@@ -8,9 +8,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { useTheme } from '@mui/material/styles';
 
 function App() {
   const [count, setCount] = useState(0)
+  const theme = useTheme();
 
   return (
     <>
@@ -22,7 +24,7 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Futurize</h1>
+      <h1 style={{ color: theme.palette.primary.main}}>Futurize</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
