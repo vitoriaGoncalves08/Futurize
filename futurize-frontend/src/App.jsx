@@ -2,52 +2,83 @@ import { useState } from 'react'
 import reactLogo from '../public/assets/react.svg'
 import viteLogo from '../public/vite.svg'
 import './App.css'
-import Button from '@mui/material/Button';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import { useTheme } from '@mui/material/styles';
-import Buttons from './components/Buttons/Buttons'
+import DeleteIcon from '@mui/icons-material/Delete';
+import Buttons from './components/Buttons/Buttons';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { AlertError } from "./components/Alert/Modal";
+import {ToastSuccess} from "./components/Alert/Toast"
 
 function App() {
-  const [count, setCount] = useState(0)
   const theme = useTheme();
+  const [loading, setLoading] = useState(false);
+  function handleClick() {
+    setLoading(!loading);
+  }
 
+  function teste(){
+    AlertError({
+      text: "Ops... Erros encontrados",
+      title: "Erro!!",
+    });
+  }
+
+  function teste2(){
+    ToastSuccess({
+      text: "Ops... Erros encontrados toast",
+      title: "Erro!!",
+    });
+  }
   return (
     <>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
+
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1 style={{ color: theme.palette.primary.main}}>Futurize</h1>
+      <h1 style={{ color: theme.palette.primary.black}}>Futurize</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <Button variant="contained">Hello world</Button>
+        {/* <Button variant="contained" startIcon={<DeleteIcon />}>
+          Delete
+        </Button>
+      <Buttons startIcon={<DeleteIcon />} className="c-button">dgrdg</Buttons> */}
 
-        <FormControl>
-        <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="female"
-          name="radio-buttons-group"
+
+      <Buttons buttonType="contained" onClick={teste}>
+        Contained Button
+      </Buttons>
+
+      <Buttons buttonType="outlined" variant="outlined" onClick={teste2}>
+        Outlined Button
+      </Buttons>
+
+      <Buttons buttonType="icon" className="c-button">
+      <DeleteIcon />
+      </Buttons>
+
+      <Buttons buttonType="loading"  onClick={handleClick}
+          loading={loading} variant="contained">
+        Loading Button
+      </Buttons>
+
+     
+        <LoadingButton
+          size="small"
+          color="secondary"
+          onClick={handleClick}
+          loading={loading}
+          loadingPosition="start"
+          startIcon={<DeleteIcon />}
+          variant="contained"
         >
-          <FormControlLabel value="female" control={<Radio />} label="Female" />
-          <FormControlLabel value="male" control={<Radio />} label="Male" />
-          <FormControlLabel value="other" control={<Radio />} label="Other" />
-        </RadioGroup>
-      </FormControl>
-      <Buttons variant="outlined"/>
+          <span>Save</span>
+        </LoadingButton>
       </div>
     </>
   )
 }
-
 export default App
