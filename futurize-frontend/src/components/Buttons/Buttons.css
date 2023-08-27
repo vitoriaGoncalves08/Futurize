@@ -1,3 +1,9 @@
-.custom-button {
-    height: 140px;
-  }
+.c-button {
+  height: 145px;
+  width: 160px;
+  border-radius: 16px;
+}
+
+.c-button:focus, .c-button:active {
+  outline: none;
+}
