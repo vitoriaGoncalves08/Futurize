@@ -1,0 +1,55 @@
+
+:root {
+    --blue: #1e90ff;
+    --white: #ffffff;
+
+    /* Project Colors */
+    --primary: #407BFF;
+    --primary-medium: #59a4ff;
+    --primary-light: #63b4ff;
+    --primary-white: #6AC2FF;
+    --primary-dark: #4668B3;
+
+    --secondary: #F5F8FF;
+    --secondary-menu: #79A2FE;
+    --secondary-menu-light: #ADDCFB;
+    --secondary-menu-medium: #6AC2FF;
+    --secondary-menu-dark: #3767D4;
+    --secondary-scrow: #9bb9fc;
+
+    --dark: #111828;
+    --dark-medium: #202938;
+    --dark-black: #212529;
+    --dark-light: #394457;
+    --dark-font: #407BFF;
+    --dark-font-light: #85A9FD;
+
+    --accent: #513487;
+    --accent-dark: #1d1b31;
+    --dash-dark:#333039;
+    --dash-light:#E4E4F5;
+    --shadow: #1114;
+
+    /* Socias */
+    --facebook: #3b5998;
+    --twitter: #00aced;
+    --linkedin: #0077b5;
+    --youtube: #dc3535;
+    --instagram: #e4405f;
+    --github: #333;
+
+    /* Neutrals */
+    --white: #fdfdfd;
+    --light: #f8f9fa;
+    --black: #151515;
+    --gray: #6c757d;
+    --gray-light: #d1d1d1;
+    --gray-dark: #343a40;
+    --dark: #212529;
+
+    /* Alerts */
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #e7ae01;
+    --danger: #dc3535;
+}
