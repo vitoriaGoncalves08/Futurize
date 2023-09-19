@@ -1,12 +1,12 @@
-# FUTURIZE
+# Nome do projeto
 
-![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge](https://github.com/vitoriaGoncalves08/Futurize)
-![GitHub language count]([https://img.shields.io/github/languages/count/iuricode/README-template?style=for-the-badge](https://github.com/vitoriaGoncalves08/Futurize))
-![GitHub forks]([https://img.shields.io/github/forks/iuricode/README-template?style=for-the-badge](https://github.com/vitoriaGoncalves08/Futurize))
-![Bitbucket open issues]([https://img.shields.io/bitbucket/issues/iuricode/README-template?style=for-the-badge](https://github.com/vitoriaGoncalves08/Futurize))
-![Bitbucket open pull requests]([https://img.shields.io/bitbucket/pr-raw/iuricode/README-template?style=for-the-badge](https://github.com/vitoriaGoncalves08/Futurize))
+![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/iuricode/README-template?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/iuricode/README-template?style=for-the-badge)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/iuricode/README-template?style=for-the-badge)
+![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/iuricode/README-template?style=for-the-badge)
 
-<img src="imagem.png" alt="Exemplo imagem">
+<img src="Home-1.png" alt="Futurize">
 
 > Linha adicional de texto informativo sobre o que o projeto faz. Sua introdução deve ter cerca de 2 ou 3 linhas. Não exagere, as pessoas não vão ler.
 
@@ -68,38 +68,52 @@ Como alternativa, consulte a documentação do GitHub em [como criar uma solicit
 
 Agradecemos às seguintes pessoas que contribuíram para este projeto:
 
-<table>
+<br>
+
+<h2> Equipe</h2>
+
+<br>
+
+<table border="0" align="center">
   <tr>
     <td align="center">
-      <a href="#">
-        <img src="https://avatars3.githubusercontent.com/u/31936044" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
-        <sub>
-          <b>Iuri Silva</b>
-        </sub>
-      </a>
+      <img src="https://avatars.githubusercontent.com/u/141746637?v=4" width="160px" alt="Foto do Felipe"/><br>
+      <sub>
+        <a href="https://github.com/Felip3Sadrak">@Felipe Sadrak</a>
+      </sub>
     </td>
     <td align="center">
-      <a href="#">
-        <img src="https://s2.glbimg.com/FUcw2usZfSTL6yCCGj3L3v3SpJ8=/smart/e.glbimg.com/og/ed/f/original/2019/04/25/zuckerberg_podcast.jpg" width="100px;" alt="Foto do Mark Zuckerberg"/><br>
-        <sub>
-          <b>Mark Zuckerberg</b>
-        </sub>
-      </a>
+      <img src="https://avatars.githubusercontent.com/u/71136865?v=4" width="160px" alt="Foto do Gabriel"/><br>
+      <sub>
+        <a href="https://github.com/Gabriel-Sena">@Gabriel Sena</a>
+      </sub>
     </td>
     <td align="center">
-      <a href="#">
-        <img src="https://miro.medium.com/max/360/0*1SkS3mSorArvY9kS.jpg" width="100px;" alt="Foto do Steve Jobs"/><br>
-        <sub>
-          <b>Steve Jobs</b>
-        </sub>
-      </a>
+      <img src="https://avatars.githubusercontent.com/u/56117556?v=4" width="160px" alt="Foto da Vitória"/><br>
+      <sub>
+        <a href="https://www.github.com/vitoriaGoncalves08">@Vitoria Gonçalves</a>
+      </sub>
     </td>
+    
   </tr>
 </table>
 
-## 😄 Seja um dos contribuidores
-
-Quer fazer parte desse projeto? Clique [AQUI](CONTRIBUTING.md) e leia como contribuir.
+<table align="center">
+  <tr>   
+    <td align="center">
+        <img src="https://avatars.githubusercontent.com/u/142413532?v=4" width="160px" alt="Foto da Luisa"/><br>
+        <sub>
+          <a href="https://github.com/Luisaaaredes">@Luisa Aredes</a>
+        </sub>
+    </td> 
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/91352941?v=4" width="160px" alt="Foto do Fábio"/><br>
+      <sub>
+        <a href="https://github.com/FabBarbosa">@Fábio Barbosa</a>
+      </sub>
+    </td>
+  </tr>
+</table>
 
 ## 📝 Licença
 
