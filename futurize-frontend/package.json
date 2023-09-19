@@ -17,6 +17,7 @@
     "@mui/material": "^5.14.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
     "sweetalert2": "^11.7.27"
   },
   "devDependencies": {

@@ -1,10 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Importe createRoot do local correto
+import './index.css';
+import AppRoutes from './routes/AppRoutes.jsx';
+import { AuthProvider } from './context/auth';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const root = document.getElementById('root');
+
+// Use createRoot para renderizar seu aplicativo
+const rootInstance = createRoot(root);
+rootInstance.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
   </React.StrictMode>,
-)
+);
