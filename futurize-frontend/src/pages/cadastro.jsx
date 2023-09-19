@@ -1,5 +1,5 @@
-import { Input } from "@mui/material";
 import React, { useState } from "react";
+import Input from '../components/Input/input';
 
 export default function Cadastro() {
 
@@ -10,10 +10,10 @@ export default function Cadastro() {
       <>
        <h1>Cadastrar</h1>
        <Input
-       type="e-mail"
-       value={email}
-       onChange={(e) => [setEmail(e.target.value), seErro]}/>
-       <Input/>
+          label="Error"
+          placeholder="aaaa"
+          required
+        />
       </>
     )
   }

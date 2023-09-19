@@ -7,7 +7,7 @@ import Buttons from './components/Buttons/Buttons';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { AlertError, AlertSuccess } from "./components/Alert/Modal";
 import {ToastSuccess, ToastWarning} from "./components/Alert/Toast";
-import TextField from '@mui/material/TextField';
+import Input from './components/Input';
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -92,6 +92,12 @@ function App() {
           FormHelperTextProps={{
             className: valor === "" ? "error-text" : ""
           }}
+          required
+        />
+        <Input
+          label="Error"
+          placeholder="aaaa"
+         
           required
         />
 
