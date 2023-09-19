@@ -2,32 +2,40 @@ import { useState } from 'react'
 import reactLogo from '../public/assets/react.svg'
 import viteLogo from '../public/vite.svg'
 import './App.css'
-import { useTheme } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Buttons from './components/Buttons/Buttons';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { AlertError } from "./components/Alert/Modal";
-import {ToastSuccess} from "./components/Alert/Toast"
+import { AlertError, AlertSuccess } from "./components/Alert/Modal";
+import {ToastSuccess, ToastWarning} from "./components/Alert/Toast";
+import TextField from '@mui/material/TextField';
 
 function App() {
-  const theme = useTheme();
   const [loading, setLoading] = useState(false);
+  const [valor, setValor] = useState("dasdsa");
+
   function handleClick() {
     setLoading(!loading);
   }
 
   function teste(){
-    AlertError({
+    AlertSuccess({
       text: "Ops... Erros encontrados",
       title: "Erro!!",
     });
   }
 
   function teste2(){
-    ToastSuccess({
+    ToastWarning({
       text: "Ops... Erros encontrados toast",
       title: "Erro!!",
     });
+  }
+
+  function alertinha(){
+    if (valor === "") {
+      return "precisa ser preenchido";
+    }
+    return "";
   }
   return (
     <>
@@ -40,28 +48,23 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1 style={{ color: theme.palette.primary.black}}>Futurize</h1>
+      <h1>Futurize</h1>
       <div className="card">
-        {/* <Button variant="contained" startIcon={<DeleteIcon />}>
-          Delete
-        </Button>
-      <Buttons startIcon={<DeleteIcon />} className="c-button">dgrdg</Buttons> */}
-
-
+  
       <Buttons buttonType="contained" onClick={teste}>
         Contained Button
       </Buttons>
 
-      <Buttons buttonType="outlined" variant="outlined" onClick={teste2}>
+      <Buttons buttonType="outlined" variant="outlined" size="large" onClick={teste2}>
         Outlined Button
       </Buttons>
 
-      <Buttons buttonType="icon" className="c-button">
-      <DeleteIcon />
+      <Buttons buttonType="icon" className="c-button" size="small" endIcon={ <DeleteIcon />}>
+        seddsrgdrgrg
       </Buttons>
 
       <Buttons buttonType="loading"  onClick={handleClick}
-          loading={loading} variant="contained">
+           variant="contained">
         Loading Button
       </Buttons>
 
@@ -77,6 +80,21 @@ function App() {
         >
           <span>Save</span>
         </LoadingButton>
+
+        <TextField
+          label="Error"
+          placeholder="aaaa"
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+          helperText={alertinha()}
+          className={valor === "" ? "error-border" : ""}
+          error={valor === ""}
+          FormHelperTextProps={{
+            className: valor === "" ? "error-text" : ""
+          }}
+          required
+        />
+
       </div>
     </>
   )

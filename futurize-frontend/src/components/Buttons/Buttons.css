@@ -2,8 +2,11 @@
   height: 145px;
   width: 160px;
   border-radius: 16px;
+  background-color: #407BFF !important;
+  color: #fff !important;
 }
 
-.c-button:focus, .c-button:active {
+.c-button:focus,
+.c-button:active {
   outline: none;
 }
