@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import reactLogo from '../public/assets/react.svg'
 import viteLogo from '../public/vite.svg'
-import './App.css'
 import DeleteIcon from '@mui/icons-material/Delete';
 import Buttons from './components/Buttons/Buttons';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { AlertError, AlertSuccess } from "./components/Alert/Modal";
 import {ToastSuccess, ToastWarning} from "./components/Alert/Toast";
-import Input from './components/Input';
+
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -81,26 +80,7 @@ function App() {
           <span>Save</span>
         </LoadingButton>
 
-        <TextField
-          label="Error"
-          placeholder="aaaa"
-          value={valor}
-          onChange={(e) => setValor(e.target.value)}
-          helperText={alertinha()}
-          className={valor === "" ? "error-border" : ""}
-          error={valor === ""}
-          FormHelperTextProps={{
-            className: valor === "" ? "error-text" : ""
-          }}
-          required
-        />
-        <Input
-          label="Error"
-          placeholder="aaaa"
-         
-          required
-        />
-
+        
       </div>
     </>
   )

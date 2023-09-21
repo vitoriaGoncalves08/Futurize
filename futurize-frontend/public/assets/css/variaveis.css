@@ -1,0 +1,141 @@
+:root{
+/* TRANSITIONS */
+--t-ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+--t-ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+--t-ease-in-back: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+--t-ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+--t-ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+--t-ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+--t-elastic: cubic-bezier(0.2, 0.8, 0.4, 1.3);
+
+/* FONT */
+--global-font-size-sm: rem(14);
+--global-font-size: rem(16);
+--global-font-size-lg: rem(18);
+--global-font-size-xlg: rem(24);
+--global-font-letter-spacing: rem(0.5);
+--global-line-height: 1.5;
+
+--font-family-sans-serif: "Poppins","Roboto", "Open Sans","Segoe UI";
+
+--font-family-monospace: "Roboto Mono", "Ubuntu Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+  "Courier New", monospace;
+
+--font-family-serif: "STIX Two Math", "PT Serif", "Times New Roman", Times, Georgia, serif;
+
+/* Z-INDEX */
+--z-above: 500;
+--z-modal: 400;
+--z-overlay: 300;
+--z-dropdown: 200;
+--z-default: 1;
+--z-below: -1;
+
+/* BREAKPOINTS */
+--w-min: 500px;
+--w-small: 600px;
+--w-medium: 800px;
+--w-large: 1200px;
+--w-extra-large: 1400px;
+
+/* GLOBALS */
+--global-size: rem(16);
+--global-radius: rem(8px);
+--global-padding: rem(6px);
+--global-margin: rem(6px);
+--global-border: rem(1px) solid var(--color-shadow);
+--global-shadow: 0 rem(1px) rem(2px) var(--color-shadow);
+
+/* EXEMPLOS DE TAMANHO */
+
+/* @media (max-width: 600px) 
+  (max-width: 37.5em)
+
+  @media (max-width: 500px)
+  @media (max-width: 31.25em)
+
+  @media (max-width: 370px) 
+  @media (max-width: 23.125em)
+
+  @media (max-width: 900px)
+  @media (max-width: 56.25em)
+  
+  @media (max-width: 1200px) 
+  @media (max-width: 75em) */
+        
+  /* EXEMPLOS DE CENTRALIZAÇÃO */
+
+  /* Mixin centralizeAbsolute
+    position: absolute;    
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+
+/* EXEMPLOS DE ANIMAÇÕES */
+
+  /* @keyframes pulse {
+    0% {
+      transform: scale(0.95);
+      filter: drop-shadow(0 0 0 0 rgba(0, 0, 0, 0.6));
+    }
+
+    70% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 0 10px rgba(0, 0, 0, 0));
+    }
+
+    100% {
+      transform: scale(0.95);
+      filter: drop-shadow(0 0 0 0 rgba(0, 0, 0, 0));
+    }
+  }
+  @keyframes to-left {
+    from {
+      margin-left: -110%;
+      opacity: 0.3;
+    }
+    to {
+      margin-left: initial;
+      opacity: 1;
+    }
+  }
+  @keyframes to-bottom {
+    from {
+      margin-top: -110%;
+      opacity: 0.3;
+    }
+    to {
+      margin-top: initial;
+      opacity: 1;
+    }
+  }
+  @keyframes to-right {
+    from {
+      margin-left: 110%;
+      opacity: 0.3;
+    }
+    to {
+      margin-right: initial;
+      opacity: 1;
+    }
+  }
+  @keyframes rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes zoom-in {
+    to {
+      transform: scale(1.05);
+    }
+  }
+
+  @mixin opacity($op: 0.8) {
+    opacity: $op;
+
+    &:hover {
+      opacity: 1;
+    }
+  } */
+
+}

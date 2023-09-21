@@ -28,7 +28,10 @@
     --accent-dark: #1d1b31;
     --dash-dark:#333039;
     --dash-light:#E4E4F5;
+    --dash-bright: #747bff;
     --shadow: #1114;
+
+    --other-dark: #213547;
 
     /* Socias */
     --facebook: #3b5998;
