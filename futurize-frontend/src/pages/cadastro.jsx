@@ -39,15 +39,26 @@ export default function Cadastro() {
           id="filled-multiline-static"
           label="Multiline"
           multiline
-          row={4}
-
-        />
-          <TextField
-          id="filled-multiline-static"
-          label="Multiline"
-          multiline
           rows={4}
+          required
+          variant="filled"
+          type="text"
         />
+       <Input
+        id="outlined-basic"
+        label="Username"
+        variant="filled"
+        type="text"
+        // outras propriedades comuns, como required, helperText, etc.
+      />
+
+      <Input
+        id="outlined-password"
+        label="Password"
+        variant="filled"
+        type="password"
+        // outras propriedades comuns, como required, helperText, etc.
+      />
       </>
     )
   }
