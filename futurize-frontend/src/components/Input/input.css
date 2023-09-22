@@ -1,3 +1,8 @@
 .c-input{
-    background-color: brown !important;
+    background: #F5F8FF !important;
+}
+.c-input:focus,
+.c-input:active,
+.c-input:hover {
+  outline: none !important;
 }
