@@ -17,7 +17,7 @@ function App() {
   }
 
   function teste(){
-    AlertSuccess({
+    AlertError({
       text: "Ops... Erros encontrados",
       title: "Erro!!",
     });
