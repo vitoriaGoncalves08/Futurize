@@ -1,64 +1,148 @@
 import React, { useState } from "react";
 import Input from '../components/Input/input';
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from '../hooks/useAuth';
 import Buttons from '../components/Buttons/Buttons';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { AlertError, AlertSuccess } from "../components/Alert/Modal";
-import {ToastSuccess, ToastWarning} from "../components/Alert/Toast";
-import TextField from '@mui/material/TextField';
+import '../../public/assets/css/cadastro-login.css';
+import { ToastError } from "../components/Alert/Toast";
 
 export default function Cadastro() {
-  const [loading, setLoading] = useState(false);
-  const [valor, setValor] = useState("dasdsa");
-
-  function handleClick() {
-    setLoading(!loading);
-  }
-
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [error, setError] = useState("");
-
-    function teste(){
-      AlertSuccess({
-        text: "Ops... Erros encontrados",
-        title: "Erro!!",
-      });
-    }
+  const [email, setEmail] = useState("");
+  const [senhaConf, setSenhaConf] = useState("");
+  const [senha, setSenha] = useState("");
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [senhaError, setSenhaError] = useState("");
+  const [senhaConfError, setSenhaConfError] = useState("");
   
-    function teste2(){
-      ToastWarning({
-        text: "Ops... Erros encontrados toast",
-        title: "Erro!!",
+  const navigate = useNavigate();
+
+  const { signup } = useAuth();
+
+   // Função para validar o formato do email
+   const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  
+  // Função para verificar se o e-mail já existe (simulando no frontend)
+  const checkIfEmailExists = async (emailToCheck) => {
+    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+
+    const hasUser = usersStorage?.filter((user) => user.email === emailToCheck);
+
+    return !!hasUser.length;
+  };
+
+  // Função para validar a senha
+  const isSenhaValida = (senha) => {
+    // Pelo menos uma letra maiúscula
+    if (!/[A-Z]/.test(senha)) {
+      return false;
+    }
+    // Pelo menos uma letra minúscula
+    if (!/[a-z]/.test(senha)) {
+      return false;
+    }
+    // Pelo menos 8 caracteres
+    if (senha.length < 8) {
+      return false;
+    }
+    return true;
+};
+  const handleSignup = async () => {
+    if (!email | !senhaConf | !senha) {
+      isFilled();
+      return;
+    } else if (senha !== senhaConf) {
+      setSenhaConfError("As senhas não são iguais");
+      return;
+    } else if (!isEmailValid(email)) {
+      setEmailError("Email inválido");
+      return;
+    }else if (!isSenhaValida(senha)) {
+      setSenhaError("A senha não atende aos critérios mínimos");
+      return;
+    }
+     // Verifica se o e-mail já existe
+     const emailExists = await checkIfEmailExists(email);
+
+     if (emailExists) {
+       setError("Este e-mail já está cadastrado");
+       return;
+     }
+
+     //função para mostrar o alerta caso os campos não estejam preenchidos
+     function isFilled(){ 
+      ToastError({
+        text: "Preencha todos os campos!",
+        title: "Erro!",
       });
     }
+ 
+    try {
+      const res = await signup(email, senha);
+  
+      if (res && res.error) {
+        setError(res.error);
+      } else {
+        alert("Usuário cadastrado com sucesso!");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Ocorreu um erro durante o cadastro.");
+    }
+  };
 
     return (
       <>
-       <h1>Cadastrar</h1>
-       <Input
-          id="filled-multiline-static"
-          label="Multiline"
-          multiline
-          rows={4}
-          required
-          variant="filled"
-          type="text"
+      <div className="container">
+       <h1 className="titulo">CADASTRAR</h1>
+       <h2 className="subtitulo">Crie sua conta</h2>
+       <div className="inputs">
+        <Input
+            id="email"
+            type="text"
+            label="Digite seu E-mail"
+            value={email}
+            onChange={(e) => [setEmail(e.target.value), setEmailError("")]}
+            helperText={emailError}
+          />
+        <Input
+          id="senha"
+          type="password"
+          inputVariant="outlined"
+          label="Digite sua Senha"
+          value={senha}
+          onChange={(e) => {
+            setSenha(e.target.value);
+            setSenhaError(""); // Remova o erro quando o usuário digitar
+          }}
+          helperText={senhaError} // Exibe a mensagem de erro para a senha
+          error={Boolean(senhaError)} // Define erro como verdadeiro para exibir erro
         />
-       <Input
-        id="outlined-basic"
-        label="Username"
-        variant="filled"
-        type="text"
-        // outras propriedades comuns, como required, helperText, etc.
-      />
 
-      <Input
-        id="outlined-password"
-        label="Password"
-        variant="filled"
-        type="password"
-        // outras propriedades comuns, como required, helperText, etc.
-      />
+        <Input
+          id="senhaConf"
+          type="password"
+          inputVariant="outlined"
+          label="Confirme sua Senha"
+          value={senhaConf}
+          onChange={(e) => {
+            setSenhaConf(e.target.value);
+            setSenhaConfError(""); // Remova o erro quando o usuário digitar
+          }}
+          helperText={senhaConfError} // Exibe a mensagem de erro para a confirmação de senha
+          error={Boolean(senhaConfError)} // Define erro como verdadeiro para exibir erro
+        />
+        <div className="conta">
+          <h3 className="info">Já tem uma conta?</h3>
+          <Link className="link" to="/login">&nbsp;Entre aqui!</Link>
+        </div>
+        </div>
+        <Buttons onClick={handleSignup}>Cadastrar</Buttons>
+        </div>
       </>
     )
   }

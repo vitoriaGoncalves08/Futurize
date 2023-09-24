@@ -1,8 +1,11 @@
 .c-input{
-    background: #F5F8FF !important;
+  width: 100% !important;
+  margin-top: 0.3rem !important;
+  margin-bottom: 0.3rem !important;
 }
 .c-input:focus,
 .c-input:active,
 .c-input:hover {
-  outline: none !important;
+outline: none !important;
+background-color: transparent;
 }
