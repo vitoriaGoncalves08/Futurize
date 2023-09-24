@@ -50,6 +50,13 @@
     --gray-dark: #343a40;
     --dark: #212529;
 
+    /* FORMS */
+    --found-light-blue: #DFE8FF;
+    --font-dark: #3E3E3E;
+    --font-medium: #8E8E8E;
+    --gradient-light: #7EA9FF;
+    --gradient-medium: #407BFF;
+
     /* Alerts */
     --success: #28a745;
     --info: #17a2b8;
