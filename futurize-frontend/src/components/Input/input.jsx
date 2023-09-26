@@ -10,7 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import './input.css';
 
 export default function Input(props) {
-  const { type, inputVariant, error, ...rest } = props;
+  const { type, inputVariant, error, helperText, ...rest } = props;
 
   if (type === 'text') {
     return (
@@ -26,8 +26,8 @@ export default function Input(props) {
           size={props.size}
           value={props.value} 
           onChange={props.onChange}
-          helperText={props.helperText} 
           error={error}
+          helperText={helperText} 
         />
       </>
     );
