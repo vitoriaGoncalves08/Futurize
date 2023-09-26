@@ -10,7 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import './input.css';
 
 export default function Input(props) {
-  const { type, inputVariant, error, ...rest } = props; // Adicione a prop 'error'
+  const { type, inputVariant, error, ...rest } = props;
 
   if (type === 'text') {
     return (
@@ -26,15 +26,15 @@ export default function Input(props) {
           size={props.size}
           value={props.value} 
           onChange={props.onChange}
-          helperText={error ? props.helperText : ''} // Exiba a mensagem de erro quando 'error' for verdadeiro
-          error={error} // Defina o erro com base na prop 'error'
+          helperText={props.helperText} 
+          error={error}
         />
       </>
     );
   } else if (type === 'password') {
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
@@ -42,13 +42,11 @@ export default function Input(props) {
 
     return (
       <>
-        <FormControl className="c-input" >
-          <InputLabel id="filled-weight-helper-text">{props.label}</InputLabel>
+        <FormControl className="c-input" variant={inputVariant} error={error}>
+          <InputLabel htmlFor={props.id}>{props.label}</InputLabel>
           <OutlinedInput
             {...rest}
-            variant={inputVariant}
-            error={error} // Defina o erro com base na prop 'error'
-            helperText={error ? props.helperText : ''} // Exiba a mensagem de erro quando 'error' for verdadeiro
+            id={props.id}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
@@ -62,7 +60,9 @@ export default function Input(props) {
                 </IconButton>
               </InputAdornment>
             }
+            label={props.label}
           />
+          <div className="helper-text">{props.helperText}</div>
         </FormControl>
       </>
     );

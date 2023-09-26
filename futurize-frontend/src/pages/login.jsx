@@ -4,6 +4,7 @@ import useAuth from '../hooks/useAuth';
 import Input from '../components/Input/input';
 import Buttons from '../components/Buttons/Buttons';
 import '../../public/assets/css/cadastro-login.css';
+import { ToastError } from "../components/Alert/Toast";
 
 export default function Login() {
 
@@ -13,12 +14,22 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [senhaError, setSenhaError] = useState("");
 
    // Função para validar o formato do email
    const isEmailValid = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
+  //função para mostrar o alerta caso os campos não estejam preenchidos
+  function isErrors(error){ 
+    ToastError({
+      text: error,
+      title: "Erro!",
+    });
+  }
 
   const handleLogin = () => {
     if (!email | !senha) {
@@ -30,12 +41,10 @@ export default function Login() {
     }
 
     const res = signin(email, senha);
-
     if (res) {
-      setError(res);
+      isErrors(res)
       return;
     }
-
     navigate("/home");
   };
 
@@ -49,13 +58,13 @@ export default function Login() {
           type="text"
           value={email}
           label="E-mail"
-          onChange={(e) => [setEmail(e.target.value), setError("")]}
+          onChange={(e) => [setEmail(e.target.value), setEmailError("")]}
         />
         <Input
           type="password"
           label="Senha"
           value={senha}
-          onChange={(e) => [setSenha(e.target.value), setError("")]}
+          onChange={(e) => [setSenha(e.target.value), setSenhaError("")]}
         />
         {error}
         <div className="conta">

@@ -27,12 +27,13 @@ export default function Cadastro() {
   
   // Função para verificar se o e-mail já existe (simulando no frontend)
   const checkIfEmailExists = async (emailToCheck) => {
-    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
-
-    const hasUser = usersStorage?.filter((user) => user.email === emailToCheck);
-
+    const usersStorage = JSON.parse(localStorage.getItem("users_bd")) || [];
+  
+    const hasUser = usersStorage.filter((user) => user.email === emailToCheck);
+  
     return !!hasUser.length;
   };
+  
 
   // Função para validar a senha
   const isSenhaValida = (senha) => {
@@ -55,20 +56,21 @@ export default function Cadastro() {
       isFilled();
       return;
     } else if (senha !== senhaConf) {
+      setSenhaError("As senhas não são iguais");
       setSenhaConfError("As senhas não são iguais");
       return;
     } else if (!isEmailValid(email)) {
       setEmailError("Email inválido");
       return;
     }else if (!isSenhaValida(senha)) {
-      setSenhaError("A senha não atende aos critérios mínimos");
+      setSenhaError("Tenha 1 caracter minúsculo, 1 maiúsculo e 8 digitos totais");
       return;
     }
      // Verifica se o e-mail já existe
      const emailExists = await checkIfEmailExists(email);
 
      if (emailExists) {
-       setError("Este e-mail já está cadastrado");
+       setEmailError("Este e-mail já está cadastrado");
        return;
      }
 
@@ -106,8 +108,9 @@ export default function Cadastro() {
             type="text"
             label="Digite seu E-mail"
             value={email}
-            onChange={(e) => [setEmail(e.target.value), setEmailError("")]}
+            onChange={(e) => {setEmail(e.target.value); setEmailError("");}}
             helperText={emailError}
+            error={Boolean(emailError)}
           />
         <Input
           id="senha"
@@ -133,8 +136,8 @@ export default function Cadastro() {
             setSenhaConf(e.target.value);
             setSenhaConfError(""); // Remova o erro quando o usuário digitar
           }}
-          helperText={senhaConfError} // Exibe a mensagem de erro para a confirmação de senha
-          error={Boolean(senhaConfError)} // Define erro como verdadeiro para exibir erro
+          helperText={senhaConfError}
+          error={Boolean(senhaConfError)}
         />
         <div className="conta">
           <h3 className="info">Já tem uma conta?</h3>
