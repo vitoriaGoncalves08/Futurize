@@ -10,8 +10,8 @@
     justify-content: center;
     flex-direction: column;
     gap: 10px;  
-    height: 55vh;
-    width: 46vh;
+    height: 62vh;
+    width: 50vh;
     border-radius: 8px;
     background-color: var(--white);
     color: var(--font-dark);

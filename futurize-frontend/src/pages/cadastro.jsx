@@ -7,10 +7,12 @@ import '../../public/assets/css/cadastro-login.css';
 import { ToastError } from "../components/Alert/Toast";
 
 export default function Cadastro() {
+  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senhaConf, setSenhaConf] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
+  const [nomeError, setNomeError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [senhaError, setSenhaError] = useState("");
   const [senhaConfError, setSenhaConfError] = useState("");
@@ -52,7 +54,7 @@ export default function Cadastro() {
     return true;
 };
   const handleSignup = async () => {
-    if (!email | !senhaConf | !senha) {
+    if (!email | !senhaConf | !senha | !nome) {
       isFilled();
       return;
     } else if (senha !== senhaConf) {
@@ -83,7 +85,7 @@ export default function Cadastro() {
     }
  
     try {
-      const res = await signup(email, senha);
+      const res = await signup(nome, email, senha);
   
       if (res && res.error) {
         setError(res.error);
@@ -103,6 +105,13 @@ export default function Cadastro() {
        <h1 className="titulo">CADASTRAR</h1>
        <h2 className="subtitulo">Crie sua conta</h2>
        <div className="inputs">
+       <Input
+            id="nome"
+            type="text"
+            label="Digite seu Nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
         <Input
             id="email"
             type="text"
@@ -120,10 +129,10 @@ export default function Cadastro() {
           value={senha}
           onChange={(e) => {
             setSenha(e.target.value);
-            setSenhaError(""); // Remova o erro quando o usuário digitar
+            setSenhaError("");
           }}
-          helperText={senhaError} // Exibe a mensagem de erro para a senha
-          error={Boolean(senhaError)} // Define erro como verdadeiro para exibir erro
+          helperText={senhaError}
+          error={Boolean(senhaError)} 
         />
 
         <Input
@@ -134,7 +143,7 @@ export default function Cadastro() {
           value={senhaConf}
           onChange={(e) => {
             setSenhaConf(e.target.value);
-            setSenhaConfError(""); // Remova o erro quando o usuário digitar
+            setSenhaConfError("");
           }}
           helperText={senhaConfError}
           error={Boolean(senhaConfError)}

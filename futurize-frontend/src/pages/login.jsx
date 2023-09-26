@@ -10,7 +10,7 @@ export default function Login() {
 
   const { signin } = useAuth();
   const navigate = useNavigate();
-
+  
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
@@ -40,7 +40,7 @@ export default function Login() {
       return;
     }
 
-    const res = signin(email, senha);
+    const res = signin( email, senha);
     if (res) {
       isErrors(res)
       return;
@@ -55,12 +55,14 @@ export default function Login() {
        <h2 className="subtitulo">Entre em sua conta</h2>
        <div className="inputs">
         <Input
+          id="email"
           type="text"
           value={email}
           label="E-mail"
           onChange={(e) => [setEmail(e.target.value), setEmailError("")]}
         />
         <Input
+          id="senha"
           type="password"
           label="Senha"
           value={senha}
