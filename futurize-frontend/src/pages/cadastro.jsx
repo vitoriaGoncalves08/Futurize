@@ -5,6 +5,7 @@ import useAuth from '../hooks/useAuth';
 import Buttons from '../components/Buttons/Buttons';
 import '../../public/assets/css/cadastro-login.css';
 import { ToastError } from "../components/Alert/Toast";
+import axios from "axios";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -68,6 +69,33 @@ export default function Cadastro() {
       setSenhaError("Tenha 1 caracter minúsculo, 1 maiúsculo e 8 digitos totais");
       return;
     }
+
+
+
+    // Crie um objeto com os dados a serem enviados para o backend
+    const userData = {
+      nome: nome,
+      email: email,
+      senha: senha,
+    };
+
+    try {
+      // Faça a chamada Axios para o endpoint do backend
+      const response = await axios.post("http://localhost:8080/User", userData);
+
+      if (response.data.error) {
+        setError(response.data.error);
+      } else {
+        alert("Usuário cadastrado com sucesso!");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Ocorreu um erro durante o cadastro.");
+    }
+
+
+
      // Verifica se o e-mail já existe
      const emailExists = await checkIfEmailExists(email);
 
