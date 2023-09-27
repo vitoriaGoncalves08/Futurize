@@ -5,6 +5,7 @@ import Login from '../pages/login';
 import Cadastro from '../pages/cadastro';
 import Home from '../pages/home';
 import useAuth from "../hooks/useAuth";
+import App from "../Teste";
 
 const PrivateRoute = ({ children }) => {
     const { signed } = useAuth();
@@ -20,6 +21,7 @@ export default function AppRoutes() {
                 <Route path="/" element={<SiteInicial />} />
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/app" element={<App />} />
                 <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
             </Routes>
         </Router>

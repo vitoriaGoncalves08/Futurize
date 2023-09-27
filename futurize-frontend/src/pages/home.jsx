@@ -1,13 +1,15 @@
-import NavBar from '../components/NavBar/NavBar';
-import HeroContent from '../components/HeroContent/HeroContent';
+import Buttons from "../components/Buttons/Buttons";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <NavBar/>
-      <HeroContent/>
-    </div>
-  );
-}
-
-export default App;
+export default function Home() {
+  const { signout } = useAuth();
+  const navigate = useNavigate();
+    return (
+      <>
+       <Buttons onClick={() => [signout(), navigate("/")]}>
+        Sair
+      </Buttons>
+      </>
+    )
+  }

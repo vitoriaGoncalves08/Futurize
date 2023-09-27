@@ -1,0 +1,30 @@
+
+.c-input{
+  width: 100% !important;
+  margin-top: 0.3rem !important;
+  margin-bottom: 0.3rem !important;
+}
+.c-input:focus,
+.c-input:active,
+.c-input:hover {
+outline: none !important;
+background-color: transparent;
+}
+
+.helper-text{
+  opacity: 1;
+  color: RGB(211, 47, 47);
+  font-size: 10px;
+  letter-spacing: 0px;
+  text-align: left;
+  font-family: 'Roboto', 'Helvetica';
+  line-height: 19.92px;
+  vertical-align: 'baseline';
+  letter-spacing: 0.39996px;
+  word-spacing: 0px;
+  margin: 3px 14px 0px;
+  padding: 0px;
+  font-weight: 400;
+  font-size: 12px;
+}
+
