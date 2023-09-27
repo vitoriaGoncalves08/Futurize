@@ -1,7 +1,41 @@
 .HeroContent{
-    border: 1px solid red;
     width: 627px; 
     height: 298px; 
-    margin: auto;
+    margin: 40px auto;
     padding: 0 24px;
+}
+
+.Titulo p{
+    text-align: center;
+    font-size: 70px; 
+    font-weight: 800; 
+    line-height: 62px; 
+    text-transform: uppercase;
+    background-image: linear-gradient(to right, #407BFF, #6AC2FF);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+}  
+
+.Subtitulo p{
+    text-align: center; 
+    color: #A1A1A1; 
+    font-size: 18px; 
+    line-height: 28px; 
+}
+
+.ButtonCriarConta{
+    padding: 16px; 
+    background: #3E3E3E;
+    border-radius: 10px; 
+    color: white; 
+    font-size: 18px; 
+    font-weight: 700; 
+    border: none;
+    cursor: pointer;
+    line-height: 24px; 
+    position: absolute;    
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

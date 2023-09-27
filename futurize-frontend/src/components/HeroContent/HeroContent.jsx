@@ -4,19 +4,15 @@ function HeroContent() {
     return (
         <div className={styles.HeroContent}>
             
-            <div className="Titulo">
+            <div className={styles.Titulo}>
                 <p>Gerencie seus projetos</p>
             </div>
             
-            <div className="Subtitulo">
+            <div className={styles.Subtitulo}>
                 <p>Desbloqueie uma eficiência sem precedentes e organize-se em projetos de grande escala!</p>
             </div>
-               
-            <div className="BtnCriarConta">
-                <div className="ButtonCriarConta">
-                    <p>Criar Conta</p>
-                </div>
-            </div>
+
+            <button className={styles.ButtonCriarConta}>Criar Conta</button>
         </div>
     );
 }
