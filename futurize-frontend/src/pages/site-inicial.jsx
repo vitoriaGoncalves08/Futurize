@@ -1,8 +1,13 @@
+import NavBar from '../components/NavBar/NavBar';
+import HeroContent from '../components/HeroContent/HeroContent';
 
-export default function SiteInicial() {
-    return (
-      <>
-       Site Inicial
-      </>
-    )
-  }
+function SiteInicial() {
+  return (
+    <div className="SiteInicial">
+      <NavBar/>
+      <HeroContent/>
+    </div>
+  );
+}
+
+export default SiteInicial;
