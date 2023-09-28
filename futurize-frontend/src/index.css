@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+body{
+  height: 100vh;
+  overflow: hidden;
+}
+
 :root {
   font-family: var(--font-family-sans-serif);
   color-scheme: light dark;

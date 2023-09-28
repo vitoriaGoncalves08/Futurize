@@ -1,4 +1,5 @@
-import styles from './HeroContent.module.css'
+import styles from './HeroContent.module.css';
+import Buttons from '../Buttons/Buttons';
 
 function HeroContent() {
     return (
@@ -12,7 +13,12 @@ function HeroContent() {
                 <p>Desbloqueie uma eficiência sem precedentes e organize-se em projetos de grande escala!</p>
             </div>
 
-            <button className={styles.ButtonCriarConta}>Criar Conta</button>
+            <div className={styles.ButtonCriarConta}>
+                {/* <button>Criar Conta</button> */}
+                <Buttons >
+                Criar conta
+            </Buttons>
+            </div>
         </div>
     );
 }
