@@ -1,6 +1,6 @@
 .c-button {
-  height: 45px;
-  width: 130px;
+  min-height: 45px;
+  min-width: 130px;
   border-radius: 20px;
   background-color: #407BFF !important;
   color: #fff !important;
