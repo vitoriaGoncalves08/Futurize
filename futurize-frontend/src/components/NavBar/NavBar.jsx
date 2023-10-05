@@ -1,6 +1,9 @@
-import styles from './NavBar.module.css'
+import styles from './NavBar.module.css';
+import { useNavigate } from "react-router-dom";
+import Buttons from "../Buttons/Buttons";
 
 function NavBar() {
+    const navigate = useNavigate();
     return (
         <nav>
             <div className={styles.LogoFuturize}>
@@ -16,7 +19,7 @@ function NavBar() {
                 </ul>
             </div>
             
-            <button className={styles.SignUp}>Entrar</button>
+            <Buttons onClick={() => navigate("/cadastro")}>Entrar</Buttons>
         </nav>
     );
 }

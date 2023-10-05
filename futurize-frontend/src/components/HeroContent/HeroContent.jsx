@@ -1,7 +1,9 @@
 import styles from './HeroContent.module.css';
-import Buttons from '../Buttons/Buttons';
+import Buttons from "../Buttons/Buttons";
+import { useNavigate } from "react-router-dom";
 
 function HeroContent() {
+  const navigate = useNavigate();
     return (
         <div className={styles.HeroContent}>
             
@@ -15,9 +17,7 @@ function HeroContent() {
 
             <div className={styles.ButtonCriarConta}>
                 {/* <button>Criar Conta</button> */}
-                <Buttons >
-                Criar conta
-            </Buttons>
+                <Buttons onClick={() => navigate("/Cadastro")}>Criar Conta</Buttons>
             </div>
         </div>
     );
