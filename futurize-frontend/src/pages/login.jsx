@@ -24,27 +24,34 @@ export default function Login() {
   };
 
   //função para mostrar o alerta caso os campos não estejam preenchidos
-  function isErrors(error){ 
+  function isFilled(error){ 
     ToastError({
       text: error,
       title: "Erro!",
     });
   }
 
-  const handleLogin = () => {
-    if (!email | !senha) {
-      setError("Preencha todos os campos");
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      isFilled("Preencha todos os campos!");
       return;
     } else if (!isEmailValid(email)) {
-      setError("Email inválido");
+      setEmailError("Email inválido");
       return;
     }
 
-    const res = signin( email, senha);
-    if (res) {
-      isErrors(res)
+    const res = await signin(email, senha);
+
+    if (res === "E-mail ou senha incorretos") {
+      // Mostrar um alerta para senha incorreta
+      setSenhaError("Senha incorreta");
+      return;
+    } else if (res === "Usuário não cadastrado") {
+      // Mostrar um alerta para usuário não registrado
+      setEmailError("Usuário não cadastrado");
       return;
     }
+
     navigate("/home");
   };
 
@@ -59,16 +66,23 @@ export default function Login() {
           type="text"
           value={email}
           label="E-mail"
-          onChange={(e) => [setEmail(e.target.value), setEmailError("")]}
+          onChange={(e) => {setEmail(e.target.value); setEmailError("");}}
+          helperText={emailError}
+          error={Boolean(emailError)}
         />
         <Input
-          id="senha"
-          type="password"
-          label="Senha"
-          value={senha}
-          onChange={(e) => [setSenha(e.target.value), setSenhaError("")]}
+         id="senha"
+         type="password"
+         inputVariant="outlined"
+         label="Digite sua Senha"
+         value={senha}
+         onChange={(e) => {
+           setSenha(e.target.value);
+           setSenhaError("");
+         }}
+         helperText={senhaError}
+         error={Boolean(senhaError)}
         />
-        {error}
         <div className="conta">
           <h3 className="info">Não possui uma conta?</h3>
           <Link className="link" to="/cadastro">&nbsp;Cadastrar-se</Link>

@@ -1,0 +1,108 @@
+/* Estilos para dispositivos de tela maior (por exemplo, desktop) */
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 50px;
+  }
+  
+  .LogoFuturize p {
+    color: #3E3E3E;
+    font-size: 26px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+  }
+  
+  .MenuItens,
+  ul,
+  li,
+  a {
+    display: flex;
+    list-style: none;
+    gap: 16px;
+    font-size: 20px;
+    color: #3e3e3e;
+    text-decoration: none;
+  }
+  
+  .SignUp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 45px;
+    padding: 16px;
+    background: #407BFF;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .HeroContent {
+    display: inline-block;
+    width: 40%;
+    height: 40%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    text-align: center;
+  }
+  
+  .Titulo p {
+    text-align: center;
+    font-size: 70px;
+    font-weight: 800;
+    line-height: 62px;
+    text-transform: uppercase;
+    background-image: linear-gradient(to right, #407BFF, #6AC2FF);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+  
+  .Subtitulo p {
+    text-align: center;
+    color: #A1A1A1;
+    font-size: 18px;
+    line-height: 28px;
+    margin: 2rem;
+  }
+  
+  .Wave {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  footer img {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  /* Estilos para tablets (exemplo: tela com largura máxima de 768px) */
+  @media (max-width: 768px) {
+
+    .HeroContent {
+      width: 80%;
+    }
+  
+    .Titulo p {
+      font-size: 50px;
+      line-height: 54px;
+    }
+  
+    .Subtitulo p {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+  

@@ -5,6 +5,7 @@ import useAuth from '../hooks/useAuth';
 import Buttons from '../components/Buttons/Buttons';
 import '../../public/assets/css/cadastro-login.css';
 import { ToastError } from "../components/Alert/Toast";
+import { AlertSuccess } from "../components/Alert/Modal";
 import axios from "axios";
 
 export default function Cadastro() {
@@ -36,7 +37,22 @@ export default function Cadastro() {
   
     return !!hasUser.length;
   };
-  
+
+     //função para mostrar o alerta caso os campos não estejam preenchidos
+     function isFilled(error){ 
+      ToastError({
+        text: error,
+        title: "Erro!",
+      });
+    }
+
+    function isSuccess(){ 
+      AlertSuccess({
+        text: "Usuário cadastrado com sucesso!",
+        title: "Sucesso!",
+      });
+      navigate("/login");
+    }  
 
   // Função para validar a senha
   const isSenhaValida = (senha) => {
@@ -56,7 +72,7 @@ export default function Cadastro() {
 };
   const handleSignup = async () => {
     if (!email | !senhaConf | !senha | !nome) {
-      isFilled();
+      isFilled("Preencha todos os campos!");
       return;
     } else if (senha !== senhaConf) {
       setSenhaError("As senhas não são iguais");
@@ -69,8 +85,6 @@ export default function Cadastro() {
       setSenhaError("Tenha 1 caracter minúsculo, 1 maiúsculo e 8 digitos totais");
       return;
     }
-
-
 
     // Crie um objeto com os dados a serem enviados para o backend
     const userData = {
@@ -86,15 +100,12 @@ export default function Cadastro() {
       if (response.data.error) {
         setError(response.data.error);
       } else {
-        alert("Usuário cadastrado com sucesso!");
-        navigate("/login");
+        isSuccess();
       }
     } catch (error) {
       console.error(error);
       setError("Ocorreu um erro durante o cadastro.");
     }
-
-
 
      // Verifica se o e-mail já existe
      const emailExists = await checkIfEmailExists(email);
@@ -103,14 +114,6 @@ export default function Cadastro() {
        setEmailError("Este e-mail já está cadastrado");
        return;
      }
-
-     //função para mostrar o alerta caso os campos não estejam preenchidos
-     function isFilled(){ 
-      ToastError({
-        text: "Preencha todos os campos!",
-        title: "Erro!",
-      });
-    }
  
     try {
       const res = await signup(nome, email, senha);
@@ -118,8 +121,7 @@ export default function Cadastro() {
       if (res && res.error) {
         setError(res.error);
       } else {
-        alert("Usuário cadastrado com sucesso!");
-        navigate("/login");
+        isSuccess();
       }
     } catch (error) {
       console.error(error);
