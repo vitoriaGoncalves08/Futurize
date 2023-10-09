@@ -1,7 +1,6 @@
 package med.voll.api.usuario;
 
-public enum TipoUsuario {
-
+public enum Cargo{
     USUARIO,
     INTEGRANTE,
     GESTOR;

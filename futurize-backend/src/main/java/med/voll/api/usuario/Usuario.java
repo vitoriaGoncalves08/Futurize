@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "usuario")
-@Entity(name = "usuario--")
+@Table(name = "usuarios")
+@Entity(name = "usuario")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,12 +19,12 @@ public class Usuario {
     private String email;
     private String senha;
     @Enumerated(EnumType.STRING)
-    private TipoUsuario tipoUsuario;
+    private Cargo cargo;
 
     public Usuario(DadosCadastroUsuario dados) {
         this.nome = dados.nome();
         this.email = dados.email();
-        this.tipoUsuario = dados.tipoUsuario();
+        this.cargo = dados.cargo();
         this.senha = dados.senha();
     }
 }

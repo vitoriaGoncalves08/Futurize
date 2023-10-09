@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import jakarta.validation.Valid;
 import med.voll.api.usuario.DadosCadastroUsuario;
 import med.voll.api.usuario.Usuario;
 import med.voll.api.usuario.UsuarioRepository;
@@ -18,7 +19,7 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public void CadastrarUsuario(@RequestBody DadosCadastroUsuario dados) {
+    public void CadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados) {
         repository.save(new Usuario(dados));
     }
 }
