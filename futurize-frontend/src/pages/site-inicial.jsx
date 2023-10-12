@@ -22,7 +22,7 @@ export default function SiteInicial() {
                 </ul>
             </div>
             
-            <Buttons onClick={() => navigate("/cadastro")}>Entrar</Buttons>
+            <Buttons onClick={() => navigate("/login")}>Entrar</Buttons>
       </nav>
       <div className="HeroContent">
             
@@ -36,7 +36,7 @@ export default function SiteInicial() {
 
             <div className="ButtonCriarConta">
                 {/* <button>Criar Conta</button> */}
-                <Buttons onClick={() => navigate("/Cadastro")}>Criar Conta</Buttons>
+                <Buttons onClick={() => navigate("/cadastro")}>Criar Conta</Buttons>
             </div>
       </div>
     </div>

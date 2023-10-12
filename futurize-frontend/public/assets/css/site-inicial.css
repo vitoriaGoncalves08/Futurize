@@ -1,4 +1,7 @@
-/* Estilos para dispositivos de tela maior (por exemplo, desktop) */
+:root {
+  background-color: var(--found-light-blue);
+  font-family: var(--font-family-sans-serif);
+}
 nav {
     display: flex;
     justify-content: space-evenly;
