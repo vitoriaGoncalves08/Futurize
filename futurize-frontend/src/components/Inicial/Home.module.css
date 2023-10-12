@@ -1,0 +1,15 @@
+.Wave{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+footer img{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    width: 100%;
+}

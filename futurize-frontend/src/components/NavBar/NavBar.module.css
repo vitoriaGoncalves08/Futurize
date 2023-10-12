@@ -1,0 +1,38 @@
+nav{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 50px;
+}
+
+.LogoFuturize p{
+    color: #3E3E3E; 
+    font-size: 26px; 
+    font-weight: 800; 
+    text-transform: uppercase;
+    letter-spacing: 8px;
+}
+
+.MenuItens, ul, li, a{
+    display: flex;
+    list-style: none;
+    gap: 16px;
+    font-size: 20px;
+    color: #3e3e3e;
+    text-decoration: none;
+}
+
+.SignUp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px; 
+    height: 45px;        
+    padding: 16px;
+    background: #407BFF; 
+    border-radius: 10px;
+    color: white; 
+    font-size: 18px; 
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
