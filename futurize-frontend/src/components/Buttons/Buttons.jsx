@@ -16,13 +16,6 @@ export default function Buttons(props) {
         {props.children}
       </LoadingButton>
     );
-  }  else if (type === 'submit') {
-    // Renderiza um botão de submissão
-    return (
-      <button className='c-button' type="submit" {...restProps}>
-        {props.children}
-      </button>
-    );
   } else {
     return (
       <Button
