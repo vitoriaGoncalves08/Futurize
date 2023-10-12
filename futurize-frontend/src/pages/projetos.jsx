@@ -7,13 +7,17 @@ import '../../public/assets/css/projetos.css';
 export default function Home() {
   const { signout } = useAuth();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    signout();
+    navigate("/");
+  };
     return (
       <div className='container'>
       
       <Table></Table>
-      <Buttons onClick={() => [signout(), navigate("/")]}>
-        Sair
-      </Buttons>
+      {/* <Buttons onClick={handleLogout}>Sair
+      </Buttons> */}
       </div>
     )
   }
