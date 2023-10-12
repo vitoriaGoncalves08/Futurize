@@ -3,9 +3,9 @@ import React from "react";
 import SiteInicial from "../pages/site-inicial";
 import Login from '../pages/login'; 
 import Cadastro from '../pages/cadastro';
-import Home from '../pages/home';
+import Projetos from '../pages/projetos';
 import useAuth from "../hooks/useAuth";
-import App from "../Teste";
+import Teste from "../Teste";
 
 const PrivateRoute = ({ children }) => {
     const { signed } = useAuth();
@@ -21,8 +21,8 @@ export default function AppRoutes() {
                 <Route path="/" element={<SiteInicial />} />
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/app" element={<App />} />
-                <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+                <Route path="/projeto" element={<PrivateRoute><Projetos /></PrivateRoute>} />
+                <Route path="/teste" element={<Teste />} />
             </Routes>
         </Router>
     );

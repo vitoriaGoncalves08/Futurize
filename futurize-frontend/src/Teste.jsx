@@ -6,6 +6,7 @@ import Buttons from './components/Buttons/Buttons';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { AlertError, AlertSuccess } from "./components/Alert/Modal";
 import {ToastSuccess, ToastWarning} from "./components/Alert/Toast";
+import TableC from "./components/Table/Table";
 
 
 function App() {
@@ -38,6 +39,8 @@ function App() {
   }
   return (
     <>
+
+    <TableC />
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

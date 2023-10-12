@@ -1,0 +1,99 @@
+@import '../../../public/assets/css/variaveis.css';
+@import '../../../public/assets/css/colors.css';
+
+.container{
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.titulo {
+    position: relative;
+    display: inline-block;
+    color: var(--font-dark); 
+    font-weight: 800;
+    font-size: 25px;
+  }
+  
+  .titulo::before,
+  .titulo::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right,#7EA9FF, #407BFF); /* Gradiente de azul para roxo */
+    bottom: -5px;
+    left: 0;
+    right: 0;
+  }
+  
+  .titulo::before {
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: var(--t-ease-in-out-circ);
+  }
+
+  .meus-projetos{
+    display: flex;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+
+  .subtitulo {
+    font-weight: 500;
+    color: var(--font-medium);
+    font-size: var(--global-font-size-lg);
+    margin-top: 0;
+    margin-right: 1rem;
+    text-align: left !important; /* Alinha o texto à esquerda */    
+  }
+
+  .button-circle{
+    border-radius: 100% !important;
+    min-width: 10px !important;
+    background-color: var(--secondary-menu) !important;
+    color: var(--white) !important;
+  }
+
+  
+.c-input{
+  width: 100% !important;
+  margin-top: 0.3rem !important;
+  margin-bottom: 0.3rem !important;
+}
+.c-input:focus,
+.c-input:active,
+.c-input:hover {
+outline: none !important;
+background-color: transparent;
+}
+
+.row{
+  background: linear-gradient(to right, #3767D4, #407BFF);
+  
+}
+
+.cel{
+  color: var(--white) !important;
+}
+
+.tag-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.tag-em-andamento {
+  background-color: var(--warning)!important; 
+  color: var(--white) !important;
+}
+
+.tag-concluido {
+  background-color: var(--success)!important; 
+  color: var(--white) !important;
+}
+
+.tag-pausado {
+  background-color: var(--danger)!important;
+  color: var(--white) !important;
+}
