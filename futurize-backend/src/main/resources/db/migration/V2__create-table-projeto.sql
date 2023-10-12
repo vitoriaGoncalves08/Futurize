@@ -1,5 +1,5 @@
 CREATE TABLE projeto(
-     id bigint not null auto_increment,
+     id INT not null auto_increment,
      titulo varchar(100) not null,
      descricao varchar(240),
      inicio date not null,

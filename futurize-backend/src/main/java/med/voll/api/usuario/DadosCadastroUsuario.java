@@ -1,13 +1,12 @@
 package med.voll.api.usuario;
 
-import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 
-public record   DadosCadastroUsuario(
+public record DadosCadastroUsuario(
         @NotBlank
         String nome,
         @NotBlank
@@ -15,9 +14,8 @@ public record   DadosCadastroUsuario(
         String email,
         @NotBlank
         @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[@#$%^&+=!_])(?=.*\\d)[A-Za-z@#$%^&+=!_\\d]{7,25}$", message = "Senha inválida")
-        String senha,
-        @NotNull
-        Cargo cargo) {
+        String senha
+        ) {
 
 
 

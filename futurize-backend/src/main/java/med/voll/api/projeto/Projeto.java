@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.usuario.Cargo;
-import med.voll.api.usuario.DadosCadastroUsuario;
-import med.voll.api.usuario.Usuario;
 
 import java.util.Date;
 
@@ -29,12 +26,13 @@ public class Projeto {
 
 
 
+
+
     public Projeto(DadosCadastroProjeto dadosCadastroProjeto) {
         this.titulo = dadosCadastroProjeto.titulo();
         this.descricao = dadosCadastroProjeto.descricao();
         this.inicio = dadosCadastroProjeto.inicio();
         this.encerramento = dadosCadastroProjeto.encerramento();
         this.estado = dadosCadastroProjeto.estado();
-
     }
 }

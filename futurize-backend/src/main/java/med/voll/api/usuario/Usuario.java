@@ -18,13 +18,14 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
-    @Enumerated(EnumType.STRING)
-    private Cargo cargo;
+
 
     public Usuario(DadosCadastroUsuario dados) {
         this.nome = dados.nome();
         this.email = dados.email();
-        this.cargo = dados.cargo();
         this.senha = dados.senha();
     }
+
+
+
 }
