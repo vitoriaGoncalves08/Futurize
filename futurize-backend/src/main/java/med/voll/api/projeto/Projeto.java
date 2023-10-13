@@ -18,7 +18,6 @@ public class Projeto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
-    private String descricao;
     private Date inicio;
     private Date encerramento;
     @Enumerated(EnumType.STRING)
@@ -30,7 +29,6 @@ public class Projeto {
 
     public Projeto(DadosCadastroProjeto dadosCadastroProjeto) {
         this.titulo = dadosCadastroProjeto.titulo();
-        this.descricao = dadosCadastroProjeto.descricao();
         this.inicio = dadosCadastroProjeto.inicio();
         this.encerramento = dadosCadastroProjeto.encerramento();
         this.estado = dadosCadastroProjeto.estado();
