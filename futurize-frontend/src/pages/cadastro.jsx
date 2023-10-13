@@ -70,8 +70,6 @@ export default function Cadastro() {
       return;
     }
 
-
-
     // Crie um objeto com os dados a serem enviados para o backend
     const userData = {
       nome: nome,
