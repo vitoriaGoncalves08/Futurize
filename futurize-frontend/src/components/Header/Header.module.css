@@ -1,0 +1,35 @@
+.Header {
+    display: flex;
+    align-items: center;
+    padding: 2%;
+    background: #79A2FE;
+}
+.Logo {
+    width: 173px; 
+    height: 34px;
+    color: white; 
+    font-size: 20px; 
+    font-weight: 800;
+    text-transform: uppercase; 
+    line-height: 35px; 
+    letter-spacing: 3px;
+}
+
+.ImgPessoa{
+    position: absolute;
+    right: 10%;
+    width: 40px; 
+    height: 40px;
+    margin-right: 0;
+    border-radius: 9999px;
+}
+
+.OpcoesIcon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 3%;
+    font-size: 35px;
+    color: #fff;
+}
