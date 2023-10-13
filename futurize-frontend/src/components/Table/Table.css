@@ -1,10 +1,11 @@
 @import '../../../public/assets/css/variaveis.css';
 @import '../../../public/assets/css/colors.css';
 
-/* .container{
-  min-width: 100%;
-  min-height: 100%;
-} */
+.container{
+  min-width: 84%;
+  min-height: 86%;
+  margin: 50px 130px;
+}
 
 .titulo {
     position: relative;

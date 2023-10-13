@@ -16,14 +16,12 @@ export default function Home(
     navigate("/");
   };
     return (
-    <> 
-      <Header/>
-      <SideBar/>
-      <div className='container'>
-        <Table></Table>
-        {/* <Buttons onClick={handleLogout}>Sair
-        </Buttons> */}
-      </div>
-    </>
+      <> 
+        <Header/>
+        <SideBar/>
+          <Table></Table>
+          {/* <Buttons onClick={handleLogout}>Sair
+          </Buttons> */}
+      </>
     );
   }
