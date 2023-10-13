@@ -1,45 +1,45 @@
-import './SideBar.module.css';
+import './SideBar.css';
+import FolderIcon from '@mui/icons-material/Folder';
+import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function SideBar(){
     return (
         <div className="rectangle12">
             <div className="SideBar">
                 {/*<i className="ph ph-list" id="btn"></i>*/}
-                <ul className="NavList>">
+                <ul className="NavList">
                     <li>
                         <a href="#">
-                            {/*<i className="ph ph-folder-open"></i>*/}
+                            <FolderIcon></FolderIcon>
                             <span className="LinksName">Projeto</span>
                         </a>
-                        <span className="Tooltip">Projeto</span>
                     </li>
                     <li>
                         <a href="#">
-                            {/* <i className="ph ph-kanban"></i> */}
+                            <ViewKanbanIcon></ViewKanbanIcon>
                             <span className="LinksName">Kanban</span>
                         </a>
-                        <span className="Tooltip">Kanban</span>
                     </li>
                     <li>
                         <a href="#">
-                            {/* <i className="ph ph-calendar"></i> */}
+                            <CalendarMonthIcon></CalendarMonthIcon>
                             <span className="LinksName">Calendário</span>
                         </a>
-                        <span className="Tooltip">Calendário</span>
                     </li>
                     <li>
                         <a href="#">
-                            {/* <i className="ph ph-chart-bar"></i> */}
+                            <DashboardIcon></DashboardIcon>
                             <span className="LinksName">Dashboard</span>
                         </a>
-                        <span className="Tooltip">Dashboard</span>
                     </li>
                     <li>
                         <a href="#">
-                            {/* <i className="ph ph-gear"></i> */}
+                            <SettingsIcon></SettingsIcon>
                             <span className="LinksName">Configurações</span>
                         </a>
-                        <span className="Tooltip">Configurações</span>
                     </li>
                 </ul>
             </div>

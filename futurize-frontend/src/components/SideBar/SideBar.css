@@ -1,0 +1,80 @@
+.SideBar{
+    height: 100%; 
+    background: #79A2FE;
+    position: fixed;
+    left: 0;
+    width: 15%;
+    padding: 6px 14px;
+    transition: all 0.5s ease;
+}
+.SideBar ul{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30%;
+}
+
+.SideBar ul li{
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin: 10px;
+    list-style: none;
+    line-height: 50px;
+}
+
+.SideBar ul li .Tooltip{
+    position: absolute;
+    left: 122px;
+    top: 0;
+    transform: translateY(-50%);
+    border-radius: 6px;
+    height: 35px;
+    width: 100%;
+    background: #fff;
+    line-height: 35px;
+    text-align: center;
+    box-shadow:  0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: 0s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.SideBar ul li:hover .Tooltip{
+    transition: all 0.5s ease;
+    opacity: 1;
+    top: 50%;
+}
+
+.SideBar ul li a{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    white-space: nowrap;
+    transition: all .4s ease;
+
+}
+
+.SideBar ul li a:hover{
+    color: #11101d;
+    background: #fff;
+}
+
+.SideBar ul li i{
+    text-align: center;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+}
+
+.SideBar .LinksName{
+    font-size: 15px;
+    font-weight: 400;
+    pointer-events: auto;
+    opacity: 1;
+    transition: 0s;
+}

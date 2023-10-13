@@ -13,6 +13,7 @@
     text-transform: uppercase; 
     line-height: 35px; 
     letter-spacing: 3px;
+    cursor: pointer;
 }
 
 .ImgPessoa{
@@ -22,6 +23,7 @@
     height: 40px;
     margin-right: 0;
     border-radius: 9999px;
+    cursor: pointer;
 }
 
 .OpcoesIcon {
@@ -32,4 +34,5 @@
     right: 3%;
     font-size: 35px;
     color: #fff;
+    cursor: pointer;
 }
