@@ -14,15 +14,13 @@ import Input from '../Input/input';
 import Buttons from '../Buttons/Buttons';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { isBefore, format } from 'date-fns';
 import "./Table.css";
 import { AlertError } from '../Alert/Modal';
 
-
 export default function TableC() {
-
   const [open, setOpen] = useState(false);
   const [nome, setNome] = useState("");
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,14 +45,60 @@ export default function TableC() {
     const year = now.getFullYear();
     return `${day}/${month}/${year}`;
   };
-  
+
   const [formData, setFormData] = useState({
     nome: '',
     dataInicio: '',
     dataFim: '',
-    status: 'Concluído',
+    status: 'Pausado',
   });
+
+  const [rows, setRows] = useState([]);
+
+  function isError() {
+    handleClose();
+    AlertError({
+      text: "A data de término não pode ser menor que a data atual.",
+      title: "Erro!",
+    });
+  }
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const { nome, dataFim, status } = formData;
   
+    // Verifique se a data de término é posterior à data atual
+    const dataFimDate = new Date(dataFim);
+    const dataAtual = new Date();
+  
+    // Troque as datas na condição
+      // A data de término é válida, continue com a adição da linha
+      const newRow = {
+        nome: nome,
+        dataInicio: getCurrentDate(),
+        dataFim: format(dataFimDate, 'dd/MM/yyyy'), // Formate a data de término
+        status: status,
+      };
+  
+      // Atualize o estado dos rows com os novos dados antes de salvá-los
+      const updatedRows = [...rows, newRow];
+      setRows(updatedRows);
+  
+      // Salve os dados no localStorage
+      localStorage.setItem("formData", JSON.stringify(updatedRows));
+      handleClose(); // Feche o diálogo após a adição
+  };
+
+  const handleInputChange = (e, name) => {
+    const { value } = e.target;
+    if (name === 'nomep') {
+      setNome(value);
+    } else {
+      // Handle other input fields based on their names
+      setFormData({ ...formData, [name]: value });
+    }
+  }
+
   function getStatusTagClass(status) {
     switch (status) {
       case 'Em andamento':
@@ -67,62 +111,6 @@ export default function TableC() {
         return 'tag-status';
     }
   }
-
-  const [rows, setRows] = useState([]);
-
-  useEffect(() => {
-    const savedData = localStorage.getItem('formData');
-    if (savedData) {
-      setRows(JSON.parse(savedData));
-    }
-  }, []);
-
-  function isError(){ 
-    handleClose();
-    AlertError({
-      text: "A data de término não pode ser maior que a data atual.",
-      title: "Erro!",
-    });
-  }  
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const { nome, dataFim, status } = formData;
-    const currentDate = getCurrentDate();
-
-    // Verifique se a data de término é maior que a data atual
-    if (dataFim && dataFim > currentDate) {
-      const newRow = {
-        nome: nome,
-        dataInicio: currentDate,
-        dataFim: dataFim,
-        status: status,
-      };
-      setRows([...rows, newRow]);
-      // Limpar o formulário após adicionar os dados
-      setFormData({
-        nome: "",
-        dataInicio: "",
-        dataFim: "",
-        status: "",
-      });
-
-      // Salvar os dados no localStorage
-      localStorage.setItem("formData", JSON.stringify([...rows, newRow]));
-    } else {
-      isError();
-    }
-    };
-
-  const handleInputChange = (e, name) => {
-    const { value } = e.target;
-    if (name === 'nomep') {
-      setNome(value);
-    } else {
-      // Handle other input fields based on their names
-      setFormData({ ...formData, [name]: value });
-    }
-  };
 
   return (
     <div className='container'>
@@ -165,8 +153,8 @@ export default function TableC() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Criar Projeto</h1>
-       </DialogTitle>
-       <IconButton
+        </DialogTitle>
+        <IconButton
           aria-label="close"
           onClick={handleClose}
           sx={{
@@ -179,29 +167,29 @@ export default function TableC() {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-        <form onSubmit={handleFormSubmit}>
-        <Input
-          id="nomep"
-          type="text"
-          name="nomep"
-          value={formData.nome}
-          onChange={(e) => handleInputChange(e, 'nome')}
-          label="Digite seu Nome"
-        />
-       
-       <Input
-          id="dataFim"
-          type="date"
-          name="dataFim"
-          value={formData.dataFim}
-          onChange={(e) => handleInputChange(e, 'dataFim')}
-          label="Digite a data final"
-        />
+          <form onSubmit={handleFormSubmit}>
+            <Input
+              id="nomep"
+              type="text"
+              name="nomep"
+              value={formData.nome}
+              onChange={(e) => handleInputChange(e, 'nome')}
+              label="Digite seu Nome"
+            />
 
-        <DialogActions>
-          <Buttons type="submit">Criar</Buttons>
-        </DialogActions>
-        </form>
+            <Input
+              id="dataFim"
+              type="date"
+              name="dataFim"
+              value={formData.dataFim}
+              onChange={(e) => handleInputChange(e, 'dataFim')}
+              label="Digite a data final"
+            />
+
+            <DialogActions>
+              <button type="submit">Criar</button>
+            </DialogActions>
+          </form>
         </DialogContent>
       </Dialog>
     </div>

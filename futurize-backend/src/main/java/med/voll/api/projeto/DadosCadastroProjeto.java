@@ -10,7 +10,6 @@ import java.util.Date;
 public record DadosCadastroProjeto(
         @NotBlank
         String titulo,
-        String descricao,
         @NotNull
         Date inicio,
         @NotNull
