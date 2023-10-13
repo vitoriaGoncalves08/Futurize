@@ -22,7 +22,7 @@ export default function AppRoutes() {
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/app" element={<App />} />
-                <Route path="/projeto" element={<PrivateRoute><Projeto /></PrivateRoute>} />
+                <Route path="/projeto" element ={<Projeto />} />
             </Routes>
         </Router>
     );

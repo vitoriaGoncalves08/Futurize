@@ -1,6 +1,6 @@
 import NavBar from '../components/NavBar/NavBar';
 import HeroContent from '../components/HeroContent/HeroContent';
-import Inicial from '../components/Inicial/Home';
+import Inicial from '../components/Inicial/Home'; 
 
 function SiteInicial() {
   return (

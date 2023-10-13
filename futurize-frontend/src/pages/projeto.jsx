@@ -1,8 +1,13 @@
 import Buttons from "../components/Buttons/Buttons";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import Header from '../components/Header/Header';
+import SideBar from '../components/SideBar/SideBar';
+import Table from '../components/Table/Table';    
 
-export default function Home() {
+export default function Home(
+
+) {
   const { signout } = useAuth();
   const navigate = useNavigate();
 
@@ -11,11 +16,14 @@ export default function Home() {
     navigate("/");
   };
     return (
+    <> 
+      <Header/>
+      <SideBar/>
       <div className='container'>
-      
-      <Table></Table>
-      {/* <Buttons onClick={handleLogout}>Sair
-      </Buttons> */}
+        <Table></Table>
+        {/* <Buttons onClick={handleLogout}>Sair
+        </Buttons> */}
       </div>
-    )
+    </>
+    );
   }

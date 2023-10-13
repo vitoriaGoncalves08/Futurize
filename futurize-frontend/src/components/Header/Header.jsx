@@ -1,4 +1,5 @@
-import styles from './Header.module.css'
+import styles from './Header.module.css';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function Header() {
     return (
@@ -6,7 +7,9 @@ function Header() {
             <div className={styles.Logo}>FURURIZE</div>
             <img className={styles.ImgPessoa} src="https://via.placeholder.com/40x40" />
             <div className={styles.OpcoesIcon}>
-                <i class="ph ph-dots-three-vertical" id="op"></i>
+                <div className={styles.op}>
+                    <MoreVertIcon></MoreVertIcon>
+                </div>
             </div>
         </div>
     );
