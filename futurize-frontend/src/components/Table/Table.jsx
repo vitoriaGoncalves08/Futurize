@@ -41,7 +41,7 @@ export default function TableC() {
     const day = String(now.getDate()).padStart(2, "0");
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const year = now.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${day}-${month}-${year}`;
   };
 
   const [formData, setFormData] = useState({
@@ -65,24 +65,25 @@ export default function TableC() {
     e.preventDefault();
     const { nome, dataFim, status } = formData;
   
-    // Formate a data a partir do valor em formData.dataFim
-    const dataFimFormatada = format(new Date(dataFim), 'dd/MM/yyyy');
+    // Formate a data de término diretamente
+    const formattedDataFim = format(new Date(dataFim), 'dd/MM/yyyy');
   
     const newRow = {
       nome: nome,
       dataInicio: getCurrentDate(),
-      dataFim: dataFimFormatada, // Use a data formatada
+      dataFim: formattedDataFim, // Formate a data de término
       status: status,
     };
-    // Call the function to save data to the backend
+  
+    // Chame a função para salvar os dados no backend
     await saveDataToBackend(newRow);
   
-    // Now, you can update the state with the new data or fetch the updated data from the backend and update the state.
-    // For simplicity, you can add the new row to the state as you did before.
+    // Agora você pode atualizar o estado com os novos dados ou buscar os dados atualizados no backend e atualizar o estado.
+    // Por simplicidade, você pode adicionar a nova linha ao estado como fez anteriormente.
     const updatedRows = [...rows, newRow];
     setRows(updatedRows);
   
-    // Clear the form and close the dialog
+    // Limpe o formulário e feche o diálogo
     setFormData({ nome: '', dataInicio: '', dataFim: '', status: 'Pausado' });
     handleClose();
   };
