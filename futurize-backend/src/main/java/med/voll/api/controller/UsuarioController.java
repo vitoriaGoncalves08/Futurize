@@ -31,7 +31,7 @@ public class UsuarioController {
         return repository.findAll().stream().map(DadosListagemUsuario::new).toList();
     }
 
-    @CrossOrigin(origins = "", allowedHeaders = "")
+    @CrossOrigin(origins = "*", allowedHeaders = "")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Usuario data) {
         Usuario usuario = repository.findByEmail(data.getEmail());

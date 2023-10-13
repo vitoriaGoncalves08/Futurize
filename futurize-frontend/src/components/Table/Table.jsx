@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { isBefore, format } from 'date-fns';
 import "./Table.css";
 import { AlertError } from '../Alert/Modal';
+import Axios from 'axios';
 
 export default function TableC() {
   const [open, setOpen] = useState(false);
@@ -31,10 +32,7 @@ export default function TableC() {
   };
 
   useEffect(() => {
-    const savedData = localStorage.getItem("formData");
-    if (savedData) {
-      setRows(JSON.parse(savedData));
-    }
+    fetchDataFromBackend();
   }, []);
 
   // Função para obter a data atual no formato "DD/MM/AAAA"
@@ -43,7 +41,7 @@ export default function TableC() {
     const day = String(now.getDate()).padStart(2, "0");
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const year = now.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${day}-${month}-${year}`;
   };
 
   const [formData, setFormData] = useState({
@@ -63,30 +61,44 @@ export default function TableC() {
     });
   }
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const { nome, dataFim, status } = formData;
   
-    // Verifique se a data de término é posterior à data atual
-    const dataFimDate = new Date(dataFim);
-    const dataAtual = new Date();
+    // Formate a data de término diretamente
+    const formattedDataFim = format(new Date(dataFim), 'dd/MM/yyyy');
   
-    // Troque as datas na condição
-      // A data de término é válida, continue com a adição da linha
-      const newRow = {
-        nome: nome,
-        dataInicio: getCurrentDate(),
-        dataFim: format(dataFimDate, 'dd/MM/yyyy'), // Formate a data de término
-        status: status,
-      };
+    const newRow = {
+      nome: nome,
+      dataInicio: getCurrentDate(),
+      dataFim: formattedDataFim, // Formate a data de término
+      status: status,
+    };
   
-      // Atualize o estado dos rows com os novos dados antes de salvá-los
-      const updatedRows = [...rows, newRow];
-      setRows(updatedRows);
+    // Chame a função para salvar os dados no backend
+    await saveDataToBackend(newRow);
   
-      // Salve os dados no localStorage
-      localStorage.setItem("formData", JSON.stringify(updatedRows));
-      handleClose(); // Feche o diálogo após a adição
+    // Agora você pode atualizar o estado com os novos dados ou buscar os dados atualizados no backend e atualizar o estado.
+    // Por simplicidade, você pode adicionar a nova linha ao estado como fez anteriormente.
+    const updatedRows = [...rows, newRow];
+    setRows(updatedRows);
+  
+    // Limpe o formulário e feche o diálogo
+    setFormData({ nome: '', dataInicio: '', dataFim: '', status: 'Pausado' });
+    handleClose();
+  };
+
+  const fetchDataFromBackend = async () => {
+    try {
+      // Make a GET request to your backend API to retrieve data
+      const response = await Axios.get('http://localhost:8080/Projeto');
+      if (response.status === 200) {
+        // Update the state with the data received from the backend
+        setRows(response.data); // Assuming the response data is an array of rows
+      }
+    } catch (error) {
+      // Handle the error here
+    }
   };
 
   const handleInputChange = (e, name) => {
@@ -111,6 +123,18 @@ export default function TableC() {
         return 'tag-status';
     }
   }
+
+  const saveDataToBackend = async (data) => {
+    try {
+      // Make a POST request to your backend API to save the data
+      const response = await Axios.post('http://localhost:8080/Projeto', data);
+      if (response.status === 200) {
+        // Data saved successfully, you can handle success here
+      }
+    } catch (error) {
+      // Handle the error here
+    }
+  };
 
   return (
     <div className='container'>
