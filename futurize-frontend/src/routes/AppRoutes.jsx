@@ -3,7 +3,7 @@ import React from "react";
 import SiteInicial from "../pages/site-inicial";
 import Login from '../pages/login'; 
 import Cadastro from '../pages/cadastro';
-import Home from '../pages/home';
+import Projeto from '../pages/projeto';
 import useAuth from "../hooks/useAuth";
 import App from "../Teste";
 
@@ -22,7 +22,7 @@ export default function AppRoutes() {
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/app" element={<App />} />
-                <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+                <Route path="/projeto" element={<PrivateRoute><Projeto /></PrivateRoute>} />
             </Routes>
         </Router>
     );

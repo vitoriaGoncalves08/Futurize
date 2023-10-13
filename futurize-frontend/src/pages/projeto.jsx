@@ -1,6 +1,7 @@
 import Buttons from "../components/Buttons/Buttons";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import Table from '../components/Table/Table';
 
 export default function Home() {
   const { signout } = useAuth();
