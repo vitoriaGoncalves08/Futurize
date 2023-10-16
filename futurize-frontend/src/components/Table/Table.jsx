@@ -14,15 +14,14 @@ import Input from '../Input/input';
 import Buttons from '../Buttons/Buttons';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { isBefore, format } from 'date-fns';
 import "./Table.css";
 import { AlertError } from '../Alert/Modal';
-
+import Axios from 'axios';
 
 export default function TableC() {
-
   const [open, setOpen] = useState(false);
   const [nome, setNome] = useState("");
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,10 +32,7 @@ export default function TableC() {
   };
 
   useEffect(() => {
-    const savedData = localStorage.getItem("formData");
-    if (savedData) {
-      setRows(JSON.parse(savedData));
-    }
+    fetchDataFromBackend();
   }, []);
 
   // Função para obter a data atual no formato "DD/MM/AAAA"
@@ -45,16 +41,76 @@ export default function TableC() {
     const day = String(now.getDate()).padStart(2, "0");
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const year = now.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${day}-${month}-${year}`;
   };
-  
+
   const [formData, setFormData] = useState({
     nome: '',
     dataInicio: '',
     dataFim: '',
-    status: 'Concluído',
+    status: 'Pausado',
   });
+
+  const [rows, setRows] = useState([]);
+
+  function isError() {
+    handleClose();
+    AlertError({
+      text: "A data de término não pode ser menor que a data atual.",
+      title: "Erro!",
+    });
+  }
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const { nome, dataFim, status } = formData;
   
+    // Formate a data de término diretamente
+    const formattedDataFim = format(new Date(dataFim), 'dd/MM/yyyy');
+  
+    const newRow = {
+      nome: nome,
+      dataInicio: getCurrentDate(),
+      dataFim: formattedDataFim, // Formate a data de término
+      status: status,
+    };
+  
+    // Chame a função para salvar os dados no backend
+    await saveDataToBackend(newRow);
+  
+    // Agora você pode atualizar o estado com os novos dados ou buscar os dados atualizados no backend e atualizar o estado.
+    // Por simplicidade, você pode adicionar a nova linha ao estado como fez anteriormente.
+    const updatedRows = [...rows, newRow];
+    setRows(updatedRows);
+  
+    // Limpe o formulário e feche o diálogo
+    setFormData({ nome: '', dataInicio: '', dataFim: '', status: 'Pausado' });
+    handleClose();
+  };
+
+  const fetchDataFromBackend = async () => {
+    try {
+      // Make a GET request to your backend API to retrieve data
+      const response = await Axios.get('http://localhost:8080/Projeto');
+      if (response.status === 200) {
+        // Update the state with the data received from the backend
+        setRows(response.data); // Assuming the response data is an array of rows
+      }
+    } catch (error) {
+      // Handle the error here
+    }
+  };
+
+  const handleInputChange = (e, name) => {
+    const { value } = e.target;
+    if (name === 'nomep') {
+      setNome(value);
+    } else {
+      // Handle other input fields based on their names
+      setFormData({ ...formData, [name]: value });
+    }
+  }
+
   function getStatusTagClass(status) {
     switch (status) {
       case 'Em andamento':
@@ -68,59 +124,15 @@ export default function TableC() {
     }
   }
 
-  const [rows, setRows] = useState([]);
-
-  useEffect(() => {
-    const savedData = localStorage.getItem('formData');
-    if (savedData) {
-      setRows(JSON.parse(savedData));
-    }
-  }, []);
-
-  function isError(){ 
-    handleClose();
-    AlertError({
-      text: "A data de término não pode ser maior que a data atual.",
-      title: "Erro!",
-    });
-  }  
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const { nome, dataFim, status } = formData;
-    const currentDate = getCurrentDate();
-
-    // Verifique se a data de término é maior que a data atual
-    if (dataFim && dataFim > currentDate) {
-      const newRow = {
-        nome: nome,
-        dataInicio: currentDate,
-        dataFim: dataFim,
-        status: status,
-      };
-      setRows([...rows, newRow]);
-      // Limpar o formulário após adicionar os dados
-      setFormData({
-        nome: "",
-        dataInicio: "",
-        dataFim: "",
-        status: "",
-      });
-
-      // Salvar os dados no localStorage
-      localStorage.setItem("formData", JSON.stringify([...rows, newRow]));
-    } else {
-      isError();
-    }
-    };
-
-  const handleInputChange = (e, name) => {
-    const { value } = e.target;
-    if (name === 'nomep') {
-      setNome(value);
-    } else {
-      // Handle other input fields based on their names
-      setFormData({ ...formData, [name]: value });
+  const saveDataToBackend = async (data) => {
+    try {
+      // Make a POST request to your backend API to save the data
+      const response = await Axios.post('http://localhost:8080/Projeto', data);
+      if (response.status === 200) {
+        // Data saved successfully, you can handle success here
+      }
+    } catch (error) {
+      // Handle the error here
     }
   };
 
@@ -165,8 +177,8 @@ export default function TableC() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Criar Projeto</h1>
-       </DialogTitle>
-       <IconButton
+        </DialogTitle>
+        <IconButton
           aria-label="close"
           onClick={handleClose}
           sx={{
@@ -179,29 +191,29 @@ export default function TableC() {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-        <form onSubmit={handleFormSubmit}>
-        <Input
-          id="nomep"
-          type="text"
-          name="nomep"
-          value={formData.nome}
-          onChange={(e) => handleInputChange(e, 'nome')}
-          label="Digite seu Nome"
-        />
-       
-       <Input
-          id="dataFim"
-          type="date"
-          name="dataFim"
-          value={formData.dataFim}
-          onChange={(e) => handleInputChange(e, 'dataFim')}
-          label="Digite a data final"
-        />
+          <form onSubmit={handleFormSubmit}>
+            <Input
+              id="nomep"
+              type="text"
+              name="nomep"
+              value={formData.nome}
+              onChange={(e) => handleInputChange(e, 'nome')}
+              label="Digite seu Nome"
+            />
 
-        <DialogActions>
-          <Buttons type="submit">Criar</Buttons>
-        </DialogActions>
-        </form>
+            <Input
+              id="dataFim"
+              type="date"
+              name="dataFim"
+              value={formData.dataFim}
+              onChange={(e) => handleInputChange(e, 'dataFim')}
+              label="Digite a data final"
+            />
+
+            <DialogActions>
+              <button type="submit">Criar</button>
+            </DialogActions>
+          </form>
         </DialogContent>
       </Dialog>
     </div>
