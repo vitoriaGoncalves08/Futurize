@@ -20,14 +20,14 @@ public class ProjetoController {
     @Autowired
     private ProjetoRepository repository;
 
-    @CrossOrigin(origins = "*", allowedHeaders = "")
+    @CrossOrigin("*")
     @PostMapping
     @Transactional
     public void CadastrarProjeto(@RequestBody @Valid DadosCadastroProjeto dadosCadastroProjeto){
         repository.save(new Projeto(dadosCadastroProjeto));
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "")
+    @CrossOrigin("*")
     @GetMapping
     public List<DadosListagemProjeto> listarProjeto(){
         return repository.findAll().stream().map(DadosListagemProjeto::new).toList();

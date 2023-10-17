@@ -19,19 +19,19 @@ import java.util.List;
 public class UsuarioController {
     @Autowired
     private UsuarioRepository repository;
-    @CrossOrigin(origins = "*", allowedHeaders = "")
+    @CrossOrigin("*")
     @PostMapping
     @Transactional
     public void CadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados) {
         repository.save(new Usuario(dados));
     }
-    @CrossOrigin(origins = "*", allowedHeaders = "")
+    @CrossOrigin("*")
     @GetMapping
     public List<DadosListagemUsuario> listarUsuario() {
         return repository.findAll().stream().map(DadosListagemUsuario::new).toList();
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "")
+    @CrossOrigin("*")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Usuario data) {
         Usuario usuario = repository.findByEmail(data.getEmail());
