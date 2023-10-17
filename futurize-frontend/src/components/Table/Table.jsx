@@ -14,10 +14,9 @@ import Input from '../Input/input';
 import Buttons from '../Buttons/Buttons';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { isBefore, format } from 'date-fns';
+import { isValid, format } from 'date-fns';
 import "./Table.css";
 import { AlertError } from '../Alert/Modal';
-import Axios from 'axios';
 
 export default function TableC() {
   const [open, setOpen] = useState(false);
@@ -32,7 +31,10 @@ export default function TableC() {
   };
 
   useEffect(() => {
-    fetchDataFromBackend();
+    const savedData = localStorage.getItem("formData");
+    if (savedData) {
+      setRows(JSON.parse(savedData));
+    }
   }, []);
 
   // Função para obter a data atual no formato "DD/MM/AAAA"
@@ -61,43 +63,34 @@ export default function TableC() {
     });
   }
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     const { nome, dataFim, status } = formData;
-  
-    // Formate a data de término diretamente
-    const formattedDataFim = format(new Date(dataFim), 'dd/MM/yyyy');
-  
-    const newRow = {
-      nome: nome,
-      dataInicio: getCurrentDate(),
-      dataFim: formattedDataFim, // Formate a data de término
-      status: status,
-    };
-  
-    // Chame a função para salvar os dados no backend
-    await saveDataToBackend(newRow);
-  
-    // Agora você pode atualizar o estado com os novos dados ou buscar os dados atualizados no backend e atualizar o estado.
-    // Por simplicidade, você pode adicionar a nova linha ao estado como fez anteriormente.
-    const updatedRows = [...rows, newRow];
-    setRows(updatedRows);
-  
-    // Limpe o formulário e feche o diálogo
-    setFormData({ nome: '', dataInicio: '', dataFim: '', status: 'Pausado' });
-    handleClose();
-  };
 
-  const fetchDataFromBackend = async () => {
-    try {
-      // Make a GET request to your backend API to retrieve data
-      const response = await Axios.get('http://localhost:8080/Projeto');
-      if (response.status === 200) {
-        // Update the state with the data received from the backend
-        setRows(response.data); // Assuming the response data is an array of rows
-      }
-    } catch (error) {
-      // Handle the error here
+    // Verifique se a data de término é posterior à data atual
+    const dataFimDate = new Date(dataFim);
+
+    if (isValid(dataFimDate)) {
+      // A data de término é válida, continue com a formatação
+      const formattedDataFim = format(dataFimDate, 'dd-MM-yyyy'); // Formate a data de término
+
+      // Atualize o estado dos rows com os novos dados antes de salvá-los
+      const newRow = {
+        nome: nome,
+        dataInicio: getCurrentDate(),
+        dataFim: formattedDataFim,
+        status: status,
+      };
+
+      const updatedRows = [...rows, newRow];
+      setRows(updatedRows);
+
+      // Salve os dados no localStorage
+      localStorage.setItem("formData", JSON.stringify(updatedRows));
+
+      handleClose(); // Feche o diálogo após a adição
+    } else {
+      isError();
     }
   };
 
@@ -123,21 +116,8 @@ export default function TableC() {
         return 'tag-status';
     }
   }
-
-  const saveDataToBackend = async (data) => {
-    try {
-      // Make a POST request to your backend API to save the data
-      const response = await Axios.post('http://localhost:8080/Projeto', data);
-      if (response.status === 200) {
-        // Data saved successfully, you can handle success here
-      }
-    } catch (error) {
-      // Handle the error here
-    }
-  };
-
   return (
-    <div className='container'>
+    <div className='container_table'>
       <div className='meus-projetos'>
         <h1 className="subtitulo">Meus Projetos</h1>
         <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
@@ -173,7 +153,6 @@ export default function TableC() {
           </TableBody>
         </Table>
       </TableContainer>
-
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Criar Projeto</h1>
@@ -200,7 +179,6 @@ export default function TableC() {
               onChange={(e) => handleInputChange(e, 'nome')}
               label="Digite seu Nome"
             />
-
             <Input
               id="dataFim"
               type="date"
@@ -209,7 +187,6 @@ export default function TableC() {
               onChange={(e) => handleInputChange(e, 'dataFim')}
               label="Digite a data final"
             />
-
             <DialogActions>
               <button type="submit">Criar</button>
             </DialogActions>
