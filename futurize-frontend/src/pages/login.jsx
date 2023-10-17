@@ -50,7 +50,7 @@ export default function Login() {
 
   return (
     <>
-    <div className="container">
+    <div className="container-lc">
        <h1 className="titulo">ENTRAR</h1>
        <h2 className="subtitulo">Entre em sua conta</h2>
        <div className="inputs">

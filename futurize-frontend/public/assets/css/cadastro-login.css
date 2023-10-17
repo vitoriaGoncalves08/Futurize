@@ -4,7 +4,7 @@
     background-color: var(--found-light-blue);
     font-family: var(--font-family-sans-serif);
 }
-.container{
+.container-lc{
     display: flex;
     align-items: center;
     justify-content: center;

@@ -117,7 +117,7 @@ export default function TableC() {
     }
   }
   return (
-    <div className='container_table'>
+    <div className='table'>
       <div className='meus-projetos'>
         <h1 className="subtitulo">Meus Projetos</h1>
         <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
@@ -125,7 +125,7 @@ export default function TableC() {
         </Buttons>
       </div>
       <TableContainer component={Paper}>
-        <Table className="table" sx={{ minWidth: 1400 }} aria-label="simple table">
+        <Table sx={{ minWidth: 10 }} aria-label="simple table">
           <TableHead>
             <TableRow className='row'>
               <TableCell className='cel'>Nome</TableCell>
