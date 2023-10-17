@@ -28,6 +28,7 @@ export default function Buttons(props) {
         className={props.size || "c-button"}
         href={props.href}
         onClick={props.onClick}
+        type={props.type}
         {...restProps}
       >
         {props.children}

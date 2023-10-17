@@ -131,7 +131,7 @@ export default function Cadastro() {
 
     return (
       <>
-      <div className="container_table">
+      <div className="container">
        <h1 className="titulo">CADASTRAR</h1>
        <h2 className="subtitulo">Crie sua conta</h2>
        <div className="inputs">

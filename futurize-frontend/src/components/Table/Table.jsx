@@ -50,7 +50,7 @@ export default function TableC() {
     nome: '',
     dataInicio: '',
     dataFim: '',
-    status: 'Pausado',
+    status: 'Andamento',
   });
 
   const [rows, setRows] = useState([]);
@@ -106,8 +106,8 @@ export default function TableC() {
 
   function getStatusTagClass(status) {
     switch (status) {
-      case 'Em andamento':
-        return 'tag-em-andamento';
+      case 'Andamento':
+        return 'tag-andamento';
       case 'Concluído':
         return 'tag-concluido';
       case 'Pausado':
@@ -125,7 +125,7 @@ export default function TableC() {
         </Buttons>
       </div>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table className="table" sx={{ minWidth: 1400 }} aria-label="simple table">
           <TableHead>
             <TableRow className='row'>
               <TableCell className='cel'>Nome</TableCell>
@@ -188,7 +188,7 @@ export default function TableC() {
               label="Digite a data final"
             />
             <DialogActions>
-              <button type="submit">Criar</button>
+              <Buttons type="submit">Criar</Buttons>
             </DialogActions>
           </form>
         </DialogContent>
