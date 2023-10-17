@@ -117,7 +117,7 @@ export default function TableC() {
     }
   }
   return (
-    <div className='container'>
+    <div className='container_table'>
       <div className='meus-projetos'>
         <h1 className="subtitulo">Meus Projetos</h1>
         <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
