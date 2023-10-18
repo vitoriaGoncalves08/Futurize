@@ -2,10 +2,7 @@
 @import '../../../public/assets/css/colors.css';
 
 .table{
-  width: 154vh;
-  height: 100%;
-  margin-left: 21rem;
-  margin-top: 2rem;
+  margin: 4rem;
 }
 
 .titulo {
@@ -98,4 +95,27 @@ background-color: transparent;
 .tag-pausado {
   background-color: var(--danger)!important;
   color: var(--white) !important;
+}
+
+@media (max-width: 600px) {
+  /* Redefina a largura da célula e limite o texto a uma única linha */
+  .cel {
+    width: 50%; /* ou outra largura apropriada */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Oculte a coluna Data de Término em telas menores, se necessário */
+  .data-encerramento {
+    display: none;
+  }
+}
+
+/* Adapte o tamanho da fonte ou outros estilos, se necessário */
+@media (max-width: 400px) {
+  /* Reduza o tamanho da fonte ou faça outras modificações de estilo */
+  .cel {
+    font-size: 14px;
+  }
 }

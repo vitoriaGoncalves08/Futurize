@@ -117,7 +117,6 @@ export default function TableC() {
     if (title === 'titulop') {
       setTitulo(value);
     } else {
-      // Handle other input fields based on their titles
       setFormData({ ...formData, [title]: value });
     }
   }
@@ -143,7 +142,7 @@ export default function TableC() {
         </Buttons>
       </div>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 10 }} aria-label="simple table">
+        <Table sx={{ minWidth: 1500 }} aria-label="simple table">
           <TableHead>
             <TableRow className='row'>
               <TableCell className='cel'>TÍtulo</TableCell>

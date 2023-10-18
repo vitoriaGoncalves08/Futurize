@@ -18,12 +18,10 @@ export default function Home(
     return (
     <> 
       <Header/>
-      <SideBar/>
-      <div className='container'>
-        <Table></Table>
-        <Buttons onClick={handleLogout}>Sair
-        </Buttons>
-      </div>
+      <SideBar>
+        <Table/>
+      </SideBar>
+      
     </>
     );
   }
