@@ -70,7 +70,7 @@ export default function Input(props) {
   } else if (type === 'date') {
     return (
       <InputMask
-        mask="99/99/9999"
+        mask="99-99-9999"
         maskChar="_"
         value={props.value}
         onChange={(e) => props.onChange(e, 'dataFim')}

@@ -14,13 +14,18 @@ import Input from '../Input/input';
 import Buttons from '../Buttons/Buttons';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { isValid, format } from 'date-fns';
+import { isValid, format, parse } from 'date-fns';
 import "./Table.css";
 import { AlertError } from '../Alert/Modal';
+import axios from "axios";
 
 export default function TableC() {
   const [open, setOpen] = useState(false);
-  const [nome, setNome] = useState("");
+  const [titulo, setTitulo] = useState("");
+  const [inicio, setinicio] = useState("");
+  const [estado, setEstado] = useState("");
+  const [error, setError] = useState();
+  const [rows, setRows] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,87 +35,100 @@ export default function TableC() {
     setOpen(false);
   };
 
-  useEffect(() => {
-    const savedData = localStorage.getItem("formData");
-    if (savedData) {
-      setRows(JSON.parse(savedData));
-    }
-  }, []);
-
-  // Função para obter a data atual no formato "DD/MM/AAAA"
   const getCurrentDate = () => {
     const now = new Date();
     const day = String(now.getDate()).padStart(2, "0");
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const year = now.getFullYear();
-    return `${day}-${month}-${year}`;
+    return `${year}-${month}-${day}`; // Formate a data de acordo com "yyyy-MM-dd"
+  };
+
+  useEffect(() => {
+    // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/Projeto");
+        if (response.status === 200) {
+          setRows(response.data); // Atualize o estado 'rows' com os dados do banco
+        } else {
+          console.error("Erro ao buscar dados do banco.");
+        }
+      } catch (error) {
+        console.error("Erro ao conectar-se ao backend:", error);
+      }
+    };
+
+    fetchData(); // Chame a função para buscar os dados ao carregar a página
+  }, []);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const { titulo, inicio, encerramento, estado } = formData;
+  
+    const dataInicio = getCurrentDate(); // Data de início formatada em "yyyy-MM-dd"
+    const inicioDate = parse(inicio, 'dd-MM-yyyy', new Date()); // Converta o formato da data do componente Input para 'dd-MM-yyyy'
+  
+    if (!isValid(inicioDate)) {
+      const formattedInicio = format(inicioDate, 'yyyy-MM-dd'); // Formate a data de término para o formato esperado pelo banco
+  
+      const newRow = {
+        titulo: titulo,
+        inicio: formattedInicio,
+        encerramento: encerramento,
+        estado: estado.toUpperCase(),
+      };
+
+      try {
+        const response = await axios.post("http://localhost:8080/Projeto", newRow);
+
+        if (response.status === 200) {
+          const updatedRows = [...rows, newRow];
+          setRows(updatedRows);
+          localStorage.setItem("formData", JSON.stringify(updatedRows));
+          handleClose();
+        } else {
+          console.error("Erro ao salvar os dados no backend.");
+        }
+      } catch (error) {
+        console.error("Erro ao conectar-se ao backend:", error);
+      }
+    } else {
+      console.error("Data de término inválida.");
+    }
   };
 
   const [formData, setFormData] = useState({
-    nome: '',
-    dataInicio: '',
-    dataFim: '',
-    status: 'Andamento',
+    titulo: '',
+    inicio: '',
+    encerramento: '',
+    estado: 'ANDAMENTO',
   });
 
-  const [rows, setRows] = useState([]);
-
-  function isError() {
-    handleClose();
-    AlertError({
-      text: "A data de término não pode ser menor que a data atual.",
-      title: "Erro!",
-    });
-  }
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const { nome, dataFim, status } = formData;
-
-    // Verifique se a data de término é posterior à data atual
-    const dataFimDate = new Date(dataFim);
-
-    if (isValid(dataFimDate)) {
-      // A data de término é válida, continue com a formatação
-      const formattedDataFim = format(dataFimDate, 'dd-MM-yyyy'); // Formate a data de término
-
-      // Atualize o estado dos rows com os novos dados antes de salvá-los
-      const newRow = {
-        nome: nome,
-        dataInicio: getCurrentDate(),
-        dataFim: formattedDataFim,
-        status: status,
-      };
-
-      const updatedRows = [...rows, newRow];
-      setRows(updatedRows);
-
-      // Salve os dados no localStorage
-      localStorage.setItem("formData", JSON.stringify(updatedRows));
-
-      handleClose(); // Feche o diálogo após a adição
-    } else {
-      isError();
-    }
-  };
-
-  const handleInputChange = (e, name) => {
+  // function isError() {
+  //   handleClose();
+  //   AlertError({
+  //     text: "A data de término não pode ser menor que a data atual.",
+  //     title: "Erro!",
+  //   });
+  // }
+  
+  const handleInputChange = (e, title) => {
     const { value } = e.target;
-    if (name === 'nomep') {
-      setNome(value);
+    if (title === 'titulop') {
+      setTitulo(value);
     } else {
-      // Handle other input fields based on their names
-      setFormData({ ...formData, [name]: value });
+      // Handle other input fields based on their titles
+      setFormData({ ...formData, [title]: value });
     }
   }
 
-  function getStatusTagClass(status) {
-    switch (status) {
-      case 'Andamento':
+  function getStatusTagClass(estado) {
+    switch (estado) {
+      case 'ANDAMENTO':
         return 'tag-andamento';
-      case 'Concluído':
+      case 'CONCLUIDO':
         return 'tag-concluido';
-      case 'Pausado':
+      case 'PAUSADO':
         return 'tag-pausado';
       default:
         return 'tag-status';
@@ -128,7 +146,7 @@ export default function TableC() {
         <Table sx={{ minWidth: 10 }} aria-label="simple table">
           <TableHead>
             <TableRow className='row'>
-              <TableCell className='cel'>Nome</TableCell>
+              <TableCell className='cel'>TÍtulo</TableCell>
               <TableCell className='cel'>Data de Início</TableCell>
               <TableCell className='cel'>Data de Término</TableCell>
               <TableCell className='cel'>Status</TableCell>
@@ -141,12 +159,12 @@ export default function TableC() {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.nome}
+                  {row.titulo}
                 </TableCell>
-                <TableCell>{row.dataInicio}</TableCell>
-                <TableCell>{row.dataFim}</TableCell>
+                <TableCell>{format(new Date(row.inicio), 'dd-MM-yyyy')}</TableCell>
+                <TableCell>{format(new Date(row.encerramento), 'dd-MM-yyyy')}</TableCell>
                 <TableCell>
-                  <span className={`tag-status ${getStatusTagClass(row.status)}`} >{row.status}</span>
+                  <span className={`tag-status ${getStatusTagClass(row.estado)}`} >{row.estado}</span>
                 </TableCell>
               </TableRow>
             ))}
@@ -172,19 +190,19 @@ export default function TableC() {
         <DialogContent>
           <form onSubmit={handleFormSubmit}>
             <Input
-              id="nomep"
+              id="titulop"
               type="text"
-              name="nomep"
-              value={formData.nome}
-              onChange={(e) => handleInputChange(e, 'nome')}
-              label="Digite seu Nome"
+              name="titulop"
+              value={formData.titulo}
+              onChange={(e) => handleInputChange(e, 'titulo')}
+              label="Digite seu titulo"
             />
             <Input
-              id="dataFim"
+              id="encerramento"
               type="date"
-              name="dataFim"
-              value={formData.dataFim}
-              onChange={(e) => handleInputChange(e, 'dataFim')}
+              name="encerramento"
+              value={formData.encerramento}
+              onChange={(e) => handleInputChange(e, 'encerramento')}
               label="Digite a data final"
             />
             <DialogActions>

@@ -21,8 +21,8 @@ export default function Home(
       <SideBar/>
       <div className='container'>
         <Table></Table>
-        {/* <Buttons onClick={handleLogout}>Sair
-        </Buttons> */}
+        <Buttons onClick={handleLogout}>Sair
+        </Buttons>
       </div>
     </>
     );

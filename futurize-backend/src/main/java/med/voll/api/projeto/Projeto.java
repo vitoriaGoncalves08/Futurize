@@ -23,10 +23,6 @@ public class Projeto {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
-
-
-
-
     public Projeto(DadosCadastroProjeto dadosCadastroProjeto) {
         this.titulo = dadosCadastroProjeto.titulo();
         this.inicio = dadosCadastroProjeto.inicio();
