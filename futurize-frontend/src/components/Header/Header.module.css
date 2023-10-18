@@ -1,7 +1,7 @@
 .Header {
     display: flex;
     align-items: center;
-    padding: 2%;
+    padding: 10px;
     background: #79A2FE;
 }
 .Logo {
@@ -13,8 +13,9 @@
     text-transform: uppercase; 
     line-height: 35px; 
     letter-spacing: 3px;
+    cursor: pointer;
+    margin-left: 3rem;
 }
-
 .ImgPessoa{
     position: absolute;
     right: 10%;
@@ -22,8 +23,8 @@
     height: 40px;
     margin-right: 0;
     border-radius: 9999px;
+    cursor: pointer;
 }
-
 .OpcoesIcon {
     position: absolute;
     display: flex;
@@ -32,4 +33,5 @@
     right: 3%;
     font-size: 35px;
     color: #fff;
+    cursor: pointer;
 }

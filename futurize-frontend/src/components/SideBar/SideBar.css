@@ -1,4 +1,4 @@
-.SideBar{
+/* .SideBar{
     height: 100%; 
     background: #79A2FE;
     position: fixed;
@@ -38,28 +38,26 @@
     opacity: 0;
     pointer-events: none;
 }
-
 .SideBar ul li:hover .Tooltip{
     transition: all 0.5s ease;
     opacity: 1;
     top: 50%;
 }
-
 .SideBar ul li a{
     display: flex;
     align-items: center;
+    width: 100%;
+    padding: 10px;
     color: #fff;
     text-decoration: none;
     border-radius: 12px;
     white-space: nowrap;
     transition: all .4s ease;
 }
-
 .SideBar ul li a:hover{
     color: #11101d;
     background: #fff;
 }
-
 .SideBar ul li i{
     text-align: center;
     height: 50px;
@@ -67,11 +65,58 @@
     border-radius: 12px;
     line-height: 50px;
 }
-
 .SideBar .LinksName{
     font-size: 15px;
     font-weight: 400;
     pointer-events: auto;
     opacity: 1;
     transition: 0s;
+} */
+
+@import "../../../public/assets/css/colors.css";
+@import "../../../public/assets/css/variaveis.css";
+.menu-lateral{
+
 }
+.sidebar-menu{
+    background: var(--secondary-menu);
+    color: #fff;
+    height: 100vh;
+    transition: all 0.5s;
+}
+.top_section-menu{
+    display: flex;
+    align-items:center;
+    padding: 20px 15px;
+}
+.logo-menu{
+    font-size: 30px;
+}
+.bars-menu{
+    display: flex;
+    font-size: 25px;
+    margin-left: 50px;
+}
+.link-menu{
+    display: flex;
+    color: #fff;
+    padding: 10px 15px;
+    gap: 15px;
+    transition: all 0.5s;
+}
+.link-menu .logout{
+    position: fixed;
+    bottom: 0;
+}
+
+.link-menu:hover{
+    color: var(--primary-dark);
+    transition: all 0.5s;
+}
+.active-menu{
+    color: var(--primary-dark);
+}
+.icon-menu, .link_text-menu{
+    font-size: 18px;
+}
+
