@@ -32,7 +32,7 @@ export const Container = styled.div`
         }
     }
 
-    ul{
+    .ListaUl{
         margin-top: 30px;
     }
 `;

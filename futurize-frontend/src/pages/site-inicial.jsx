@@ -14,7 +14,7 @@ function SiteInicial() {
         </div>
 
         <div className="MenuItens">
-            <ul>
+            <ul className='InicialUl'>
                 <li><a href="#">Tópicos</a></li>
                 <li><a href="#">Membros</a></li>
                 <li><a href="#">Sobre nós</a></li>

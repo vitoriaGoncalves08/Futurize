@@ -1,6 +1,6 @@
 import React from "react";
 
-import '../../public/assets/css/kanban.css';
+import GlobalStyles from '../../public/assets/css/kanban';
 
 import HeaderKanban from '../components/HeaderKanban';
 import Board from '../components/Board';
@@ -11,7 +11,7 @@ function Kanban() {
       <HeaderKanban />
       <Board />
 
-      {/* <GlobalStyles/> */}
+      <GlobalStyles/>
     </>
   );
 }
