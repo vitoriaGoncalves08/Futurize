@@ -5,7 +5,7 @@ import { Container } from './styles';
 export default function Header() {
   return (
     <Container>
-        <h1>Kanban</h1>
+      <h1>Rocketfy</h1>
     </Container>
   );
 }

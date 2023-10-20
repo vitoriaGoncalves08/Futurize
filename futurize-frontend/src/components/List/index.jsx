@@ -6,20 +6,27 @@ import Card from '../Card';
 
 import { Container } from './styles';
 
-export default function List({data}) {
+export default function List({ data, index: listIndex }) {
   return (
     <Container done={data.done}>
       <header>
         <h2>{data.title}</h2>
         {data.creatable && (
           <button type="button">
-            <MdAdd size={24} color="#fff" />
+            <MdAdd size={24} color="#FFF" />
           </button>
         )}
       </header>
 
-      <ul className='ListaUl'>
-        {data.cards.map((card, index) => <Card key={card.id} index={index} data={card} />)}
+      <ul>
+        { data.cards.map((card, index) => (
+          <Card 
+            key={card.id} 
+            listIndex={listIndex}
+            index={index} 
+            data={card}
+          />
+        )) }
       </ul>
     </Container>
   );
