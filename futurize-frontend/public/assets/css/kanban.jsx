@@ -1,6 +1,8 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css?family=Popins:400,500&display=swap');
+
   * {
     margin: 0;
     padding: 0;
@@ -13,7 +15,7 @@ export default createGlobalStyle`
   }
 
   body {
-    font: 14px 'Poppins', sans-serif;
+    font: 14px;
     background: #ecf1f8;
     color: #333;
     -webkit-font-smoothing: antialiased !important;

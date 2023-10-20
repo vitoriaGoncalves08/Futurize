@@ -10,7 +10,8 @@ export default function Card({ data, index, listIndex }) {
   const { move } = useContext(BoardContext);
 
   const [{ isDragging }, dragRef] = useDrag({
-     type: 'CARD', index, listIndex ,
+    type: 'CARD', listIndex,
+    item: { index },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
