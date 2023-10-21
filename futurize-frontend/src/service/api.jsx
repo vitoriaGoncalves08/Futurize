@@ -12,7 +12,7 @@ export function loadLists() {
           },
           {
             id: 2,
-            content: 'Criar vídeo para o Youtube ensinando a recriar a interface do Pipefy',
+            content: 'Criar vídeo para o Youtube ensinando a recriar a interface do Pipefy,',
             labels: ['#7159c1'],
             user: 'https://gravatar.com/avatar/7087488912ef4c8e9322a93564dd0116?s=400&d=robohash&r=x'
           },

@@ -200,13 +200,12 @@ export default function TableC() {
             />
             <Input
               id="encerramento"
-              type="text"
+              type="date"
               name="encerramento"
               value={formData.encerramento}
               onChange={(e) => handleInputChange(e, 'encerramento')}
               label="Digite a data final"
             />
-            
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
             </DialogActions>

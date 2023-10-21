@@ -20,7 +20,7 @@ export default function Card({ data, index, listIndex }) {
       if (item.index === index && item.listIndex === listIndex) {
         return;
       }
-  
+
       move(item.listIndex, listIndex, item.index, index);
       item.index = index;
       item.listIndex = listIndex;

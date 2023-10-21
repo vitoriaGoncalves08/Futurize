@@ -21,7 +21,6 @@ export default function Home(
       <SideBar>
         <Table/>
       </SideBar>
-      
     </>
     );
   }

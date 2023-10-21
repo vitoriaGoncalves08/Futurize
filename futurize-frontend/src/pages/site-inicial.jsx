@@ -21,7 +21,7 @@ function SiteInicial() {
                 <li><a href="#">Contato</a></li>
             </ul>
         </div>
-          <Buttons onClick={() => navigate("/cadastro")}>Entrar</Buttons>
+          <Buttons onClick={() => navigate("/login")}>Entrar</Buttons>
         </nav>
         <div className="HeroContent">
             

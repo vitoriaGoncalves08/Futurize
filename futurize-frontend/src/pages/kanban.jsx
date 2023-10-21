@@ -7,12 +7,14 @@ import GlobalStyle from '../../public/assets/css/kanban';
 import Header from '../components/Header/Header';
 import Board from '../components/Board';
 import SideBar from '../components/SideBar/SideBar';
+import HeaderKanban from '../components/HeaderKanban/HeaderKanban';
 
 function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Header />
       <SideBar>
+      <HeaderKanban/>
         <Board />
         <GlobalStyle />
         </SideBar>

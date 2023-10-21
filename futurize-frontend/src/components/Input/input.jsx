@@ -70,6 +70,7 @@ export default function Input(props) {
   } else if (type === 'date') {
     return (
       <InputMask
+        {...rest}
         mask="99-99-9999"
         maskChar="_"
         value={props.value}
