@@ -24,7 +24,7 @@ export default function AppRoutes() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/app" element={<App />} />
                 <Route path="/projeto" element={<PrivateRoute><Projeto /></PrivateRoute>} />
-                <Route path="/kanban" element={<Kanban /> } />
+                <Route path="/kanban" element={<PrivateRoute><Kanban /></PrivateRoute>} />
             </Routes>
         </Router>
     );

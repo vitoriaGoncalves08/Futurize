@@ -1,7 +1,7 @@
 export function loadLists() {
     return [
       { 
-        title: 'Tarefas', 
+        title: 'Backlog', 
         creatable: true,
         cards: [
           {
@@ -37,8 +37,9 @@ export function loadLists() {
         ]
       },
       { 
-        title: 'Fazendo', 
+        title: 'Sprint Backlog', 
         creatable: false,
+        isEmpty: true,
         cards: [
           {
             id: 6,
@@ -49,7 +50,7 @@ export function loadLists() {
         ]
       },
       { 
-        title: 'Pausado', 
+        title: 'Development', 
         creatable: false,
         cards: [
           {
@@ -72,7 +73,91 @@ export function loadLists() {
         ]
       },
       { 
-        title: 'Concluído', 
+        title: 'Done Development', 
+        creatable: false,
+        cards: [
+          {
+            id: 10,
+            content: 'Gravar aula sobre deploy e CI com React Native',
+            labels: [],
+          },
+          {
+            id: 12,
+            content: 'Gravar testes e deploy ReactJS',
+            labels: ['#54e1f7'],
+          },
+          {
+            id: 13,
+            content: 'Gravar Aula "Internacionalização de aplicações Node.js, ReactJS e React Native"',
+            labels: ['#7159c1'],
+          }
+        ]
+      },
+      { 
+        title: 'Test', 
+        creatable: false,
+        cards: [
+          {
+            id: 10,
+            content: 'Gravar aula sobre deploy e CI com React Native',
+            labels: [],
+          },
+          {
+            id: 12,
+            content: 'Gravar testes e deploy ReactJS',
+            labels: ['#54e1f7'],
+          },
+          {
+            id: 13,
+            content: 'Gravar Aula "Internacionalização de aplicações Node.js, ReactJS e React Native"',
+            labels: ['#7159c1'],
+          }
+        ]
+      },
+      { 
+        title: 'Done Test', 
+        creatable: false,
+        cards: [
+          {
+            id: 10,
+            content: 'Gravar aula sobre deploy e CI com React Native',
+            labels: [],
+          },
+          {
+            id: 12,
+            content: 'Gravar testes e deploy ReactJS',
+            labels: ['#54e1f7'],
+          },
+          {
+            id: 13,
+            content: 'Gravar Aula "Internacionalização de aplicações Node.js, ReactJS e React Native"',
+            labels: ['#7159c1'],
+          }
+        ]
+      },
+      { 
+        title: 'Rework', 
+        creatable: false,
+        cards: [
+          {
+            id: 10,
+            content: 'Gravar aula sobre deploy e CI com React Native',
+            labels: [],
+          },
+          {
+            id: 12,
+            content: 'Gravar testes e deploy ReactJS',
+            labels: ['#54e1f7'],
+          },
+          {
+            id: 13,
+            content: 'Gravar Aula "Internacionalização de aplicações Node.js, ReactJS e React Native"',
+            labels: ['#7159c1'],
+          }
+        ]
+      },
+      { 
+        title: 'DONE', 
         creatable: false,
         done: true,
         cards: [
