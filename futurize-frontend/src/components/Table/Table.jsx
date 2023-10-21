@@ -35,13 +35,13 @@ export default function TableC() {
     setOpen(false);
   };
 
-  const getCurrentDate = () => {
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, "0");
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const year = now.getFullYear();
-    return `${year}-${month}-${day}`; // Formate a data de acordo com "yyyy-MM-dd"
-  };
+  // const getCurrentDate = () => {
+  //   const now = new Date();
+  //   const day = String(now.getDate()).padStart(2, "0");
+  //   const month = String(now.getMonth() + 1).padStart(2, "0");
+  //   const year = now.getFullYear();
+  //   return `${year}-${month}-${day}`; // Formate a data de acordo com "yyyy-MM-dd"
+  // };
 
   useEffect(() => {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
@@ -63,37 +63,39 @@ export default function TableC() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
     const { titulo, inicio, encerramento, estado } = formData;
-  
-    const dataInicio = getCurrentDate(); // Data de início formatada em "yyyy-MM-dd"
-    const inicioDate = parse(inicio, 'dd-MM-yyyy', new Date()); // Converta o formato da data do componente Input para 'dd-MM-yyyy'
-  
-    if (!isValid(inicioDate)) {
-      const formattedInicio = format(inicioDate, 'yyyy-MM-dd'); // Formate a data de término para o formato esperado pelo banco
-  
-      const newRow = {
-        titulo: titulo,
-        inicio: formattedInicio,
-        encerramento: encerramento,
-        estado: estado.toUpperCase(),
-      };
 
-      try {
-        const response = await axios.post("http://localhost:8080/Projeto", newRow);
+    // Se o campo "inicio" estiver vazio, preencha com a data atual
+    const dataInicial = inicio
+      ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
+      : format(new Date(), 'yyyy-MM-dd');
 
-        if (response.status === 200) {
-          const updatedRows = [...rows, newRow];
-          setRows(updatedRows);
-          localStorage.setItem("formData", JSON.stringify(updatedRows));
-          handleClose();
-        } else {
-          console.error("Erro ao salvar os dados no backend.");
-        }
-      } catch (error) {
-        console.error("Erro ao conectar-se ao backend:", error);
+    const encerramentoEmData = parse(encerramento, 'dd-MM-yyyy', new Date());
+
+    const dataFinal = format(encerramentoEmData, 'yyyy-MM-dd');
+
+    const newRow = {
+      titulo: titulo,
+      inicio: dataInicial,
+      encerramento: dataFinal,
+      estado: estado.toUpperCase(),
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8080/Projeto', newRow);
+
+      if (response.status === 200) {
+        const updatedRows = [...rows, newRow];
+        setRows(updatedRows);
+        localStorage.setItem('formData', JSON.stringify(updatedRows));
+        handleClose();
+        return;
       }
-    } else {
-      console.error("Data de término inválida.");
+
+      console.error('Erro ao salvar os dados no backend.');
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
     }
   };
 
@@ -198,12 +200,13 @@ export default function TableC() {
             />
             <Input
               id="encerramento"
-              type="date"
+              type="text"
               name="encerramento"
               value={formData.encerramento}
               onChange={(e) => handleInputChange(e, 'encerramento')}
               label="Digite a data final"
             />
+            
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
             </DialogActions>

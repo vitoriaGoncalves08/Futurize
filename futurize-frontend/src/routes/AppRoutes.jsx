@@ -4,6 +4,7 @@ import SiteInicial from "../pages/site-inicial";
 import Login from '../pages/login'; 
 import Cadastro from '../pages/cadastro';
 import Projeto from '../pages/projeto';
+import Kanban from "../pages/kanban";
 import useAuth from "../hooks/useAuth";
 import App from "../Teste";
 
@@ -23,6 +24,7 @@ export default function AppRoutes() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/app" element={<App />} />
                 <Route path="/projeto" element={<PrivateRoute><Projeto /></PrivateRoute>} />
+                <Route path="/kanban" element={<PrivateRoute><Kanban /></PrivateRoute>} />
             </Routes>
         </Router>
     );
