@@ -1,40 +1,39 @@
-import { useState } from 'react'
-import reactLogo from '../public/assets/react.svg'
-import viteLogo from '../public/vite.svg'
+import { useState } from 'react';
+import reactLogo from '/assets/react.svg';
+import viteLogo from '/vite.svg';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Buttons from './components/Buttons/Buttons';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { AlertError, AlertSuccess } from "./components/Alert/Modal";
-import {ToastSuccess, ToastWarning} from "./components/Alert/Toast";
-
+import { AlertError, AlertSuccess } from './components/Alert/Modal';
+import { ToastSuccess, ToastWarning } from './components/Alert/Toast';
 
 function App() {
   const [loading, setLoading] = useState(false);
-  const [valor, setValor] = useState("dasdsa");
+  const [valor, setValor] = useState('dasdsa');
 
   function handleClick() {
     setLoading(!loading);
   }
 
-  function teste(){
+  function teste() {
     AlertError({
-      text: "Ops... Erros encontrados",
-      title: "Erro!!",
+      text: 'Ops... Erros encontrados',
+      title: 'Erro!!',
     });
   }
 
-  function teste2(){
+  function teste2() {
     ToastWarning({
-      text: "Ops... Erros encontrados toast",
-      title: "Erro!!",
+      text: 'Ops... Erros encontrados toast',
+      title: 'Erro!!',
     });
   }
 
-  function alertinha(){
-    if (valor === "") {
-      return "precisa ser preenchido";
+  function alertinha() {
+    if (valor === '') {
+      return 'precisa ser preenchido';
     }
-    return "";
+    return '';
   }
   return (
     <>
@@ -49,25 +48,32 @@ function App() {
       </div>
       <h1>Futurize</h1>
       <div className="card">
-  
-      <Buttons buttonType="contained" onClick={teste}>
-        Contained Button
-      </Buttons>
+        <Buttons buttonType="contained" onClick={teste}>
+          Contained Button
+        </Buttons>
 
-      <Buttons buttonType="outlined" variant="outlined" size="large" onClick={teste2}>
-        Outlined Button
-      </Buttons>
+        <Buttons
+          buttonType="outlined"
+          variant="outlined"
+          size="large"
+          onClick={teste2}
+        >
+          Outlined Button
+        </Buttons>
 
-      <Buttons buttonType="icon" className="c-button" size="small" endIcon={ <DeleteIcon />}>
-        seddsrgdrgrg
-      </Buttons>
+        <Buttons
+          buttonType="icon"
+          className="c-button"
+          size="small"
+          endIcon={<DeleteIcon />}
+        >
+          seddsrgdrgrg
+        </Buttons>
 
-      <Buttons buttonType="loading"  onClick={handleClick}
-           variant="contained">
-        Loading Button
-      </Buttons>
+        <Buttons buttonType="loading" onClick={handleClick} variant="contained">
+          Loading Button
+        </Buttons>
 
-     
         <LoadingButton
           size="small"
           color="secondary"
@@ -79,10 +85,8 @@ function App() {
         >
           <span>Save</span>
         </LoadingButton>
-
-        
       </div>
     </>
-  )
+  );
 }
-export default App
+export default App;

@@ -1,5 +1,4 @@
-
-.c-input{
+.c-input {
   width: 100% !important;
   margin-top: 0.3rem !important;
   margin-bottom: 0.3rem !important;
@@ -7,11 +6,11 @@
 .c-input:focus,
 .c-input:active,
 .c-input:hover {
-outline: none !important;
-background-color: transparent;
+  outline: none !important;
+  background-color: transparent;
 }
 
-.helper-text{
+.helper-text {
   opacity: 1;
   color: RGB(211, 47, 47);
   font-size: 10px;
@@ -27,4 +26,3 @@ background-color: transparent;
   font-weight: 400;
   font-size: 12px;
 }
-

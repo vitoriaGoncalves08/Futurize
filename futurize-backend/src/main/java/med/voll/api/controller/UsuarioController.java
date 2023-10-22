@@ -33,10 +33,11 @@ public class UsuarioController {
 
     @CrossOrigin("*")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Usuario data) {
+    public ResponseEntity<Object> login(@RequestBody Usuario data) {
         Usuario usuario = repository.findByEmail(data.getEmail());
+
         if (usuario != null && usuario.getSenha().equals(data.getSenha())) {
-            return ResponseEntity.ok("Login bem-sucedido");
+            return ResponseEntity.ok(usuario);
         } else if (usuario == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não cadastrado");
         } else {
