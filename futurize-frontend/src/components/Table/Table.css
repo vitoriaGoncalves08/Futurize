@@ -96,6 +96,15 @@ background-color: transparent;
   background-color: var(--danger)!important;
   color: var(--white) !important;
 }
+.delete-projeto{
+  background-color: transparent !important;
+  border: transparent !important;
+  color: #407BFF !important;
+}
+.edit-projeto{
+  background-color: transparent !important;
+  border: transparent !important;
+}
 
 @media (max-width: 600px) {
   /* Redefina a largura da célula e limite o texto a uma única linha */

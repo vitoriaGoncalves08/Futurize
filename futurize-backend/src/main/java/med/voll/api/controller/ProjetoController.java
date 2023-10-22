@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("Projeto")
@@ -32,6 +33,21 @@ public class ProjetoController {
     public List<DadosListagemProjeto> listarProjeto(){
         return repository.findAll().stream().map(DadosListagemProjeto::new).toList();
     }
-    
-    
+    @CrossOrigin("*")
+    @DeleteMapping("/delete/{id}")
+    public void excluirProjeto(@PathVariable Long id) {
+        Optional<Projeto> projetoOptional = repository.findById(id);
+        if (projetoOptional.isPresent()) {
+            repository.delete(projetoOptional.get());
+        } else {
+            // Tratar o caso em que o projeto com o ID especificado não foi encontrado
+            throw new ProjetoNaoEncontradoException("Projeto não encontrado para o ID: " + id);
+        }
+    }
+    public class ProjetoNaoEncontradoException extends RuntimeException {
+
+        public ProjetoNaoEncontradoException(String mensagem) {
+            super(mensagem);
+        }
+    }
 }

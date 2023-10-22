@@ -43,7 +43,7 @@ export default function Input(props) {
 
     return (
       <>
-              <FormControl className="c-input" variant={inputVariant} error={error}>
+        <FormControl className="c-input" variant={inputVariant} error={error}>
           <InputLabel htmlFor={props.id}>{props.label}</InputLabel>
           <OutlinedInput
             {...rest}

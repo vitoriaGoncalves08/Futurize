@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 
 import Card from '../Card';
 
@@ -22,6 +23,17 @@ export default function List({ data, index: listIndex }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [formTask, setFormTask] = useState({
+    titulo: '',
+    inicio: '',
+    encerramento: '',
+    prioridade: '',
+    integrante: '',
+    descricao: '',
+    estado: '',
+  });
+
   return (
     <Container done={data.done}>
       <header>
@@ -49,21 +61,42 @@ export default function List({ data, index: listIndex }) {
         <DialogContent>
           <form>
             <Input
-              id="titulop"
+              id="titulo-kanban"
               type="text"
-              name="titulop"
-              // value={formData.titulo}
+              name="titulo"
+              value={formTask.titulo}
               onChange={(e) => handleInputChange(e, 'titulo')}
               label="Digite seu titulo"
             />
             <Input
-              id="encerramento"
-              type="text"
+              id="encerramento-kanban"
+              type="date"
               name="encerramento"
-              // value={formData.encerramento}
+              value={formTask.encerramento}
               onChange={(e) => handleInputChange(e, 'encerramento')}
-              label="Digite a data final"
+              label="Digite a data de encerramento"
             />
+            <Input
+              id="prioridade-kanban"
+              type="text"
+              name="prioridade"
+              value={formTask.titulo}
+              onChange={(e) => handleInputChange(e, 'prioridade')}
+              label="Digite a prioridade"
+            />
+            <Input
+              id="integrante-kanban"
+              type="text"
+              name="integrante"
+              value={formTask.titulo}
+              onChange={(e) => handleInputChange(e, 'integrante')}
+              label="Digite o integrante"
+            />
+
+        <TextareaAutosize>
+
+
+        </TextareaAutosize>
             
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
