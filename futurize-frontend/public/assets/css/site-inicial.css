@@ -17,7 +17,7 @@ nav {
   }
   
   .MenuItens,
-  .InicialUl,
+  ul,
   li,
   a {
     display: flex;

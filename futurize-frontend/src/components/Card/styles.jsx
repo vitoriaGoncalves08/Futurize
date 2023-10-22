@@ -45,7 +45,7 @@ export const Container = styled.div`
 export const Label = styled.span`
   width: 10px;
   height: 10px;
-  border-radius: 2px;
+  border-radius: 100%;
   display: inline-block;
   background: ${props => props.color};
 `;

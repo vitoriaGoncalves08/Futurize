@@ -1,37 +1,37 @@
 .Header {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background: #79A2FE;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #79a2fe;
 }
 .Logo {
-    width: 173px; 
-    height: 34px;
-    color: white; 
-    font-size: 20px; 
-    font-weight: 800;
-    text-transform: uppercase; 
-    line-height: 35px; 
-    letter-spacing: 3px;
-    cursor: pointer;
-    margin-left: 3rem;
+  width: 173px;
+  height: 34px;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 35px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  margin-left: 3rem;
 }
-.ImgPessoa{
-    position: absolute;
-    right: 10%;
-    width: 40px; 
-    height: 40px;
-    margin-right: 0;
-    border-radius: 9999px;
-    cursor: pointer;
+.ImgPessoa {
+  position: absolute;
+  right: 10%;
+  width: 40px;
+  height: 40px;
+  margin-right: 0;
+  border-radius: 9999px;
+  cursor: pointer;
 }
 .OpcoesIcon {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    right: 3%;
-    font-size: 35px;
-    color: #fff;
-    cursor: pointer;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 3%;
+  font-size: 35px;
+  color: #fff;
+  cursor: pointer;
 }

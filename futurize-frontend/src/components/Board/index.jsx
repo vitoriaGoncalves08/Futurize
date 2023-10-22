@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import {produce} from 'immer';
+import { produce } from 'immer';
 
-import { loadLists } from '../../service/api';
+import { loadLists } from '../../service/kanban';
 
 import BoardContext from './context';
 

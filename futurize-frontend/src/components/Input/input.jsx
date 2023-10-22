@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -16,7 +16,7 @@ export default function Input(props) {
   if (type === 'text') {
     return (
       <>
-        <TextField 
+        <TextField
           id={props.id}
           label={props.label}
           variant={props.variant}
@@ -25,10 +25,10 @@ export default function Input(props) {
           multiline={props.multiline || false}
           required={props.required || null}
           size={props.size}
-          value={props.value} 
+          value={props.value}
           onChange={props.onChange}
           error={error}
-          helperText={helperText} 
+          helperText={helperText}
         />
       </>
     );
@@ -39,11 +39,11 @@ export default function Input(props) {
 
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
-    }
+    };
 
     return (
       <>
-              <FormControl className="c-input" variant={inputVariant} error={error}>
+        <FormControl className="c-input" variant={inputVariant} error={error}>
           <InputLabel htmlFor={props.id}>{props.label}</InputLabel>
           <OutlinedInput
             {...rest}

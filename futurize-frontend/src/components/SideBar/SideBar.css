@@ -1,54 +1,52 @@
-@import "../../../public/assets/css/colors.css";
-@import "../../../public/assets/css/variaveis.css";
+@import '../../../public/assets/css/colors.css';
+@import '../../../public/assets/css/variaveis.css';
 
-.menu-lateral{
-    display:flex;
-    z-index: 0;
-    min-width: 100%;
-    min-height: 100%;
-}
-
-.sidebar-menu{
-    background: var(--secondary-menu);
-    color: #fff;
-    height: 100vh;
-    transition: all 0.5s;
-    width: 220px;
+.menu-lateral {
+  display: flex;
+  z-index: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
 
-.top_section-menu{
-    display: flex;
-    align-items:center;
-    padding: 20px 15px;
+.sidebar-menu {
+  background: var(--secondary-menu);
+  color: #fff;
+  height: 100vh;
+  transition: all 0.5s;
 }
-.logo-menu{
-    font-size: 30px;
+.top_section-menu {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
 }
-.bars-menu{
-    display: flex;
-    font-size: 25px;
-    margin-left: 50px;
+.logo-menu {
+  font-size: 30px;
 }
-.link-menu{
-    display: flex;
-    color: #fff;
-    padding: 10px 15px;
-    gap: 15px;
-    transition: all 0.5s;
+.bars-menu {
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
 }
-.link-menu .logout{
-    position: fixed;
-    bottom: 0;
+.link-menu {
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
 }
-
-.link-menu:hover{
-    color: var(--primary-dark);
-    transition: all 0.5s;
-}
-.active-menu{
-    color: var(--primary-dark);
-}
-.icon-menu, .link_text-menu{
-    font-size: 18px;
+.link-menu .logout {
+  position: fixed;
+  bottom: 0;
 }
 
+.link-menu:hover {
+  color: var(--primary-dark);
+  transition: all 0.5s;
+}
+.active-menu {
+  color: var(--primary-dark);
+}
+.icon-menu,
+.link_text-menu {
+  font-size: 18px;
+}
