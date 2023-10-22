@@ -29,11 +29,11 @@ const Sidebar = ({children}) => {
             name:"Projeto",
             icon:<FolderIcon/>
         },
-        {
-            path:"/Kanban",
-            name:"Kanban",
-            icon:<ViewKanbanIcon/>
-        },
+        // {
+        //     path:"/Kanban",
+        //     name:"Kanban",
+        //     icon:<ViewKanbanIcon/>
+        // },
         {
             path:"/Calendario",
             name:"Calendário",

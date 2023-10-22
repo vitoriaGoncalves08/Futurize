@@ -9,7 +9,7 @@ import Board from '../components/Board';
 import SideBar from '../components/SideBar/SideBar';
 import HeaderKanban from '../components/HeaderKanban/HeaderKanban';
 
-function App() {
+export default function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Header />
@@ -21,5 +21,3 @@ function App() {
     </DndProvider>
   );
 }
-
-export default App;
