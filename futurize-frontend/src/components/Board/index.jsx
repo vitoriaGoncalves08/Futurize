@@ -7,7 +7,7 @@ import BoardContext from './context';
 
 import List from '../List';
 
-import { Container } from './styles';
+import { ContainerBoard } from './styles';
 
 const data = loadLists();
 
@@ -25,9 +25,9 @@ export default function Board() {
 
   return (
     <BoardContext.Provider value={{ lists, move }}>
-      <Container>
+      <ContainerBoard>
         {lists.map((list, index) => <List key={list.title} index={index} data={list} />)}
-      </Container>
+      </ContainerBoard>
     </BoardContext.Provider>
   );
 }

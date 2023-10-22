@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const ContainerBoard = styled.div`
   display: flex;
   padding: 30px 0;
   height: calc(100vh - 102px);

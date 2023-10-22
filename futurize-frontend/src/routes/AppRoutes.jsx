@@ -34,12 +34,11 @@ export default function AppRoutes() {
             }
           />
           <Route
-            path="/kanban"
-            element={
-              <PrivateRoute>
-                <Kanban />
-              </PrivateRoute>
-            }
+          path="/kanban/:projectId" 
+          element={
+            <PrivateRoute>
+              <Kanban />
+            </PrivateRoute>}
           />
         </Routes>
       </AuthProvider>

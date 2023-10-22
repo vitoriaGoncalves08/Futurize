@@ -20,9 +20,12 @@ import { AlertError } from '../Alert/Modal';
 import axios from "axios";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function TableC() {
   const [open, setOpen] = useState(false);
+  const [projectData, setProjectData] = useState(null); // Armazena os dados do projeto selecionado
   const [titulo, setTitulo] = useState("");
   const [inicio, setinicio] = useState("");
   const [estado, setEstado] = useState("");
@@ -30,6 +33,7 @@ export default function TableC() {
   const [rows, setRows] = useState([]);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -166,6 +170,13 @@ export default function TableC() {
         return 'tag-status';
     }
   }
+
+  const openProjectKanban = (project) => {
+    console.log('Dados do projeto:', project); // Verifique os dados do projeto
+    setProjectData(project); // Define os dados do projeto selecionado
+    navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
+  };
+  
  return (
   <div className='table'>
     <div className='meus-projetos'>
@@ -212,6 +223,7 @@ export default function TableC() {
                 <Buttons className="edit-projeto">
                   <EditIcon />
                 </Buttons>
+                <Buttons onClick={() => openProjectKanban(row)}>Kanban</Buttons>
               </TableCell>
             </TableRow>
           ))}
