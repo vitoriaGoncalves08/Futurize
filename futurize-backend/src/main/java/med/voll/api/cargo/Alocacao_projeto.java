@@ -30,14 +30,19 @@ public class Alocacao_projeto {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
+    private Boolean ativo;
 
     public Alocacao_projeto(DadosCadastroCargoProjeto dadosCadastroCargoProjeto) {
+        this.ativo = true;
         this.cargo = dadosCadastroCargoProjeto.cargo();
         this.projeto = dadosCadastroCargoProjeto.projeto();
         this.usuario = dadosCadastroCargoProjeto.usuario();
     }
 
-    /*DadosListagemProjeto dadosListagemProjeto = new DadosListagemProjeto(projeto);*/
+    public void excluir() {
+        this.ativo = false;
+    }
+
+
 
 }
