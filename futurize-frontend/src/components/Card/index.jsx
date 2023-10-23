@@ -36,12 +36,20 @@ export default function Card({ data, index, listIndex }) {
         {data && (
           <>
             <header>
-              {data.labels.map((label) => (
+              {data.labels.map((label)  => (
                 <Label key={label} color={label} />
               ))}
             </header>
-            <p>{data.content}</p>
-            {data.user && <img src={data.user} alt="" />}
+            <h3>{data.content}</h3>
+            <p>{data.descricao}</p>
+            <div className="DataEComentarios">
+              <p>{data.data}</p>
+              <p>{data.comentarios}</p>
+            </div>
+            <div className="ImgPessoas">
+              {data.tempo}
+              {data.user && <img src={data.user} alt="" />}
+            </div>
           </>
         )}
       </Container>

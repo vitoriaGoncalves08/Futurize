@@ -17,15 +17,31 @@ export const Container = styled.div`
   }
 
   p {
-    font-weight: 500;
+    font-weight: 300;
     line-height: 20px;
+    margin-top: 7px;
   }
 
+  .DataEComentarios{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 7px;
+  }
+
+  .ImgPessoas{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 7px;
+  }
+  
   img {
-    width: 24px;
-    height: 24px;
-    border-radius: 2px;
-    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: 1px solid;
+    margin-top: 7px;
   }
 
   ${props => props.isDragging && css`
