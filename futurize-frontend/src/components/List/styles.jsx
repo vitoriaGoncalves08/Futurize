@@ -32,6 +32,11 @@ export const Container = styled.div`
     }
   }
 
+  .camadas{
+    display: flex;
+    margin: 2px;
+  }
+
   ul {
     margin-top: 30px;
   }
