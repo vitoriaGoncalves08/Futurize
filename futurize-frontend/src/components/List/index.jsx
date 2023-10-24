@@ -8,8 +8,9 @@ import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
-
+import LayersIcon from '@mui/icons-material/Layers';
 import Card from '../Card';
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
 
 import { Container } from './styles';
 
@@ -38,6 +39,7 @@ export default function List({ data, index: listIndex }) {
     <Container done={data.done}>
       <header>
         <h2>{data.title}</h2>
+       
         {data.creatable && (
           <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>+</Buttons>
         )}
@@ -55,8 +57,10 @@ export default function List({ data, index: listIndex }) {
             top: 8,
             color: (theme) => theme.palette.grey[500],
           }}
+          
         >
           <CloseIcon />
+
         </IconButton>
         <DialogContent>
           <form>
@@ -105,6 +109,14 @@ export default function List({ data, index: listIndex }) {
         </DialogContent>
       </Dialog>
 
+      <div className="camadas">
+        <LayersIcon></LayersIcon>
+        <p>1</p>
+        <WatchLaterIcon></WatchLaterIcon>
+        <p>00:00:00</p>
+
+      </div>
+
       <ul>
         { data.cards.map((card, index) => (
           <Card 
@@ -115,6 +127,8 @@ export default function List({ data, index: listIndex }) {
           />
         )) }
       </ul>
+      
     </Container>
   );
+  
 }

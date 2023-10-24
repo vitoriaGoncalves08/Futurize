@@ -46,6 +46,7 @@ export default function Card({ data, index, listIndex }) {
               <p>{data.data}</p>
               <p>{data.comentarios}</p>
             </div>
+           
             <div className="ImgPessoas">
               {data.tempo}
               {data.user && <img src={data.user} alt="" />}
