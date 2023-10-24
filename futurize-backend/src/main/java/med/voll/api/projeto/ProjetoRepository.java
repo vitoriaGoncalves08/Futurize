@@ -8,5 +8,6 @@ import java.util.stream.DoubleStream;
 
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
 
-    Page<Projeto> findAllByAtivoTrue(Pageable paginacao);
+    //PAGINAÇÃO
+//    Page<Projeto> findAllByAtivoTrue(Pageable paginacao);
 }

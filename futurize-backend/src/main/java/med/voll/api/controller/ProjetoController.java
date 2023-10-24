@@ -30,6 +30,26 @@ public class ProjetoController {
 
     @CrossOrigin("*")
     @GetMapping
+    public List<DadosListagemProjeto> listarProjeto(){
+        return repository.findAll().stream().map(DadosListagemProjeto::new).toList();
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizarProjeto(@RequestBody @Valid DadosAtualizarProjeto dadosAtualizarProjeto){
+        var projeto = repository.getReferenceById(dadosAtualizarProjeto.id());
+        projeto.atualizarInformacoes(dadosAtualizarProjeto);
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void ExcluirProjeto(@PathVariable Long id){
+        repository.deleteById(id);
+    }
+
+    //PAGINAÇÂO
+/*
+    @CrossOrigin("*")
+    @GetMapping
     public Page<DadosListagemProjeto> listarProjeto(@PageableDefault(sort = {"encerramento"}) Pageable paginacao){
         return repository.findAllByAtivoTrue(paginacao).map(DadosListagemProjeto::new);
     }
@@ -46,6 +66,7 @@ public class ProjetoController {
         var projeto = repository.getReferenceById(id);
         projeto.excluir();
     }
+*/
 
 
 //    @CrossOrigin("*")
