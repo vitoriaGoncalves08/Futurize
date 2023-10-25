@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import LayersIcon from '@mui/icons-material/Layers';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -51,9 +52,6 @@ export default function List({ data, index: listIndex }) {
     <Container done={data.done}>
       <header>
         <h2>{data.title}</h2>
-        <p>
-          <MoreVertIcon></MoreVertIcon>
-        </p>
        
         {data.creatable && (
           <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>+</Buttons>
@@ -73,10 +71,8 @@ export default function List({ data, index: listIndex }) {
             top: 8,
             color: (theme) => theme.palette.grey[500],
           }}
-          
         >
           <CloseIcon />
-
         </IconButton>
         <DialogContent>
           <form>
@@ -148,11 +144,11 @@ export default function List({ data, index: listIndex }) {
 
       <div className="CamadaTime">
         <div className="Camada">
-          <LayersIcon></LayersIcon>1
+          <LayersIcon/>1
         </div>
 
         <div className="Time">
-          <WatchLaterIcon></WatchLaterIcon>
+          <WatchLaterIcon/>
           <p>00:00:00</p>
         </div>
       </div>

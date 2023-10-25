@@ -34,7 +34,7 @@ export const Container = styled.div`
   
   .CamadaTime{
     display: flex;
-    padding: 15px;
+    margin-left: 10px;
     color: #C8C8C8;
     gap: 25px;
   }
@@ -48,7 +48,7 @@ export const Container = styled.div`
   }
   
   ul {
-    margin-top: 30px;
+    margin-top: 15px;
     display: block;
   }
 `;

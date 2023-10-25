@@ -70,9 +70,9 @@ export default function Card({ data, index, listIndex }) {
               {data.labels.map((label)  => (
                 <Label key={label} color={label} />
               ))}
-            </header>
+            </header> 
 
-            <h3>{data.content}</h3>
+            <h5>{data.content}</h5>
             <p>{data.descricao}</p>
             
             <div className="Data">

@@ -10,7 +10,7 @@ export function loadLists() {
             descricao: 'Criar documento .dock da maté...',
             data: '30-06-2023',
             prioridade: 3,
-            labels: ['#ff0000'],
+            labels: ['green'],
             user: 'https://gravatar.com/avatar/7087488912ef4c8e9322a93564dd0116?s=400&d=robohash&r=x'
           },   
           {
@@ -19,7 +19,7 @@ export function loadLists() {
             descricao: 'Criar documento .dock da maté...',
             data: '30-06-2023',
             prioridade: 3,
-            labels: ['#ff0000'],
+            labels: ['green'],
             user: 'https://gravatar.com/avatar/7087488912ef4c8e9322a93564dd0116?s=400&d=robohash&r=x'
           },
           {

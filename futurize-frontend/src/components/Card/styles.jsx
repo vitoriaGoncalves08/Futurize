@@ -19,6 +19,7 @@ export const Container = styled.div`
   p {
     display: flex;
     align-items: center;
+    font-size: 15px;
   }
 
   .Data{
