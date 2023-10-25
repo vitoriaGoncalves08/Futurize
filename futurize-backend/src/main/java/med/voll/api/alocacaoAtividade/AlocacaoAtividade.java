@@ -22,17 +22,21 @@ public class AlocacaoAtividade {
     private Long id;
     private Date data_inicio;
     private Date data_encerramento;
-    @OneToOne
+    private Estado estado;
+
+    @ManyToOne
     @JoinColumn(name ="id_usuario")
     private Usuario usuario;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_atividade")
     private Atividade atividade;
 
 
     public AlocacaoAtividade(DadosCadastroAtividadeAlocacaoAtividade dadosCadastroAtividadeAlocacaoAtividade) {
         this.data_inicio = dadosCadastroAtividadeAlocacaoAtividade.data_inicio();
+        this.data_encerramento = dadosCadastroAtividadeAlocacaoAtividade.data_encerramento();
+        this.estado = dadosCadastroAtividadeAlocacaoAtividade.estado();
         this.atividade = dadosCadastroAtividadeAlocacaoAtividade.atividade();
         this.usuario = dadosCadastroAtividadeAlocacaoAtividade.usuario();
     }
@@ -49,6 +53,9 @@ public class AlocacaoAtividade {
         }
         if(dadosAtualizarAlocacaoAtividade.atividade() != null){
             this.atividade = dadosAtualizarAlocacaoAtividade.atividade();
+        }
+        if(dadosAtualizarAlocacaoAtividade.estado() != null){
+            this.estado = dadosAtualizarAlocacaoAtividade.estado();
         }
     }
 }

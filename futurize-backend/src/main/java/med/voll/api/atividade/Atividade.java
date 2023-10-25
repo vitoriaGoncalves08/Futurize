@@ -15,10 +15,10 @@ import java.util.Date;
     @AllArgsConstructor
 @EqualsAndHashCode
 @Entity(name = "atividade")
-@Table(name = "Atividade")
+@Table(name = "atividade")
 public class Atividade {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long Id;
     private String titulo;
     private String descricao;
     private Date inicio;

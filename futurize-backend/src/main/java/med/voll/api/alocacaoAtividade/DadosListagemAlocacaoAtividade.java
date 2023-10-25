@@ -5,9 +5,9 @@ import med.voll.api.usuario.Usuario;
 
 import java.util.Date;
 
-public record DadosListagemAlocacaoAtividade(Long id, Date data_inicio, Date data_encerramento, Usuario usuario, Atividade atividade) {
+public record DadosListagemAlocacaoAtividade(Long id, Date data_inicio, Date data_encerramento, Estado estado, Usuario usuario, Atividade atividade) {
 
     public DadosListagemAlocacaoAtividade(AlocacaoAtividade alocacaoAtividade){
-        this(alocacaoAtividade.getId(), alocacaoAtividade.getData_inicio(), alocacaoAtividade.getData_encerramento(), alocacaoAtividade.getUsuario(), alocacaoAtividade.getAtividade() );
+        this(alocacaoAtividade.getId(), alocacaoAtividade.getData_inicio(), alocacaoAtividade.getData_encerramento(), alocacaoAtividade.getEstado(), alocacaoAtividade.getUsuario(), alocacaoAtividade.getAtividade() );
     }
 }

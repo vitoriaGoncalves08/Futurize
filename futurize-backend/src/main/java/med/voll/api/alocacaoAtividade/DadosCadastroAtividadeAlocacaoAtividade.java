@@ -11,6 +11,8 @@ public record DadosCadastroAtividadeAlocacaoAtividade(
         @NotNull
         Date data_encerramento,
         @NotNull
+        Estado estado,
+        @NotNull
         Usuario usuario,
         @NotNull
         Atividade atividade) {

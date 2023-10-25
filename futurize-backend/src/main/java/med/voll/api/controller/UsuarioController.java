@@ -1,6 +1,7 @@
 package med.voll.api.controller;
 
 import jakarta.validation.Valid;
+import med.voll.api.atividade.DadosListagemAtividade;
 import med.voll.api.projeto.DadosListagemProjeto;
 import med.voll.api.usuario.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,9 @@ public class UsuarioController {
     }
     @CrossOrigin("*")
     @GetMapping
-    public Page<DadosListagemUsuario> listarUsuario(Pageable paginacao) {
-        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemUsuario::new);
+    public List<DadosListagemUsuario> listarUsuario(){
+        return repository.findAll().stream().map(DadosListagemUsuario::new).toList();
     }
-
-
 
     @PutMapping
     @Transactional
@@ -42,8 +41,7 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     @Transactional
     public void ExcluirUsuario(@PathVariable Long id){
-        var usuario = repository.getReferenceById(id);
-        usuario.excluir();
+        repository.deleteById(id);
     }
 
 
