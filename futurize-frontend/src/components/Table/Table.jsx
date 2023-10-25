@@ -38,7 +38,6 @@ export default function TableC() {
   const [idToDelete, setIdToDelete] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editProjectData, setEditProjectData] = useState(null);
-
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -72,26 +71,39 @@ export default function TableC() {
     setDeleteConfirmationOpen(false);
   };
 
-  const confirmDelete = async () => {
-    if (idToDelete !== undefined && !isNaN(idToDelete)) {
-      try {
-        // Faça a chamada de exclusão para o backend
-        await axios.delete(`http://localhost:8080/Projeto/${idToDelete}`);
-
-        // Atualize o estado `rows` após a exclusão
-        const updatedRows = rows.filter((row) => row.id !== idToDelete);
-        setRows(updatedRows);
-
-        // Feche a caixa de diálogo de confirmação
-        setDeleteConfirmationOpen(false);
-      } catch (error) {
-        console.error('Erro ao excluir o item:', error);
-      }
-    } else {
-      console.error('ID de projeto inválido:', idToDelete);
-    }
+  const handleEditClose = () => {
+    setEditOpen(false);
   };
 
+  const [formProjeto, setFormProjeto] = useState({
+    titulo: '',
+    inicio: '',
+    encerramento: '',
+    estado: 'ANDAMENTO',
+  });
+
+  const handleInputChange = (e, title) => {
+    const { value } = e.target;
+    if (title === 'titulop') {
+      setTitulo(value);
+    } else {
+      setFormProjeto({ ...formProjeto, [title]: value });
+    }
+  }
+
+  function getStatusTagClass(estado) {
+    switch (estado) {
+      case 'ANDAMENTO':
+        return 'tag-andamento';
+      case 'CONCLUIDO':
+        return 'tag-concluido';
+      case 'PAUSADO':
+        return 'tag-pausado';
+      default:
+        return 'tag-status';
+    }
+  }
+  
   useEffect(() => {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
     const fetchData = async () => {
@@ -109,7 +121,6 @@ export default function TableC() {
 
     fetchData(); // Chame a função para buscar os dados ao carregar a página
   }, []);
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -149,12 +160,25 @@ export default function TableC() {
     }
   };
 
-  const [formProjeto, setFormProjeto] = useState({
-    titulo: '',
-    inicio: '',
-    encerramento: '',
-    estado: 'ANDAMENTO',
-  });
+  const confirmDelete = async () => {
+    if (idToDelete !== undefined && !isNaN(idToDelete)) {
+      try {
+        // Faça a chamada de exclusão para o backend
+        await axios.delete(`http://localhost:8080/Projeto/${idToDelete}`);
+
+        // Atualize o estado `rows` após a exclusão
+        const updatedRows = rows.filter((row) => row.id !== idToDelete);
+        setRows(updatedRows);
+
+        // Feche a caixa de diálogo de confirmação
+        setDeleteConfirmationOpen(false);
+      } catch (error) {
+        console.error('Erro ao excluir o item:', error);
+      }
+    } else {
+      console.error('ID de projeto inválido:', idToDelete);
+    }
+  };
 
   // function isError() {
   //   handleClose();
@@ -163,35 +187,7 @@ export default function TableC() {
   //     title: "Erro!",
   //   });
   // }
-
-  const handleInputChange = (e, title) => {
-    const { value } = e.target;
-    if (title === 'titulop') {
-      setTitulo(value);
-    } else {
-      setFormProjeto({ ...formProjeto, [title]: value });
-    }
-  }
-
-  function getStatusTagClass(estado) {
-    switch (estado) {
-      case 'ANDAMENTO':
-        return 'tag-andamento';
-      case 'CONCLUIDO':
-        return 'tag-concluido';
-      case 'PAUSADO':
-        return 'tag-pausado';
-      default:
-        return 'tag-status';
-    }
-  }
-
-  const openProjectKanban = (project) => {
-    console.log('Dados do projeto:', project); // Verifique os dados do projeto
-    setProjectData(project); // Define os dados do projeto selecionado
-    navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
-  };
-
+ 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
@@ -236,14 +232,10 @@ export default function TableC() {
     setEditOpen(true);
 };
 
-  const handleEditClose = () => {
-    setEditOpen(false);
-  };
-
-  const [age, setAge] = React.useState('');
-
-  const handleChange = () => {
-    alert("aaaaa");
+  const openProjectKanban = (project) => {
+    console.log('Dados do projeto:', project); // Verifique os dados do projeto
+    setProjectData(project); // Define os dados do projeto selecionado
+    navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
   };
 
   return (
@@ -402,7 +394,7 @@ export default function TableC() {
             </Box>
 
             <DialogActions>
-              <Buttons type="submit">Salvar</Buttons>
+              <Buttons type="submit">Atualizar</Buttons>
             </DialogActions>
           </form>
         </DialogContent>
