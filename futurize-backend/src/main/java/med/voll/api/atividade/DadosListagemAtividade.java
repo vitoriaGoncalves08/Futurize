@@ -8,7 +8,7 @@ package med.voll.api.atividade;
     public record DadosListagemAtividade(long id, String titulo, String descricacao, Date inicio, Date encerramento, Estado estado, Dificuldade dificuldade, Prioridade prioridade, String tempo_execucao, Projeto projeto){
 
         public DadosListagemAtividade(Atividade atividade){
-            this(atividade.getID(), atividade.getTitulo(), atividade.getDescricao(), atividade.getInicio(), atividade.getEncerramento(), atividade.getEstado(), atividade.getDificuldade(), atividade.getPrioridade(), atividade.getTempo_execucao(), atividade.getProjeto());
+            this(atividade.getId(), atividade.getTitulo(), atividade.getDescricao(), atividade.getInicio(), atividade.getEncerramento(), atividade.getEstado(), atividade.getDificuldade(), atividade.getPrioridade(), atividade.getTempo_execucao(), atividade.getProjeto());
         }
 
     }

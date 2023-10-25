@@ -11,6 +11,7 @@ public record DadosAtualizarAlocacaoAtividade(
         Long id,
         Date data_inicio,
         Date data_encerramento,
+        Estado estado,
         Usuario usuario,
         Atividade atividade) {
 }
