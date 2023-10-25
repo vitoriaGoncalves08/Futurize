@@ -5,10 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.stream.DoubleStream;
+
 
 public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
-    List<Atividade> findByStatus(Status status);
+//    List<Atividade> findByEstado(Estado estado);
 
-    Page<Atividade> findAllByAtivoTrue(Pageable paginacao);
+    //Paginação
+//    Page<Atividade> findAllByAtivoTrue(Pageable paginacao);
 }

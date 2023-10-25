@@ -5,6 +5,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import med.voll.api.projeto.DadosCadastroProjeto;
+import med.voll.api.projeto.Projeto;
 import med.voll.api.usuario.DadosCadastroUsuario;
 
 import java.util.Date;
@@ -19,6 +20,15 @@ public record DadosCadastroAtividade(
         @NotNull
         Date encerramento,
         @NotNull
-        Status status
+        Estado estado,
+        @NotNull
+        Dificuldade dificuldade,
+        @NotNull
+        Prioridade prioridade,
+        @NotBlank
+        String tempo_execucao,
+        @NotNull
+        Projeto projeto
+
  ) {
 }

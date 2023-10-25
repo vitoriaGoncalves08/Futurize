@@ -1,6 +1,6 @@
 package med.voll.api.atividade;
 
-public enum Status {
+public enum Estado {
     BACKLOG,
     TO_DO,
     DESENVOLVIMENTO,

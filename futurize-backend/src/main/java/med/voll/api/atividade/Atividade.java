@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import med.voll.api.projeto.Projeto;
+import med.voll.api.usuario.Usuario;
 
 import java.util.Date;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+    @NoArgsConstructor
+    @AllArgsConstructor
 @EqualsAndHashCode
 @Entity(name = "atividade")
 @Table(name = "Atividade")
@@ -22,8 +24,17 @@ public class Atividade {
     private Date inicio;
     private Date encerramento;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Estado estado;
+    @Enumerated(EnumType.STRING)
+    private Dificuldade dificuldade;
+    @Enumerated(EnumType.STRING)
+    private Prioridade prioridade;
+    private String tempo_execucao;
+    @ManyToOne
+    @JoinColumn(name = "id_projeto")
+    private Projeto projeto;
     private Boolean ativo;
+
 
     public Atividade(DadosCadastroAtividade dadosCadastroAtividade){
         this.ativo = true;
@@ -31,7 +42,11 @@ public class Atividade {
         this.descricao = dadosCadastroAtividade.descricao();
         this.inicio = dadosCadastroAtividade.inicio();
         this.encerramento = dadosCadastroAtividade.encerramento();
-        this.status = dadosCadastroAtividade.status();
+        this.estado = dadosCadastroAtividade.estado();
+        this.dificuldade = dadosCadastroAtividade.dificuldade();
+        this.prioridade = dadosCadastroAtividade.prioridade();
+        this.tempo_execucao = dadosCadastroAtividade.tempo_execucao();
+        this.projeto = dadosCadastroAtividade.projeto();
     }
 
     public void atualizarInformacoes(DadosAtualizarAtividade dadosAtualizarAtividade) {
@@ -44,12 +59,22 @@ public class Atividade {
         if(dadosAtualizarAtividade.encerramento() != null){
             this.encerramento = dadosAtualizarAtividade.encerramento();
         }
-        if(dadosAtualizarAtividade.status() != null){
-            this.status = dadosAtualizarAtividade.status();
+        if(dadosAtualizarAtividade.estado() != null){
+            this.estado = dadosAtualizarAtividade.estado();
+        }
+        if(dadosAtualizarAtividade.dificuldade() != null){
+            this.dificuldade = dadosAtualizarAtividade.dificuldade();
+        }
+        if(dadosAtualizarAtividade.prioridade() != null){
+            this.prioridade = dadosAtualizarAtividade.prioridade();
+        }
+        if(dadosAtualizarAtividade.prioridade() != null){
+            this.tempo_execucao = dadosAtualizarAtividade.tempo_execucao();
         }
 
     }
 
+    //Paginação
     public void excluir() {
         this.ativo = false;
     }

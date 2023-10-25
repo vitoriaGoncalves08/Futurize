@@ -10,5 +10,9 @@ public record DadosAtualizarAtividade(
         String titulo,
         String descricaco,
         Date encerramento,
-        Status status) {
+        Estado estado,
+        Dificuldade dificuldade,
+        Prioridade prioridade,
+        String tempo_execucao
+) {
 }
