@@ -35,7 +35,7 @@ public class ProjetoController {
     public List<DadosListagemProjeto> listarProjeto(){
         return repository.findAll().stream().map(DadosListagemProjeto::new).toList();
     }
-    
+
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> atualizarProjeto(@PathVariable Long id, @RequestBody DadosAtualizarProjeto dadosAtualizarProjeto) {
