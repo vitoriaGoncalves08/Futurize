@@ -22,34 +22,34 @@ export const Container = styled.div`
     margin-top: 7px;
   }
 
-    .Data{
+  .Data{
     margin-top:10px;
     display: flex;
     justify-content: space-between; 
     color: #C8C8C8;
-    }
-    .Cdata{
-      margin-top:10px;
-      display: flex;
-    }
-    .Comentarios{
-      margin-top:5px;
-      display: flex;
-    }
+  }
   
-    .TempoPessoa{
-      
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-    }
-    .Pessoa{
-      
-      display: flex;
-    }
+  .Cdata{
+    margin-top:10px;
+    display: flex;
+  }
   
-  img {
+  .Comentarios{
+    margin-top:5px;
+    display: flex;
+  }
+  
+  .TempoPerfil{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .Pessoa{ 
+    display: flex;
+  }
+  
+  Perfil, img {
     width: 30px;
     height: 30px;
     border-radius: 100%;

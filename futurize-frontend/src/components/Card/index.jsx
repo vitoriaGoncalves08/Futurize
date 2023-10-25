@@ -40,6 +40,7 @@ export default function Card({ data, index, listIndex }) {
                 <Label key={label} color={label} />
               ))}
             </header>
+
             <h3>{data.content}</h3>
             <p>{data.descricao}</p>
             
@@ -49,16 +50,17 @@ export default function Card({ data, index, listIndex }) {
                 {data.data} 
                 </div>  
                  
-              <div className="Comentarios">
-              <p>{data.comentarios}</p>
-            </div>
+                <div className="Prioridade">
+                <p>{data.prioridade}</p>
+              </div>
             </div>
            
-            <div className="TempoPessoa">
+            <div className="TempoPerfil">
               <div className="Pessoa">
                 <PlayArrowIcon></PlayArrowIcon>
-                {data.tempo}
+                <p>{data.tempo}</p>
               </div>
+
               <div className='Perfil'>
                 <p>{data.user && <img src={data.user} alt="" />}</p>
               </div>
