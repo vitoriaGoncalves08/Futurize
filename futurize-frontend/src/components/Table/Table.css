@@ -1,25 +1,29 @@
-@import '../../../public/assets/css/variaveis.css';
-@import '../../../public/assets/css/colors.css';
+@import "../../../public/assets/css/variaveis.css";
+@import "../../../public/assets/css/colors.css";
 
-.table{
+.table {
   margin: 4rem;
 }
 
 .titulo {
   position: relative;
   display: inline-block;
-  color: var(--font-dark); 
+  color: var(--font-dark);
   font-weight: 800;
   font-size: 25px;
 }
-  
+
 .titulo::before,
 .titulo::after {
   content: "";
   position: absolute;
   width: 100%;
   height: 4px;
-  background: linear-gradient(to right,#7EA9FF, #407BFF); /* Gradiente de azul para roxo */
+  background: linear-gradient(
+    to right,
+    #7ea9ff,
+    #407bff
+  ); /* Gradiente de azul para roxo */
   bottom: -5px;
   left: 0;
   right: 0;
@@ -31,7 +35,7 @@
   transition: var(--t-ease-in-out-circ);
 }
 
-.meus-projetos{
+.meus-projetos {
   display: flex;
   align-items: center !important;
   justify-content: flex-start !important;
@@ -44,17 +48,17 @@
   font-size: var(--global-font-size-lg);
   margin-top: 0;
   margin-right: 1rem;
-  text-align: left !important; /* Alinha o texto à esquerda */  
+  text-align: left !important; /* Alinha o texto à esquerda */
 }
 
-.button-circle{
+.button-circle {
   border-radius: 100% !important;
   min-width: 10px !important;
   background-color: var(--secondary-menu) !important;
   color: var(--white) !important;
 }
 
-.c-input{
+.c-input {
   width: 100% !important;
   margin-top: 0.3rem !important;
   margin-bottom: 0.3rem !important;
@@ -62,16 +66,15 @@
 .c-input:focus,
 .c-input:active,
 .c-input:hover {
-outline: none !important;
-background-color: transparent;
+  outline: none !important;
+  background-color: transparent;
 }
 
-.row{
-  background: linear-gradient(to right, #3767D4, #407BFF);
-  
+.row {
+  background: linear-gradient(to right, #3767d4, #407bff);
 }
 
-.cel{
+.cel {
   color: var(--white) !important;
 }
 
@@ -83,25 +86,25 @@ background-color: transparent;
 }
 
 .tag-andamento {
-  background-color: var(--warning)!important; 
+  background-color: var(--warning) !important;
   color: var(--white) !important;
 }
 
 .tag-concluido {
-  background-color: var(--success)!important; 
+  background-color: var(--success) !important;
   color: var(--white) !important;
 }
 
 .tag-pausado {
-  background-color: var(--danger)!important;
+  background-color: var(--danger) !important;
   color: var(--white) !important;
 }
-.delete-projeto{
+.delete-projeto {
   background-color: transparent !important;
   border: transparent !important;
-  color: #407BFF !important;
+  color: #407bff !important;
 }
-.edit-projeto{
+.edit-projeto {
   background-color: transparent !important;
   border: transparent !important;
 }

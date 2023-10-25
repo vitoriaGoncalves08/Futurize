@@ -86,18 +86,18 @@ export default function List({ data, index: listIndex }) {
             />
             <Input
               id="integrante-kanban"
-              type="text"
+              multiline
               name="integrante"
               value={formTask.titulo}
               onChange={(e) => handleInputChange(e, 'integrante')}
               label="Digite o integrante"
             />
 
-        <TextareaAutosize>
+            <TextareaAutosize>
 
 
-        </TextareaAutosize>
-            
+            </TextareaAutosize>
+
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
             </DialogActions>
@@ -106,14 +106,14 @@ export default function List({ data, index: listIndex }) {
       </Dialog>
 
       <ul>
-        { data.cards.map((card, index) => (
-          <Card 
-            key={card.id} 
+        {data.cards.map((card, index) => (
+          <Card
+            key={card.id}
             listIndex={listIndex}
-            index={index} 
+            index={index}
             data={card}
           />
-        )) }
+        ))}
       </ul>
     </Container>
   );

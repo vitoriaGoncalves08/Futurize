@@ -21,7 +21,10 @@ import axios from "axios";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
-
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import Box from '@mui/material/Box';
 
 export default function TableC() {
   const [open, setOpen] = useState(false);
@@ -33,9 +36,21 @@ export default function TableC() {
   const [rows, setRows] = useState([]);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editProjectData, setEditProjectData] = useState(null);
+
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
+    // Limpa os campos do formulário
+    setFormProjeto({
+      id: 0,
+      titulo: '',
+      inicio: '',
+      encerramento: '',
+      estado: 'ANDAMENTO',
+    });
+
     setOpen(true);
   };
 
@@ -61,12 +76,12 @@ export default function TableC() {
     if (idToDelete !== undefined && !isNaN(idToDelete)) {
       try {
         // Faça a chamada de exclusão para o backend
-        await axios.delete(`http://localhost:8080/Projeto/delete/${idToDelete}`);
-        
+        await axios.delete(`http://localhost:8080/Projeto/${idToDelete}`);
+
         // Atualize o estado `rows` após a exclusão
         const updatedRows = rows.filter((row) => row.id !== idToDelete);
         setRows(updatedRows);
-      
+
         // Feche a caixa de diálogo de confirmação
         setDeleteConfirmationOpen(false);
       } catch (error) {
@@ -148,7 +163,7 @@ export default function TableC() {
   //     title: "Erro!",
   //   });
   // }
-  
+
   const handleInputChange = (e, title) => {
     const { value } = e.target;
     if (title === 'titulop') {
@@ -176,112 +191,222 @@ export default function TableC() {
     setProjectData(project); // Define os dados do projeto selecionado
     navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
   };
-  
- return (
-  <div className='table'>
-    <div className='meus-projetos'>
-      <h1 className="subtitulo">Meus Projetos</h1>
-      <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
-        +
-      </Buttons>
-    </div>
-    <TableContainer component={Paper} style={{ maxHeight: '650px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
-      {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
-      <Table sx={{ minWidth: 1500 }} aria-label="simple table">
-        <TableHead>
-          <TableRow className='row'>
-            <TableCell className='cel'>TÍtulo</TableCell>
-            <TableCell className='cel'>Data de Início</TableCell>
-            <TableCell className='cel'>Data de Término</TableCell>
-            <TableCell className='cel'>Status</TableCell>
-            <TableCell className='cel'>Ações</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow
-              key={index}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.titulo}
-              </TableCell>
-              <TableCell>{format(new Date(row.inicio), 'dd-MM-yyyy')}</TableCell>
-              <TableCell>{format(new Date(row.encerramento), 'dd-MM-yyyy')}</TableCell>
-              <TableCell>
-                <span className={`tag-status ${getStatusTagClass(row.estado)}`}>
-                  {row.estado}
-                </span>
-              </TableCell>
-              <TableCell>
-                <Buttons
-                  className='delete-projeto'
-                  onClick={() => handleDelete(row.id)} // Passa o ID do projeto para handleDelete
-                >
-                  <DeleteIcon />
-                </Buttons>
-                <Buttons className="edit-projeto">
-                  <EditIcon />
-                </Buttons>
-                <Buttons onClick={() => openProjectKanban(row)}>Kanban</Buttons>
-              </TableCell>
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    const { id, titulo, encerramento, estado } = formProjeto;
+
+    const updatedProjectData = {
+      id: id, // Certifique-se de incluir o id na solicitação PUT
+      titulo: titulo,
+      encerramento: encerramento,
+      estado: estado,
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData);
+
+      if (response.status === 200) {
+        // Atualize o estado `rows` após a edição
+        const updatedRows = rows.map((row) => (row.id === editProjectData.id ? { ...row, ...updatedProjectData } : row));
+        setRows(updatedRows);
+
+        // Feche o modal de edição
+        handleEditClose();
+      } else {
+        console.error('Erro ao atualizar os dados no backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+};
+
+  const openEditProject = (project) => {
+    // Preencha o estado `formProjeto` com os valores do projeto selecionado
+    setFormProjeto({
+      id: project.id, // Adicione o id do projeto ao formulário
+      titulo: project.titulo,
+      inicio: format(new Date(project.inicio), 'yyyy-MM-dd'),
+      encerramento: format(new Date(project.encerramento), 'yyyy-MM-dd'),
+      estado: project.estado,
+    });
+
+    setEditProjectData(project);
+    setEditOpen(true);
+};
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+
+  const [age, setAge] = React.useState('');
+
+  const handleChange = () => {
+    alert("aaaaa");
+  };
+
+  return (
+    <div className='table'>
+      <div className='meus-projetos'>
+        <h1 className="subtitulo">Meus Projetos</h1>
+        <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
+          +
+        </Buttons>
+      </div>
+      <TableContainer component={Paper} style={{ maxHeight: '650px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
+        {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
+        <Table sx={{ minWidth: 1500 }} aria-label="simple table">
+          <TableHead>
+            <TableRow className='row'>
+              <TableCell className='cel'>TÍtulo</TableCell>
+              <TableCell className='cel'>Data de Início</TableCell>
+              <TableCell className='cel'>Data de Término</TableCell>
+              <TableCell className='cel'>Status</TableCell>
+              <TableCell className='cel'>Ações</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>
-        <h1 className="titulo">Criar Projeto</h1>
-      </DialogTitle>
-      <IconButton
-        aria-label="close"
-        onClick={handleClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogContent>
-        <form onSubmit={handleFormSubmit}>
-          <Input
-            id="titulop"
-            type="text"
-            name="titulop"
-            value={formProjeto.titulo}
-            onChange={(e) => handleInputChange(e, 'titulo')}
-            label="Digite seu titulo"
-          />
-          <Input
-            id="encerramento"
-            type="date"
-            name="encerramento"
-            value={formProjeto.encerramento}
-            onChange={(e) => handleInputChange(e, 'encerramento')}
-            label="Digite a data final"
-          />
-          <DialogActions>
-            <Buttons type="submit">Criar</Buttons>
-          </DialogActions>
-        </form>
-      </DialogContent>
-    </Dialog>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, index) => (
+              <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.titulo}
+                </TableCell>
+                <TableCell>{format(new Date(row.inicio), 'dd-MM-yyyy')}</TableCell>
+                <TableCell>{format(new Date(row.encerramento), 'dd-MM-yyyy')}</TableCell>
+                <TableCell>
+                  <span className={`tag-status ${getStatusTagClass(row.estado)}`}>
+                    {row.estado}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <Buttons
+                    className='delete-projeto'
+                    onClick={() => handleDelete(row.id)} // Passa o ID do projeto para handleDelete
+                  >
+                    <DeleteIcon />
+                  </Buttons>
+                  <Buttons className="edit-projeto" onClick={() => openEditProject(row)}>
+                    <EditIcon />
+                  </Buttons>
+                  <Buttons onClick={() => openProjectKanban(row)}>Kanban</Buttons>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          <h1 className="titulo">Criar Projeto</h1>
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent>
+          <form onSubmit={handleFormSubmit}>
+            <Input
+              id="titulop"
+              type="text"
+              name="titulop"
+              value={formProjeto.titulo}
+              onChange={(e) => handleInputChange(e, 'titulo')}
+              label="Digite seu titulo"
+            />
+            <Input
+              id="encerramento"
+              type="date"
+              name="encerramento"
+              value={formProjeto.encerramento}
+              onChange={(e) => handleInputChange(e, 'encerramento')}
+              label="Digite a data final"
+            />
+            <DialogActions>
+              <Buttons type="submit">Criar</Buttons>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={deleteConfirmationOpen} onClose={cancelDelete}>
-    <DialogTitle>Confirmar Exclusão</DialogTitle>
-    <DialogContent>
-      Tem certeza de que deseja excluir este projeto?
-    </DialogContent>
-    <DialogActions>
-      <Buttons onClick={cancelDelete}>Cancelar</Buttons>
-      <Buttons onClick={confirmDelete}>Confirmar</Buttons>
-    </DialogActions>
-  </Dialog>
+        <DialogTitle>Confirmar Exclusão</DialogTitle>
+        <DialogContent>
+          Tem certeza de que deseja excluir este projeto?
+        </DialogContent>
+        <DialogActions>
+          <Buttons onClick={cancelDelete}>Cancelar</Buttons>
+          <Buttons onClick={confirmDelete}>Confirmar</Buttons>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={editOpen} onClose={handleEditClose}>
+        <DialogTitle>
+          <h1 className="titulo">Editar Projeto</h1>
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleEditClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent>
+          <form onSubmit={handleEditSubmit}>
+            <Input
+              id="titulo"
+              type="text"
+              name="titulo"
+              value={formProjeto.titulo}
+              onChange={(e) => handleInputChange(e, 'titulo')}
+              label="Altere o título"
+            />
+            <Input
+              id="encerramento"
+              type="text"
+              name="encerramento"
+              value={formProjeto.encerramento}
+              onChange={(e) => handleInputChange(e, 'encerramento')}
+              label="Altere a data final"
+            />
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <Select
+                  labelId="estado"
+                  id="estado"
+                  name="estado"
+                  value={formProjeto.estado}
+                  label="Altere o status"
+                  onChange={(e) => handleInputChange(e, 'estado')}
+                >
+                  <MenuItem value={"CONCLUIDO"}>Concluído</MenuItem>
+                  <MenuItem value={"ANDAMENTO"}>Em Andamento</MenuItem>
+                  <MenuItem value={"PAUSADO"}>Pausado</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
 
-  </div>
-);
+            <DialogActions>
+              <Buttons type="submit">Salvar</Buttons>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }

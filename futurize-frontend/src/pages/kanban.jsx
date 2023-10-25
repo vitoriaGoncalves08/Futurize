@@ -1,6 +1,6 @@
 import React from 'react';
 import { DndProvider } from 'react-dnd';
-import {HTML5Backend} from 'react-dnd-html5-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import GlobalStyle from '../../public/assets/css/kanban';
 
@@ -14,10 +14,10 @@ export default function App() {
     <DndProvider backend={HTML5Backend}>
       <Header />
       <SideBar>
-      <HeaderKanban/>
+        <HeaderKanban />
         <Board />
         <GlobalStyle />
-        </SideBar>
+      </SideBar>
     </DndProvider>
   );
 }
