@@ -31,21 +31,22 @@ export const Container = styled.div`
       cursor: pointer;
     }
   }
-
-  .Camadas{
+  
+  .CamadaTime{
     display: flex;
     padding: 15px;
-    gap: 25px;
     color: #C8C8C8;
+    gap: 25px;
   }
-  .Camada1{
+
+  .Camada{
     display: flex;
   }
-  .Camada2{
+
+  .Time{
     display: flex;
   }
   
-
   ul {
     margin-top: 30px;
   }

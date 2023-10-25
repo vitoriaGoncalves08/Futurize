@@ -47,6 +47,7 @@ export default function List({ data, index: listIndex }) {
           <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>+</Buttons>
         )}
       </header>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Criar Atividade</h1>
@@ -99,11 +100,9 @@ export default function List({ data, index: listIndex }) {
               onChange={(e) => handleInputChange(e, 'integrante')}
               label="Digite o integrante"
             />
-
-        <TextareaAutosize>
-
-
-        </TextareaAutosize>
+            
+            <TextareaAutosize>
+            </TextareaAutosize>
             
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
@@ -112,15 +111,16 @@ export default function List({ data, index: listIndex }) {
         </DialogContent>
       </Dialog>
 
-      <div className="Camadas">
-        <div className="Camada1">
+      <div className="CamadaTime">
+        <div className="Camada">
           <LayersIcon></LayersIcon>1
-          </div>
-          <div className="Camada2">
-          <WatchLaterIcon></WatchLaterIcon>00:00:00
-          </div>
-        
         </div>
+
+        <div className="Time">
+          <WatchLaterIcon></WatchLaterIcon>
+          <p>00:00:00</p>
+        </div>
+      </div>
 
       <ul>
         { data.cards.map((card, index) => (

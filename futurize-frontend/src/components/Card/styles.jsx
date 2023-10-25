@@ -17,32 +17,30 @@ export const Container = styled.div`
   }
 
   p {
-    font-weight: 300;
-    line-height: 20px;
-    margin-top: 7px;
+    display: flex;
+    align-items: center;
   }
 
   .Data{
-    margin-top:10px;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
+    align-items: center;
+    margin-top:10px;
     color: #C8C8C8;
   }
   
-  .Cdata{
-    margin-top:10px;
+  .Checkdata{
     display: flex;
   }
-  
-  .Comentarios{
-    margin-top:5px;
+
+  .Prioridade p{
     display: flex;
   }
-  
+
   .TempoPerfil{
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
   }
   
   .Pessoa{ 
