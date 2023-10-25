@@ -34,7 +34,6 @@ function SiteInicial() {
             </div>
 
             <div className="ButtonCriarConta">
-                {/* <button>Criar Conta</button> */}
                 <Buttons onClick={() => navigate("/Cadastro")}>Criar Conta</Buttons>
             </div>
         </div>
