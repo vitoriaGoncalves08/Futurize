@@ -1,8 +1,8 @@
 import React, { useRef, useContext } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import BoardContext from '../Board/context';
-
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { Container, Label } from './styles';
 
 export default function Card({ data, index, listIndex }) {
@@ -42,14 +42,26 @@ export default function Card({ data, index, listIndex }) {
             </header>
             <h3>{data.content}</h3>
             <p>{data.descricao}</p>
-            <div className="DataEComentarios">
-              <p>{data.data}</p>
+            
+            <div className="Data">
+              <div className="Cdata">
+                <CheckBoxIcon></CheckBoxIcon>
+                {data.data} 
+                </div>  
+                 
+              <div className="Comentarios">
               <p>{data.comentarios}</p>
             </div>
+            </div>
            
-            <div className="ImgPessoas">
-              {data.tempo}
-              {data.user && <img src={data.user} alt="" />}
+            <div className="TempoPessoa">
+              <div className="Pessoa">
+                <PlayArrowIcon></PlayArrowIcon>
+                {data.tempo}
+              </div>
+              <div className='Perfil'>
+                <p>{data.user && <img src={data.user} alt="" />}</p>
+              </div>
             </div>
           </>
         )}

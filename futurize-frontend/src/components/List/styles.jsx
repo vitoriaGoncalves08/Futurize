@@ -32,10 +32,19 @@ export const Container = styled.div`
     }
   }
 
-  .camadas{
+  .Camadas{
     display: flex;
-    margin: 2px;
+    padding: 15px;
+    gap: 25px;
+    color: #C8C8C8;
   }
+  .Camada1{
+    display: flex;
+  }
+  .Camada2{
+    display: flex;
+  }
+  
 
   ul {
     margin-top: 30px;

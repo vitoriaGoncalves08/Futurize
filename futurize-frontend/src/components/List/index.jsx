@@ -11,7 +11,7 @@ import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import LayersIcon from '@mui/icons-material/Layers';
 import Card from '../Card';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
-
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Container } from './styles';
 
 export default function List({ data, index: listIndex }) {
@@ -39,6 +39,9 @@ export default function List({ data, index: listIndex }) {
     <Container done={data.done}>
       <header>
         <h2>{data.title}</h2>
+        <p>
+          <MoreVertIcon></MoreVertIcon>
+        </p>
        
         {data.creatable && (
           <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>+</Buttons>
@@ -109,13 +112,15 @@ export default function List({ data, index: listIndex }) {
         </DialogContent>
       </Dialog>
 
-      <div className="camadas">
-        <LayersIcon></LayersIcon>
-        <p>1</p>
-        <WatchLaterIcon></WatchLaterIcon>
-        <p>00:00:00</p>
-
-      </div>
+      <div className="Camadas">
+        <div className="Camada1">
+          <LayersIcon></LayersIcon>1
+          </div>
+          <div className="Camada2">
+          <WatchLaterIcon></WatchLaterIcon>00:00:00
+          </div>
+        
+        </div>
 
       <ul>
         { data.cards.map((card, index) => (
