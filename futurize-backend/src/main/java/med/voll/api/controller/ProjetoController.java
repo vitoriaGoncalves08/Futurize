@@ -35,12 +35,7 @@ public class ProjetoController {
     public List<DadosListagemProjeto> listarProjeto(){
         return repository.findAll().stream().map(DadosListagemProjeto::new).toList();
     }
-
-    @PutMapping
-    @Transactional
-    public void atualizarProjeto(@RequestBody @Valid DadosAtualizarProjeto dadosAtualizarProjeto){
-
-    }
+    
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> atualizarProjeto(@PathVariable Long id, @RequestBody DadosAtualizarProjeto dadosAtualizarProjeto) {
@@ -48,6 +43,18 @@ public class ProjetoController {
         projeto.atualizarInformacoes(dadosAtualizarProjeto);
         return ResponseEntity.ok().build();
     }
+
+//    @PutMapping("/atualizar/{id}")
+//    @Transactional
+//    public ResponseEntity<Void> atualizarProjeto(@PathVariable Long id, @RequestBody @Valid DadosAtualizarProjeto dadosAtualizarProjeto) {
+//        try {
+//            var projeto = repository.getReferenceById(id);
+//            projeto.atualizarInformacoes(dadosAtualizarProjeto);
+//            return ResponseEntity.ok().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     @Transactional
