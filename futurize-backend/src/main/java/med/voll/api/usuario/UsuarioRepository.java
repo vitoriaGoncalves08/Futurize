@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.stream.DoubleStream;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    Usuario findByEmail(String email);
-    Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
+   Usuario findByEmail(String email);
+//    Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
 }
