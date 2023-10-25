@@ -31,7 +31,22 @@ export const Container = styled.div`
       cursor: pointer;
     }
   }
+  
+  .CamadaTime{
+    display: flex;
+    padding: 15px;
+    color: #C8C8C8;
+    gap: 25px;
+  }
 
+  .Camada{
+    display: flex;
+  }
+
+  .Time{
+    display: flex;
+  }
+  
   ul {
     margin-top: 30px;
     display: block;

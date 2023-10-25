@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './HeaderKanban.css';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Avatar from '@mui/material/Avatar';
-
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -74,8 +75,17 @@ export default function HeaderKanban() {
 
   return (
     <div className='container-header-kanban'>
+
       <h3 className='nome-header-kanban'>{projectData.titulo}</h3>
+      <div className='Estrela'>
+        <StarBorderIcon></StarBorderIcon>
+      </div>
+      <div className='Lixo'>
+        <DeleteOutlineIcon></DeleteOutlineIcon>
+      </div>
+    
       <div className="integrantes-header-kanban">
+        
         <Avatar>H</Avatar>
         <AddCircleIcon onClick={openEditDialog} /> {/* Abre a caixa de diálogo de edição */}
 

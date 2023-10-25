@@ -17,15 +17,42 @@ export const Container = styled.div`
   }
 
   p {
-    font-weight: 500;
-    line-height: 20px;
+    display: flex;
+    align-items: center;
   }
 
-  img {
-    width: 24px;
-    height: 24px;
-    border-radius: 2px;
-    margin-top: 5px;
+  .Data{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top:10px;
+    color: #C8C8C8;
+  }
+  
+  .Checkdata{
+    display: flex;
+  }
+
+  .Prioridade p{
+    display: flex;
+  }
+
+  .TempoPerfil{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .Pessoa{ 
+    display: flex;
+  }
+  
+  Perfil, img {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: 1px solid;
+    margin-top: 7px;
   }
 
   ${props => props.isDragging && css`

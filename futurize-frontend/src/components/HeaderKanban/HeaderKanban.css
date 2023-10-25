@@ -4,12 +4,12 @@
   background: #6594ff;
   color: #fff;
   width: 1000vh;
-
   display: flex;
   align-items: center;
 }
 
 .nome-header-kanban {
+    
   color: white;
   font-size: 20px;
   font-weight: 200;
@@ -34,6 +34,27 @@
 }
 .list{
   padding: 0.8rem;
+}
+.Estrela{
+    background-color: #407BFF;
+    margin: 10px;;
+    border-radius: 5px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.Lixo{
+    background-color: #407BFF;
+    margin: 10px;;
+    border-radius: 5px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .group-list{

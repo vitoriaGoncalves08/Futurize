@@ -13,7 +13,8 @@ import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 
 import Card from '../Card';
-
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Container } from './styles';
 
 export default function List({ data, index: listIndex }) {
@@ -50,10 +51,15 @@ export default function List({ data, index: listIndex }) {
     <Container done={data.done}>
       <header>
         <h2>{data.title}</h2>
+        <p>
+          <MoreVertIcon></MoreVertIcon>
+        </p>
+       
         {data.creatable && (
           <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>+</Buttons>
         )}
       </header>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Criar Atividade</h1>
@@ -67,8 +73,10 @@ export default function List({ data, index: listIndex }) {
             top: 8,
             color: (theme) => theme.palette.grey[500],
           }}
+          
         >
           <CloseIcon />
+
         </IconButton>
         <DialogContent>
           <form>
@@ -138,6 +146,17 @@ export default function List({ data, index: listIndex }) {
         </DialogContent>
       </Dialog>
 
+      <div className="CamadaTime">
+        <div className="Camada">
+          <LayersIcon></LayersIcon>1
+        </div>
+
+        <div className="Time">
+          <WatchLaterIcon></WatchLaterIcon>
+          <p>00:00:00</p>
+        </div>
+      </div>
+
       <ul>
         {data.cards.map((card, index) => (
           <Card
@@ -148,6 +167,8 @@ export default function List({ data, index: listIndex }) {
           />
         ))}
       </ul>
+      
     </Container>
   );
+  
 }
