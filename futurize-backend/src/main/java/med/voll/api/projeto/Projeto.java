@@ -22,11 +22,30 @@ public class Projeto {
     private Date encerramento;
     @Enumerated(EnumType.STRING)
     private Estado estado;
+    private Boolean ativo;
 
     public Projeto(DadosCadastroProjeto dadosCadastroProjeto) {
+        this.ativo = true;
         this.titulo = dadosCadastroProjeto.titulo();
         this.inicio = dadosCadastroProjeto.inicio();
         this.encerramento = dadosCadastroProjeto.encerramento();
         this.estado = dadosCadastroProjeto.estado();
+
+    }
+
+    public void atualizarInformacoes(DadosAtualizarProjeto dadosAtualizarProjeto) {
+        if(dadosAtualizarProjeto.titulo() !=  null) {
+            this.titulo = dadosAtualizarProjeto.titulo();
+        }
+        if(dadosAtualizarProjeto.encerramento() != null ){
+            this.encerramento = dadosAtualizarProjeto.encerramento();
+        }
+        if(dadosAtualizarProjeto.estado() != null){
+            this.estado = dadosAtualizarProjeto.estado();
+        }
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }

@@ -1,37 +1,64 @@
+.container-header-kanban {
+  height: 48px;
+  padding: 0 30px;
+  background: #6594ff;
+  color: #fff;
+  width: 1000vh;
+  display: flex;
+  align-items: center;
+}
 
-
-.container-header-kanban{
-    height: 48px;
-    padding: 0 30px;
-    background: #6594FF;
-    color: #FFF;
-    width: 1000vh;
-  
+.nome-header-kanban {
+    
+  color: white;
+  font-size: 20px;
+  font-weight: 200;
+  text-transform: uppercase;
+  line-height: 35px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  margin-left: 3rem;
+}
+.integrantes-header-kanban {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 2rem;
+  font-size: 35px;
+  color: #fff;
+  cursor: pointer;
+}
+.integrantes-header-kanban > div {
+  margin: 10px;
+}
+.list{
+  padding: 0.8rem;
+}
+.Estrela{
+    background-color: #407BFF;
+    margin: 10px;;
+    border-radius: 5px;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
-  }
-  
-  .nome-header-kanban{
-      color: white; 
-      font-size: 20px; 
-      font-weight: 200;
-      text-transform: uppercase; 
-      line-height: 35px; 
-      letter-spacing: 3px;
-      cursor: pointer;
-      margin-left: 3rem;
-  }
-  .integrantes-header-kanban{
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      right: 2rem;
-      font-size: 35px;
-      color: #fff;
-      cursor: pointer;
-  }
-  .integrantes-header-kanban > div{
-      margin: 10px;
-  }
-  
+    justify-content: center;
+    
+}
+.Lixo{
+    background-color: #407BFF;
+    margin: 10px;;
+    border-radius: 5px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.group-list{
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: auto;
+}

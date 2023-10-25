@@ -50,15 +50,15 @@
 
 /* EXEMPLOS DE TAMANHO */
 
-/* @media (max-width: 600px) 
-  (max-width: 37.5em)
+/*@media (max-width: 370px) 
+  @media (max-width: 23.125em)
 
   @media (max-width: 500px)
   @media (max-width: 31.25em)
 
-  @media (max-width: 370px) 
-  @media (max-width: 23.125em)
-
+  @media (max-width: 600px) 
+  @media(max-width: 37.5em)
+  
   @media (max-width: 900px)
   @media (max-width: 56.25em)
   

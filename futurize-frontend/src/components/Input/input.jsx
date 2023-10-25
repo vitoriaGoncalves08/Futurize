@@ -29,6 +29,7 @@ export default function Input(props) {
           onChange={props.onChange}
           error={error}
           helperText={helperText}
+          style={props.style}
         />
       </>
     );
