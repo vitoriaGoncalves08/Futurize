@@ -32,3 +32,10 @@
 .integrantes-header-kanban > div {
   margin: 10px;
 }
+.list{
+  padding: 0.8rem;
+}
+
+.group-list{
+  height: 300px;
+}
