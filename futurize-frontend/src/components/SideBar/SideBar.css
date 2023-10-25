@@ -1,5 +1,5 @@
-@import '../../../public/assets/css/colors.css';
-@import '../../../public/assets/css/variaveis.css';
+@import "../../../public/assets/css/colors.css";
+@import "../../../public/assets/css/variaveis.css";
 
 .menu-lateral {
   display: flex;

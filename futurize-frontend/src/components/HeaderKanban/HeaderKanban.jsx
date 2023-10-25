@@ -18,7 +18,7 @@ export default function HeaderKanban() {
       <h3 className='nome-header-kanban'>{projectData.titulo}</h3>
       <div className="integrantes-header-kanban">
         <Avatar>H</Avatar>
-        <AddCircleIcon/>
+        <AddCircleIcon />
       </div>
     </div>
   );
