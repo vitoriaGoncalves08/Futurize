@@ -28,7 +28,7 @@ function SiteInicial() {
             </li>
           </ul>
         </div>
-        <Buttons onClick={() => navigate('/cadastro')}>Entrar</Buttons>
+        <Buttons onClick={() => navigate('/login')}>Entrar</Buttons>
       </nav>
       <div className="HeroContent">
         <div className="Titulo">
@@ -47,6 +47,8 @@ function SiteInicial() {
           <Buttons onClick={() => navigate('/Cadastro')}>Criar Conta</Buttons>
         </div>
       </div>
+      <div>
+    </div>
       <footer className="Wave">
         <img src={wave} alt="" />
       </footer>
