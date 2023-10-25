@@ -103,7 +103,7 @@ export default function TableC() {
         return 'tag-status';
     }
   }
-  
+
   useEffect(() => {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
     const fetchData = async () => {
@@ -187,7 +187,7 @@ export default function TableC() {
   //     title: "Erro!",
   //   });
   // }
- 
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
@@ -216,7 +216,7 @@ export default function TableC() {
     } catch (error) {
       console.error('Erro ao conectar-se ao backend:', error);
     }
-};
+  };
 
   const openEditProject = (project) => {
     // Preencha o estado `formProjeto` com os valores do projeto selecionado
@@ -230,7 +230,7 @@ export default function TableC() {
 
     setEditProjectData(project);
     setEditOpen(true);
-};
+  };
 
   const openProjectKanban = (project) => {
     console.log('Dados do projeto:', project); // Verifique os dados do projeto
@@ -331,7 +331,7 @@ export default function TableC() {
           </form>
         </DialogContent>
       </Dialog>
-
+      {/* EXCLUSÃO */}
       <Dialog open={deleteConfirmationOpen} onClose={cancelDelete}>
         <DialogTitle>Confirmar Exclusão</DialogTitle>
         <DialogContent>
@@ -358,6 +358,7 @@ export default function TableC() {
         >
           <CloseIcon />
         </IconButton>
+        {/* EDIÇÃO */}
         <DialogContent>
           <form onSubmit={handleEditSubmit}>
             <Input
@@ -392,7 +393,6 @@ export default function TableC() {
                 </Select>
               </FormControl>
             </Box>
-
             <DialogActions>
               <Buttons type="submit">Atualizar</Buttons>
             </DialogActions>

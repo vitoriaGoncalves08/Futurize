@@ -1,13 +1,16 @@
+import React, { useState } from 'react';
 import Buttons from '../../components/Buttons/Buttons';
 import Input from '../../components/Input/input';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import Box from '@mui/material/Box';
 
 import Card from '../Card';
 
@@ -25,14 +28,23 @@ export default function List({ data, index: listIndex }) {
   };
 
   const [formTask, setFormTask] = useState({
+    id: 0,
     titulo: '',
     inicio: '',
     encerramento: '',
+    dificuldade: ' ',
     prioridade: '',
     integrante: '',
     descricao: '',
     estado: '',
   });
+
+  const handleInputChange = (e, field) => {
+    setFormTask({
+      ...formTask,
+      [field]: e.target.value,
+    });
+  };
 
   return (
     <Container done={data.done}>
@@ -76,27 +88,48 @@ export default function List({ data, index: listIndex }) {
               onChange={(e) => handleInputChange(e, 'encerramento')}
               label="Digite a data de encerramento"
             />
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <Select
+                  labelId="dificuldade-label"
+                  id="dificuldade"
+                  name="dificuldade"
+                  value={formTask.dificuldade}
+                  onChange={(e) => handleInputChange(e, 'dificuldade')}
+                >
+                  <MenuItem value=" ">Selecione a dificuldade</MenuItem>
+                  <MenuItem value={"FACIL"}>Fácil</MenuItem>
+                  <MenuItem value={"MEDIO"}>Médio</MenuItem>
+                  <MenuItem value={"DIFICIL"}>Difícil</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
             <Input
               id="prioridade-kanban"
               type="text"
               name="prioridade"
-              value={formTask.titulo}
+              value={formTask.prioridade}
               onChange={(e) => handleInputChange(e, 'prioridade')}
               label="Digite a prioridade"
             />
             <Input
               id="integrante-kanban"
-              multiline
+              type="text"
               name="integrante"
-              value={formTask.titulo}
+              value={formTask.integrante}
               onChange={(e) => handleInputChange(e, 'integrante')}
               label="Digite o integrante"
             />
-
-            <TextareaAutosize>
-
-
-            </TextareaAutosize>
+            <Input
+              id="descricao-kanban"
+              type="text"
+              name="descricao"
+              value={formTask.descricao}
+              onChange={(e) => handleInputChange(e, 'descricao')}
+              label="Digite o descricao"
+              multiline={true}
+            />
 
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
