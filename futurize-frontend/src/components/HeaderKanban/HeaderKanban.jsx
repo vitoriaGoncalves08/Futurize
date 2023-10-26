@@ -84,11 +84,11 @@ export default function HeaderKanban() {
           <DialogContent>
             {/* Adicione o conteúdo da caixa de diálogo de edição aqui */}
           </DialogContent>
-          <DialogActions>
+          <DialogActions style={{display: 'block'}}>
             <div className="add-integrante">
               <Input
                 type="text"
-                placeholder="Pesquisar por e-mail"
+                label="Pesquisar por e-mail"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -98,10 +98,10 @@ export default function HeaderKanban() {
                 ))}
               </div>
               <div>
-                <Buttons style={{marginRight: 30}} onClick={() => setEditOpen(false)}>Cancelar</Buttons>
-                <Buttons onClick={() => setEditOpen(false)}>Adicionar</Buttons>
               </div>
             </div>
+                <Buttons style={{marginRight: 30}} onClick={() => setEditOpen(false)}>Cancelar</Buttons>
+                <Buttons onClick={() => setEditOpen(false)}>Adicionar</Buttons>
           </DialogActions>
         </Dialog>
       </div>
