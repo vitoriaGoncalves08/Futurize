@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
@@ -13,6 +13,8 @@ import Card from '../Card';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Container } from './styles';
+import PauseIcon from '@mui/icons-material/Pause';
+
 
 export default function List({ data, index: listIndex }) {
   const [open, setOpen] = useState(false);
@@ -34,6 +36,42 @@ export default function List({ data, index: listIndex }) {
     descricao: '',
     estado: '',
   });
+
+  const [dias, setDias] = useState(0);
+  const [horas, setHoras] = useState(0);
+  const [minutos, setMinutos] = useState(0);
+  const [segundos, setSegundos] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let interval;
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        if (segundos < 59) {
+          setSegundos(segundos + 1);
+        } else if (minutos < 59) {
+          setMinutos(minutos + 1);
+          setSegundos(0);
+        } else if (horas < 24) {
+          setHoras(horas + 1);
+          setMinutos(0);
+          setSegundos(0);
+        } else {
+          setDias(dias + 1)
+          setHoras(0);
+          setMinutos(0);
+          setSegundos(0);
+        }
+      }, 1000);
+    }
+
+    return () => clearInterval(interval);
+  }, [segundos, minutos, horas, dias, isRunning]);
+
+  const handlePlayClick = () => {
+    setIsRunning(!isRunning);
+  };
 
   return (
     <Container done={data.done}>
@@ -116,9 +154,11 @@ export default function List({ data, index: listIndex }) {
           <LayersIcon></LayersIcon>1
         </div>
 
-        <div className="Time">
-          <WatchLaterIcon></WatchLaterIcon>
-          <p>00:00:00</p>
+        <div className="Time" onClick={handlePlayClick}>
+          {isRunning ? <PauseIcon /> : <WatchLaterIcon />}
+          <p>
+            {String(dias).padStart(2, '0')}:{String(horas).padStart(2, '0')}:{String(minutos).padStart(2, '0')}:{String(segundos).padStart(2, '0')}
+          </p>
         </div>
       </div>
 
