@@ -3,7 +3,8 @@ import { useDrag, useDrop } from 'react-dnd';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import BoardContext from '../Board/context';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded';
+import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 import { Container, Label } from './styles';
 
 export default function Card({ data, index, listIndex }) {
@@ -77,7 +78,7 @@ export default function Card({ data, index, listIndex }) {
             
             <div className="Data">
               <div className="Checkdata">
-                <CheckBoxIcon></CheckBoxIcon>
+                <CheckBoxOutlineBlankRoundedIcon></CheckBoxOutlineBlankRoundedIcon>
                 <p>{data.data}</p>
               </div>  
                  

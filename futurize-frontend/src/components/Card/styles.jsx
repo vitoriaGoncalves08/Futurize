@@ -26,11 +26,18 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top:10px;
-    color: #C8C8C8;
+    color: #fff;
   }
   
   .Checkdata{
     display: flex;
+    background-color: #b3b3b3;
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .Checkdata p{
+    margin-left: 5px;
   }
 
   .Prioridade p{
@@ -41,6 +48,7 @@ export const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 8px;
   }
   
   .Pessoa{ 
