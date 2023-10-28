@@ -1,4 +1,4 @@
-package med.voll.api.cargo;
+package med.voll.api.alocacaoProjeto;
 
 public enum Cargo{
     USUARIO,

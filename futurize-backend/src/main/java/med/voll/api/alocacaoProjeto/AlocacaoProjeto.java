@@ -1,4 +1,4 @@
-package med.voll.api.cargo;
+package med.voll.api.alocacaoProjeto;
 
 
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.projeto.DadosListagemProjeto;
 import med.voll.api.projeto.Projeto;
 import med.voll.api.usuario.Usuario;
 
@@ -16,7 +15,7 @@ import med.voll.api.usuario.Usuario;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Getter
-public class Alocacao_projeto {
+public class AlocacaoProjeto {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,17 +31,22 @@ public class Alocacao_projeto {
     private Usuario usuario;
     private Boolean ativo;
 
-    public Alocacao_projeto(DadosCadastroCargoProjeto dadosCadastroCargoProjeto) {
+    public AlocacaoProjeto(DadosCadastroCargoProjeto dadosCadastroCargoProjeto) {
         this.ativo = true;
         this.cargo = dadosCadastroCargoProjeto.cargo();
         this.projeto = dadosCadastroCargoProjeto.projeto();
         this.usuario = dadosCadastroCargoProjeto.usuario();
     }
 
-    public void excluir() {
-        this.ativo = false;
+    public void AtualizarALocacaoProjeto(DadosAtualizarAlocacaoProjeto dadosAtualizarAlocacaoProjeto) {
+        if (dadosAtualizarAlocacaoProjeto.cargo() != null){
+            this.cargo = dadosAtualizarAlocacaoProjeto.cargo();
+        }
+        if(dadosAtualizarAlocacaoProjeto.projeto() != dadosAtualizarAlocacaoProjeto.projeto()){
+            this.projeto = dadosAtualizarAlocacaoProjeto.projeto();
+        }
+        if(dadosAtualizarAlocacaoProjeto.usuario() != null){
+            this.usuario = dadosAtualizarAlocacaoProjeto.usuario();
+        }
     }
-
-
-
 }
