@@ -23,6 +23,7 @@ public class Projeto {
     @Enumerated(EnumType.STRING)
     private Estado estado;
     private Boolean ativo;
+    private Long gestor;
 
     public Projeto(DadosCadastroProjeto dadosCadastroProjeto) {
         this.ativo = true;
@@ -30,7 +31,7 @@ public class Projeto {
         this.inicio = dadosCadastroProjeto.inicio();
         this.encerramento = dadosCadastroProjeto.encerramento();
         this.estado = dadosCadastroProjeto.estado();
-
+        this.gestor = dadosCadastroProjeto.gestor();
     }
 
     public void atualizarInformacoes(DadosAtualizarProjeto dadosAtualizarProjeto) {

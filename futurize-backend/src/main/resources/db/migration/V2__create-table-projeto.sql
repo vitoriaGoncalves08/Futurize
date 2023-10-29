@@ -4,5 +4,6 @@ CREATE TABLE projeto(
      inicio date not null,
      encerramento date not null,
      estado varchar(100) not null,
+     gestor int not null,
      primary key (id)
 );

@@ -26,4 +26,5 @@ public class AlocacaoProjetoController {
         var alocacaoProjeto = repository.getReferenceById(id);
         alocacaoProjeto.excluir();
     }
+
 }

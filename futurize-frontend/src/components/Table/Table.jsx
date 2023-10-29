@@ -25,6 +25,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
+import useAuth from "../../hooks/useAuth";
 
 export default function TableC() {
   const [open, setOpen] = useState(false);
@@ -39,6 +40,8 @@ export default function TableC() {
   const [editOpen, setEditOpen] = useState(false);
   const [editProjectData, setEditProjectData] = useState(null);
   const navigate = useNavigate();
+  const { getLoginUser } = useAuth();
+  const usuarioLogado = getLoginUser();
 
   const handleClickOpen = () => {
     // Limpa os campos do formulário
@@ -48,6 +51,7 @@ export default function TableC() {
       inicio: '',
       encerramento: '',
       estado: 'ANDAMENTO',
+      gestor: '',
     });
 
     setOpen(true);
@@ -63,9 +67,12 @@ export default function TableC() {
   };
 
   const handleDelete = (id) => {
-    openDeleteConfirmation(id);
+    if (id !== undefined && !isNaN(id)) {
+      openDeleteConfirmation(id);
+    } else {
+      console.error('ID de projeto inválido:', id);
+    }
   };
-
   const cancelDelete = () => {
     // Feche a caixa de diálogo de confirmação
     setDeleteConfirmationOpen(false);
@@ -80,6 +87,7 @@ export default function TableC() {
     inicio: '',
     encerramento: '',
     estado: 'ANDAMENTO',
+    gestor: '',
   });
 
   const handleInputChange = (e, title) => {
@@ -108,7 +116,7 @@ export default function TableC() {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/Projeto");
+        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogado}`);
         if (response.status === 200) {
           setRows(response.data); // Atualize o estado 'rows' com os dados do banco
         } else {
@@ -125,7 +133,8 @@ export default function TableC() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const { titulo, inicio, encerramento, estado } = formProjeto;
+
+    const { titulo, inicio, encerramento, estado, gestor } = formProjeto;
 
     // Se o campo "inicio" estiver vazio, preencha com a data atual
     const dataInicial = inicio
@@ -141,10 +150,11 @@ export default function TableC() {
       inicio: dataInicial,
       encerramento: dataFinal,
       estado: estado.toUpperCase(),
+      gestor: getLoginUser(),
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/Projeto', newRow);
+      const response = await axios.post(`http://localhost:8080/Porjeto/porUsuario/${usuarioLogado}`, newRow);
 
       if (response.status === 200) {
         const updatedRows = [...rows, newRow];
@@ -191,13 +201,14 @@ export default function TableC() {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    const { id, titulo, encerramento, estado } = formProjeto;
+    const { id, titulo, encerramento, estado, gestor } = formProjeto;
 
     const updatedProjectData = {
       id: id, // Certifique-se de incluir o id na solicitação PUT
       titulo: titulo,
       encerramento: encerramento,
       estado: estado,
+      gestor: gestor,
     };
 
     try {

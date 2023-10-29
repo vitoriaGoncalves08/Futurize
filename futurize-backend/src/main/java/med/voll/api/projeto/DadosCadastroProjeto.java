@@ -15,7 +15,10 @@ public record DadosCadastroProjeto(
         @NotNull
         Date encerramento,
         @NotNull
-        Estado estado
+        Estado estado,
+
+        @NotNull
+        Long gestor
 ) {
 
 }
