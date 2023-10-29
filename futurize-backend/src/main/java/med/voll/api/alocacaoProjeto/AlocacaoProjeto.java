@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import med.voll.api.projeto.Projeto;
 import med.voll.api.usuario.Usuario;
 
-@Entity(name = "cargo")
+@Entity(name = "alocacao_projeto")
 @Table(name = "alocacao_projeto")
 @NoArgsConstructor
 @AllArgsConstructor
