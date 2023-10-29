@@ -22,7 +22,6 @@ export default function HeaderKanban() {
   const { projectId } = useParams();
   const location = useLocation();
   const projectData = location.state && location.state.projectData;
-   console.log('projectData:', projectData);
 
   const [rows, setRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,15 +43,15 @@ export default function HeaderKanban() {
       const selectedUser = rows.find((usuario) => usuario.id === selectedUserId);
       setProjectMembers([...projectMembers, selectedUser]);
       setSelectedUserId(null);
-
+  
       // Envie os dados do novo membro para o backend
       const newMemberData = {
-        id_projeto: projectData,
-        id_usuario: selectedUser,
+        usuario: projectMembers, //selectedUserId
+        projeto: projectData, //projectData
       };
 
       console.log("Dados", newMemberData);
-
+  
       axios.post('http://localhost:8080/Alocacao_projeto', newMemberData)
         .then((response) => {
           // Verifique se a solicitação foi bem-sucedida
@@ -67,6 +66,7 @@ export default function HeaderKanban() {
         });
     }
   };
+  
 
   useEffect(() => {
     const fetchUsuarios = async () => {
