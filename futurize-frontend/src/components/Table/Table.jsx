@@ -25,6 +25,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
+import useAuth from "../../hooks/useAuth";
 
 export default function TableC() {
   const [open, setOpen] = useState(false);
@@ -39,6 +40,8 @@ export default function TableC() {
   const [editOpen, setEditOpen] = useState(false);
   const [editProjectData, setEditProjectData] = useState(null);
   const navigate = useNavigate();
+  const { getLoginUser } = useAuth();
+  const usuarioLogado = getLoginUser();
 
   const handleClickOpen = () => {
     // Limpa os campos do formulário
@@ -48,38 +51,39 @@ export default function TableC() {
       inicio: '',
       encerramento: '',
       estado: 'ANDAMENTO',
+      gestor: '',
     });
 
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   const openDeleteConfirmation = (id) => {
     setIdToDelete(id);
     setDeleteConfirmationOpen(true);
   };
 
   const handleDelete = (id) => {
-    openDeleteConfirmation(id);
+    if (id !== undefined && !isNaN(id)) {
+      openDeleteConfirmation(id);
+    } else {
+      console.error('ID de projeto inválido:', id);
+    }
   };
-
   const cancelDelete = () => {
     // Feche a caixa de diálogo de confirmação
     setDeleteConfirmationOpen(false);
   };
-
   const handleEditClose = () => {
     setEditOpen(false);
   };
-
   const [formProjeto, setFormProjeto] = useState({
     titulo: '',
     inicio: '',
     encerramento: '',
     estado: 'ANDAMENTO',
+    gestor: '',
   });
 
   const handleInputChange = (e, title) => {
@@ -90,7 +94,6 @@ export default function TableC() {
       setFormProjeto({ ...formProjeto, [title]: value });
     }
   }
-
   function getStatusTagClass(estado) {
     switch (estado) {
       case 'ANDAMENTO':
@@ -103,12 +106,11 @@ export default function TableC() {
         return 'tag-status';
     }
   }
-
   useEffect(() => {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/Projeto");
+        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogado}`);
         if (response.status === 200) {
           setRows(response.data); // Atualize o estado 'rows' com os dados do banco
         } else {
@@ -118,33 +120,31 @@ export default function TableC() {
         console.error("Erro ao conectar-se ao backend:", error);
       }
     };
-
     fetchData(); // Chame a função para buscar os dados ao carregar a página
   }, []);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const { titulo, inicio, encerramento, estado } = formProjeto;
+    const { titulo, inicio, encerramento, estado, gestor } = formProjeto;
 
     // Se o campo "inicio" estiver vazio, preencha com a data atual
     const dataInicial = inicio
       ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
       : format(new Date(), 'yyyy-MM-dd');
-
     const encerramentoEmData = parse(encerramento, 'dd-MM-yyyy', new Date());
-
     const dataFinal = format(encerramentoEmData, 'yyyy-MM-dd');
-
     const newRow = {
       titulo: titulo,
       inicio: dataInicial,
       encerramento: dataFinal,
       estado: estado.toUpperCase(),
+      gestor: usuarioLogado,
     };
+    console.log(newRow);
 
     try {
-      const response = await axios.post('http://localhost:8080/Projeto', newRow);
+      const response = await axios.post("http://localhost:8080/Projeto", newRow);
 
       if (response.status === 200) {
         const updatedRows = [...rows, newRow];
@@ -153,23 +153,19 @@ export default function TableC() {
         handleClose();
         return;
       }
-
       console.error('Erro ao salvar os dados no backend.');
     } catch (error) {
       console.error('Erro ao conectar-se ao backend:', error);
     }
   };
-
   const confirmDelete = async () => {
-    if (idToDelete !== undefined && !isNaN(idToDelete)) {
+    if (idToDelete !== null && idToDelete !== undefined && !isNaN(idToDelete)) {
       try {
         // Faça a chamada de exclusão para o backend
         await axios.delete(`http://localhost:8080/Projeto/${idToDelete}`);
-
         // Atualize o estado `rows` após a exclusão
         const updatedRows = rows.filter((row) => row.id !== idToDelete);
         setRows(updatedRows);
-
         // Feche a caixa de diálogo de confirmação
         setDeleteConfirmationOpen(false);
       } catch (error) {
@@ -179,7 +175,7 @@ export default function TableC() {
       console.error('ID de projeto inválido:', idToDelete);
     }
   };
-
+  
   // function isError() {
   //   handleClose();
   //   AlertError({
@@ -187,27 +183,25 @@ export default function TableC() {
   //     title: "Erro!",
   //   });
   // }
-
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    const { id, titulo, encerramento, estado } = formProjeto;
+    const { id, titulo, encerramento, estado, gestor } = formProjeto;
 
     const updatedProjectData = {
       id: id, // Certifique-se de incluir o id na solicitação PUT
       titulo: titulo,
       encerramento: encerramento,
       estado: estado,
+      gestor: gestor,
     };
 
     try {
       const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData);
-
       if (response.status === 200) {
         // Atualize o estado `rows` após a edição
         const updatedRows = rows.map((row) => (row.id === editProjectData.id ? { ...row, ...updatedProjectData } : row));
         setRows(updatedRows);
-
         // Feche o modal de edição
         handleEditClose();
       } else {
@@ -217,7 +211,6 @@ export default function TableC() {
       console.error('Erro ao conectar-se ao backend:', error);
     }
   };
-
   const openEditProject = (project) => {
     // Preencha o estado `formProjeto` com os valores do projeto selecionado
     setFormProjeto({
@@ -227,17 +220,14 @@ export default function TableC() {
       encerramento: format(new Date(project.encerramento), 'yyyy-MM-dd'),
       estado: project.estado,
     });
-
     setEditProjectData(project);
     setEditOpen(true);
   };
-
   const openProjectKanban = (project) => {
     console.log('Dados do projeto:', project); // Verifique os dados do projeto
     setProjectData(project); // Define os dados do projeto selecionado
     navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
   };
-
   return (
     <div className='table'>
       <div className='meus-projetos'>

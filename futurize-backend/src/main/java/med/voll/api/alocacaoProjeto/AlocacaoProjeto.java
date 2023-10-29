@@ -20,9 +20,6 @@ public class AlocacaoProjeto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Cargo cargo;
-
     @ManyToOne
     @JoinColumn(name = "id_projeto")
     private Projeto projeto;
@@ -31,17 +28,13 @@ public class AlocacaoProjeto {
     private Usuario usuario;
     private Boolean ativo;
 
-    public AlocacaoProjeto(DadosCadastroCargoProjeto dadosCadastroCargoProjeto) {
+    public AlocacaoProjeto(DadosCadastroAlocacaoProjeto dadosCadastroAlocacaoProjeto) {
         this.ativo = true;
-        this.cargo = dadosCadastroCargoProjeto.cargo();
-        this.projeto = dadosCadastroCargoProjeto.projeto();
-        this.usuario = dadosCadastroCargoProjeto.usuario();
+        this.projeto = dadosCadastroAlocacaoProjeto.projeto();
+        this.usuario = dadosCadastroAlocacaoProjeto.usuario();
     }
 
     public void AtualizarALocacaoProjeto(DadosAtualizarAlocacaoProjeto dadosAtualizarAlocacaoProjeto) {
-        if (dadosAtualizarAlocacaoProjeto.cargo() != null){
-            this.cargo = dadosAtualizarAlocacaoProjeto.cargo();
-        }
         if(dadosAtualizarAlocacaoProjeto.projeto() != dadosAtualizarAlocacaoProjeto.projeto()){
             this.projeto = dadosAtualizarAlocacaoProjeto.projeto();
         }

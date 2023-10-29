@@ -2,9 +2,9 @@ package med.voll.api.projeto;
 
 import java.util.Date;
 
-public record DadosListagemProjeto(Long id, String titulo, Date inicio, Date encerramento, Estado estado) {
+public record DadosListagemProjeto(Long id, String titulo, Date inicio, Date encerramento, Estado estado, Long gestor) {
     public DadosListagemProjeto(Projeto projeto){
-        this(projeto.getId(), projeto.getTitulo(), projeto.getInicio(), projeto.getEncerramento(), projeto.getEstado());
+        this(projeto.getId(), projeto.getTitulo(), projeto.getInicio(), projeto.getEncerramento(), projeto.getEstado(), projeto.getGestor());
     }
 
 }

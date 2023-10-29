@@ -7,7 +7,6 @@ import med.voll.api.usuario.Usuario;
 public record DadosAtualizarAlocacaoProjeto(
         @NotNull
         Long id,
-        Cargo cargo,
         Projeto projeto,
         Usuario usuario) {
 

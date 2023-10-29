@@ -12,13 +12,13 @@ import java.util.List;
 @RequestMapping("Alocacao_projeto")
 public class AlocacaoProjetoController {
     @Autowired
-    private CargoProjetoRepository repository;
+    private AlocacaoProjetoRepository repository;
 
     @CrossOrigin("*")
     @PostMapping
     @Transactional
-    public void CadastrarCargoProjeto(@RequestBody @Valid DadosCadastroCargoProjeto dadosCadastroCargoProjeto){
-        repository.save(new AlocacaoProjeto(dadosCadastroCargoProjeto));
+    public void CadastrarCargoProjeto(@RequestBody @Valid DadosCadastroAlocacaoProjeto dadosCadastroAlocacaoProjeto){
+        repository.save(new AlocacaoProjeto(dadosCadastroAlocacaoProjeto));
     }
 
     @CrossOrigin("*")

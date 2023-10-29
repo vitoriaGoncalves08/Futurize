@@ -9,5 +9,8 @@ public record DadosAtualizarProjeto(
         Long id,
         String titulo,
         Date encerramento,
-        Estado estado) {
+        Estado estado,
+        @NotNull
+        Long gestor
+) {
 }
