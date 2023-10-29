@@ -11,5 +11,6 @@ public record DadosAtualizarProjeto(
         Date encerramento,
         Estado estado,
         @NotNull
-        Long gestor) {
+        Long gestor
+) {
 }

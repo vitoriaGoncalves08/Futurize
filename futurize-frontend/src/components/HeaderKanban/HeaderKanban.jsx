@@ -13,105 +13,127 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Buttons from '../Buttons/Buttons';
 import Input from '../Input/input';
-import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 
 export default function HeaderKanban() {
   const { projectId } = useParams();
   const location = useLocation();
   const projectData = location.state && location.state.projectData;
-  console.log('projectData:', projectData); // Adicione isso para depurar
+
   const [rows, setRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [projectMembers, setProjectMembers] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState(null); // Estado para rastrear o ID do usuário selecionado
 
-  // Função para abrir a caixa de diálogo de edição (pode ser usada para adicionar membros)
   const openEditDialog = () => {
     setEditOpen(true);
   };
 
+  const handleAddMemberClick = (userId) => {
+    setSelectedUserId(userId); // Defina o ID do usuário selecionado
+  };
+
+  const addMemberToProject = () => {
+    if (selectedUserId) {
+      const selectedUser = rows.find((usuario) => usuario.id === selectedUserId);
+      setProjectMembers([...projectMembers, selectedUser]);
+      setSelectedUserId(null);
+  
+      // Envie os dados do novo membro para o backend
+      const newMemberData = {
+        usuario: projectMembers, //selectedUserId
+        projeto: projectData, //projectData
+      };
+
+      console.log("Dados", newMemberData);
+  
+      axios.post('http://localhost:8080/Alocacao_projeto', newMemberData)
+        .then((response) => {
+          // Verifique se a solicitação foi bem-sucedida
+          if (response.status === 200) {
+            console.log('Membro adicionado com sucesso ao projeto no backend.');
+          } else {
+            console.error('Erro ao adicionar membro ao projeto no backend.');
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao conectar-se ao backend:', error);
+        });
+    }
+  };
+  
+
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/Usuario");
+        const response = await axios.get('http://localhost:8080/Usuario');
         if (response.status === 200) {
-          setRows(response.data); // Defina o estado 'rows' com os dados dos usuários
+          setRows(response.data);
         } else {
-          console.error("Erro ao buscar dados de usuários no backend.");
+          console.error('Erro ao buscar dados de usuários no backend.');
         }
       } catch (error) {
-        console.error("Erro ao conectar-se ao backend:", error);
+        console.error('Erro ao conectar-se ao backend:', error);
       }
     };
 
-    fetchUsuarios(); // Chame a função para buscar os dados ao carregar o componente
+    fetchUsuarios();
   }, []);
 
-  // Função para filtrar os e-mails com base no termo de pesquisa
   const filteredEmails = rows.filter((usuario) =>
     usuario.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const openDeleteConfirmation = (id) => {
-    setIdToDelete(id);
-    setDeleteConfirmationOpen(true);
-  };
-
-  const handleDelete = (id) => {
-    openDeleteConfirmation(id);
-  };
-
-  const cancelDelete = () => {
-    // Feche a caixa de diálogo de confirmação
-    setDeleteConfirmationOpen(false);
-  };
-
-  const confirmDelete = async () => {
-
-  };
-
   return (
-    <div className='container-header-kanban'>
-
-      <h3 className='nome-header-kanban'>{projectData.titulo}</h3>
-      <div className='Estrela'>
+    <div className="container-header-kanban">
+      <h3 className="nome-header-kanban">{projectData.titulo}</h3>
+      <div className="Estrela">
         <StarBorderIcon></StarBorderIcon>
       </div>
-      <div className='Lixo'>
+      <div className="Lixo">
         <DeleteOutlineIcon></DeleteOutlineIcon>
       </div>
-    
+
       <div className="integrantes-header-kanban">
-        
         <Avatar>H</Avatar>
-        <AddCircleIcon onClick={openEditDialog} /> {/* Abre a caixa de diálogo de edição */}
+        <AddCircleIcon onClick={openEditDialog} />
 
         <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
           <DialogTitle>Adicionar Membro</DialogTitle>
           <DialogContent>
-            {/* Adicione o conteúdo da caixa de diálogo de edição aqui */}
-          </DialogContent>
-          <DialogActions style={{display: 'block'}}>
-            <div className="add-integrante">
-              <Input
-                type="text"
-                label="Pesquisar por e-mail"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <div className='group-list'>
-                {filteredEmails.map((usuario, index) => (
-                  <p className="list" style={{ display: 'block' }} key={index}>{usuario.email}</p>
-                ))}
-              </div>
-              <div>
-              </div>
+            <Input
+              type="text"
+              label="Pesquisar por e-mail"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div className="group-list">
+              {filteredEmails.map((usuario) => (
+                <ListItem
+                  button
+                  key={usuario.id}
+                  onClick={() => handleAddMemberClick(usuario.id)}
+                  style={{
+                    backgroundColor:
+                      usuario.id === selectedUserId ? '#e0e0e0' : 'transparent',
+                  }}
+                >
+                  <ListItemText primary={usuario.email} />
+                </ListItem>
+              ))}
             </div>
-                <Buttons style={{marginRight: 30}} onClick={() => setEditOpen(false)}>Cancelar</Buttons>
-                <Buttons onClick={() => setEditOpen(false)}>Adicionar</Buttons>
+          </DialogContent>
+          <DialogActions style={{ display: 'block' }}>
+            <Buttons
+              style={{ marginRight: 30 }}
+              onClick={() => setEditOpen(false)}
+            >
+              Cancelar
+            </Buttons>
+            <Buttons onClick={() => addMemberToProject()}>Adicionar</Buttons>
           </DialogActions>
         </Dialog>
       </div>

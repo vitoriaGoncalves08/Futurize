@@ -1,13 +1,10 @@
 package med.voll.api.projeto;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
-
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,7 +42,6 @@ public class Projeto {
             this.estado = dadosAtualizarProjeto.estado();
         }
     }
-
     public void excluir() {
         this.ativo = false;
     }

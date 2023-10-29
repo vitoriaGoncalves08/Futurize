@@ -1,5 +1,4 @@
 package med.voll.api.controller;
-
 import jakarta.validation.Valid;
 import med.voll.api.projeto.*;
 import med.voll.api.usuario.Usuario;
@@ -24,10 +23,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("Projeto")
 public class ProjetoController {
-
     @Autowired
     private ProjetoRepository repository;
-
     @CrossOrigin("*")
     @PostMapping
     @Transactional
@@ -57,7 +54,6 @@ public class ProjetoController {
     public void ExcluirProjeto(@PathVariable Long id){
         repository.deleteById(id);
     }
-
     //PAGINAÇÂO
 /*
     @CrossOrigin("*")
@@ -65,7 +61,6 @@ public class ProjetoController {
     public Page<DadosListagemProjeto> listarProjeto(@PageableDefault(sort = {"encerramento"}) Pageable paginacao){
         return repository.findAllByAtivoTrue(paginacao).map(DadosListagemProjeto::new);
     }
-
     @PutMapping
     @Transactional
     public void atualizarProjeto(@RequestBody @Valid DadosAtualizarProjeto dadosAtualizarProjeto){
@@ -79,8 +74,6 @@ public class ProjetoController {
         projeto.excluir();
     }
 */
-
-
 //    @CrossOrigin("*")
 //    @DeleteMapping("/delete/{id}")
 //    public void excluirProjeto(@PathVariable Long id) {
