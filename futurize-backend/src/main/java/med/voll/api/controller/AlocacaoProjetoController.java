@@ -1,45 +1,30 @@
 package med.voll.api.controller;
 
 import jakarta.validation.Valid;
-import med.voll.api.alocacaoProjeto.*;
+import med.voll.api.cargo.Alocacao_projeto;
+import med.voll.api.cargo.CargoProjetoRepository;
+import med.voll.api.cargo.DadosCadastroCargoProjeto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("Alocacao_projeto")
+@RequestMapping("Alocar")
 public class AlocacaoProjetoController {
     @Autowired
     private CargoProjetoRepository repository;
 
-    @CrossOrigin("*")
     @PostMapping
     @Transactional
     public void CadastrarCargoProjeto(@RequestBody @Valid DadosCadastroCargoProjeto dadosCadastroCargoProjeto){
-        repository.save(new AlocacaoProjeto(dadosCadastroCargoProjeto));
+        repository.save(new Alocacao_projeto(dadosCadastroCargoProjeto));
     }
 
-    @CrossOrigin("*")
-    @GetMapping
-    public List<DadosListagemAlocacaoProjeto> ListarAlocacaoProjeto(){
-         return repository.findAll().stream().map(DadosListagemAlocacaoProjeto :: new).toList();
-    }
-
-    @CrossOrigin("*")
     @DeleteMapping("/{id}")
     @Transactional
     public void ExcluirAlocacaoProjeto(@PathVariable Long id){
-        repository.deleteById(id);
-    }
-
-    @CrossOrigin("*")
-    @PutMapping
-    @Transactional
-    public void AtualizarAlocacaoProjeto(@RequestBody @Valid DadosAtualizarAlocacaoProjeto dadosAtualizarAlocacaoProjeto){
-        var alocacaoProjeto = repository.getReferenceById(dadosAtualizarAlocacaoProjeto.id());
-        alocacaoProjeto.AtualizarALocacaoProjeto(dadosAtualizarAlocacaoProjeto);
+        var alocacaoProjeto = repository.getReferenceById(id);
+        alocacaoProjeto.excluir();
     }
 
 }

@@ -1,5 +1,6 @@
-package med.voll.api.alocacaoProjeto;
+package med.voll.api.cargo;
 
+import jakarta.validation.constraints.NotBlank;
 import med.voll.api.projeto.Projeto;
 import med.voll.api.usuario.Usuario;
 

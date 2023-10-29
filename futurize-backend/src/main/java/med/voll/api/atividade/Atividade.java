@@ -11,8 +11,8 @@ import med.voll.api.usuario.Usuario;
 import java.util.Date;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+    @NoArgsConstructor
+    @AllArgsConstructor
 @EqualsAndHashCode
 @Entity(name = "atividade")
 @Table(name = "atividade")
