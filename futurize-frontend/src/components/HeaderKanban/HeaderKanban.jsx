@@ -13,10 +13,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Buttons from '../Buttons/Buttons';
 import Input from '../Input/input';
-import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 
 export default function HeaderKanban() {
   const { projectId } = useParams();
