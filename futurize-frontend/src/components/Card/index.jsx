@@ -62,6 +62,12 @@ export default function Card({ data, index, listIndex }) {
     setIsRunning(!isRunning);
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxClick = () => {
+    setIsChecked(!isChecked);
+  };
+
   return (
     <div ref={ref}>
       <Container isDragging={data ? false : true}>
@@ -77,8 +83,8 @@ export default function Card({ data, index, listIndex }) {
             <p>{data.descricao}</p>
             
             <div className="Data">
-              <div className="Checkdata">
-                <CheckBoxOutlineBlankRoundedIcon></CheckBoxOutlineBlankRoundedIcon>
+              <div className="Checkdata" onClick={handleCheckboxClick}>
+              {isChecked ? <CheckBoxRoundedIcon style={{ color: 'green' }} /> : <CheckBoxOutlineBlankRoundedIcon />}
                 <p>{data.data}</p>
               </div>  
                  
