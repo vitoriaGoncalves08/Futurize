@@ -91,6 +91,11 @@ nav {
     width: 100%;
   }
 
+  .text-content{
+    margin-top: 200px;
+    color: #3E3E3E;
+  }
+
   /* Estilos para telas de 370px */
 @media (max-width: 370px) {
   .HeroContent p {
