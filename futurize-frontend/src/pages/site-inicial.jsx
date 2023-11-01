@@ -14,18 +14,11 @@ function SiteInicial() {
 
         <div className="MenuItens">
           <ul>
-            <li>
-              <a href="#">Tópicos</a>
-            </li>
-            <li>
-              <a href="#">Membros</a>
-            </li>
-            <li>
-              <a href="#">Sobre nós</a>
-            </li>
-            <li>
-              <a href="#">Contato</a>
-            </li>
+            <li><a href="#">Como funciona?</a></li>
+            <li><a href="#">Modelos</a></li>
+            <li><a href="#">Crie seus projetos</a></li>
+            <li><a href="#">Tarefas em tempo real</a></li>
+            <li><a href="#">Sobre nós</a></li>
           </ul>
         </div>
         <Buttons onClick={() => navigate('/login')}>Entrar</Buttons>
