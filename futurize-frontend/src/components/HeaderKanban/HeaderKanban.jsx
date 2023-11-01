@@ -28,6 +28,14 @@ export default function HeaderKanban() {
   const [editOpen, setEditOpen] = useState(false);
   const [projectMembers, setProjectMembers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(null); // Estado para rastrear o ID do usuário selecionado
+  const [allocatedUsers, setAllocatedUsers] = useState([]);
+  const [showAllocatedUsers, setShowAllocatedUsers] = useState(false);
+  const [allocationDataFetched, setAllocationDataFetched] = useState(false); // Novo estado
+  const [allocatedUserIds, setAllocatedUserIds] = useState(); // Novo estado
+
+  const openAllocatedUsersDialog = () => {
+    setShowAllocatedUsers(true);
+  };
 
   function addError() {
     ToastError({
@@ -81,7 +89,6 @@ export default function HeaderKanban() {
     }
   };
 
-
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
@@ -96,37 +103,48 @@ export default function HeaderKanban() {
       }
     };
 
-    const fetchProjectMembers = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/AlocacaoProjeto/${projectId}`);
-        if (response.status === 200) {
-          setProjectMembers(response.data);
-        } else {
-          console.error('Erro ao buscar membros alocados ao projeto no backend.');
+    if (!allocationDataFetched) {
+      const fetchProjectMembers = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+          if (response.status === 200) {
+            // Obtenha os IDs dos usuários alocados
+            const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
+            // Filtrar os usuários com base em seus IDs
+            const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+            setProjectMembers(allocatedUsersData);
+          } else {
+            console.error('Erro ao buscar membros alocados ao projeto no backend.');
+          }
+        } catch (error) {
+          console.error('Erro ao conectar-se ao backend:', error);
         }
-      } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
-      }
-    };
+        setAllocationDataFetched(true);
+      };
+
+      fetchProjectMembers();
+    }
 
     fetchUsuarios();
-    fetchProjectMembers();
-  }, [projectId]);
+  }, [projectId, allocationDataFetched]);
 
   const filteredEmails = rows.filter((usuario) =>
     usuario.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   function formatMemberName(name) {
-    const names = name.split(" "); // Divide o nome em partes
-    if (names.length === 1) {
-      // Se for apenas um nome, mostra a primeira letra em maiúscula
-      return names[0].charAt(0).toUpperCase();
+    if (name) {
+      const names = name.split(" ");
+      if (names.length === 1) {
+        return names[0].charAt(0).toUpperCase();
+      } else {
+        return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+      }
     } else {
-      // Se for um nome composto, mostra as duas primeiras letras em maiúscula
-      return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+      return ""; // Retornar uma string vazia se o nome for nulo ou indefinido
     }
   }
+  
 
   return (
     <div className="container-header-kanban">
@@ -143,6 +161,8 @@ export default function HeaderKanban() {
           <Avatar key={member.id}>{formatMemberName(member.nome)}</Avatar>
         ))}
         <AddCircleIcon onClick={openEditDialog} />
+        <button onClick={openAllocatedUsersDialog}>Mostrar Usuários Alocados</button>
+
 
         <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
           <DialogTitle>Adicionar Membro</DialogTitle>
@@ -179,6 +199,20 @@ export default function HeaderKanban() {
             <Buttons onClick={() => addMemberToProject()}>Adicionar</Buttons>
           </DialogActions>
         </Dialog>
+          {/* Diálogo para mostrar usuários alocados */}
+       <Dialog open={showAllocatedUsers} onClose={() => setShowAllocatedUsers(false)}>
+        <DialogTitle>Usuários Alocados</DialogTitle>
+        <DialogContent>
+          <ul>
+            {allocatedUsers.map((user) => (
+              <li key={user.id}>{user.nome}</li>
+            ))}
+          </ul>
+        </DialogContent>
+        <DialogActions>
+          <Buttons onClick={() => setShowAllocatedUsers(false)}>Fechar</Buttons>
+        </DialogActions>
+      </Dialog>
       </div>
     </div>
   );
