@@ -1,10 +1,13 @@
 package med.voll.api.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import med.voll.api.alocacaoProjeto.*;
 import med.voll.api.projeto.Projeto;
 import med.voll.api.projeto.ProjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +27,18 @@ public class AlocacaoProjetoController {
     @CrossOrigin("*")
     @PostMapping
     @Transactional
-    public void CadastrarAlocacaoProjeto(@RequestBody @Valid DadosCadastroAlocacaoProjeto dadosCadastroAlocacaoProjeto){
-        repository.save(new AlocacaoProjeto(dadosCadastroAlocacaoProjeto));
+    public ResponseEntity<String> CadastrarAlocacaoProjeto(@RequestBody @Valid DadosCadastroAlocacaoProjeto dadosCadastroAlocacaoProjeto, HttpServletResponse response) {
+        // Verifique se já existe uma alocação com o mesmo projeto e usuário
+        AlocacaoProjeto existingAlocacao = repository.findByProjetoAndUsuario(dadosCadastroAlocacaoProjeto.projeto(), dadosCadastroAlocacaoProjeto.usuario());
+
+        if (existingAlocacao != null) {
+            response.setStatus(HttpStatus.CONFLICT.value()); // Define o status HTTP 409
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("400");
+        } else {
+            // Caso não exista uma alocação com os mesmos valores, você pode salvar a nova alocação
+            repository.save(new AlocacaoProjeto(dadosCadastroAlocacaoProjeto));
+            return ResponseEntity.status(HttpStatus.CREATED).body("A alocação foi criada com sucesso.");
+        }
     }
 
     @CrossOrigin("*")
