@@ -74,19 +74,30 @@ export default function HeaderKanban() {
       console.log("Dados", newMemberData);
 
       axios.post('http://localhost:8080/Alocacao_projeto', newMemberData)
-        .then((response) => {
-          // Verifique se a solicitação foi bem-sucedida
-          if (response.status === 200) {
-            addSucesso();
-            setEditOpen(false);
+      .then((response) => {
+        if (response.status === 200) {
+          addSucesso();
+          setEditOpen(false);
+        } else {
+          // Verifique se a resposta tem status 409 (Conflito)
+          if (response.status === 409) {
+            // Verifique se a resposta tem um corpo (message) e exiba-o
+            if (response.data.message) {
+              addError(response.data.message);
+            } else {
+              // Caso contrário, exiba uma mensagem de erro genérica
+              addError('Erro ao adicionar membro ao projeto.');
+            }
           } else {
-            addError();
+            // Trate outros erros de forma adequada
+            addError('Erro desconhecido ao adicionar membro ao projeto.');
           }
-        })
-        .catch((error) => {
-          console.error('Erro ao conectar-se ao backend:', error);
-        });
-    }
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao conectar-se ao backend:', error);
+      });
+    }    
   };
 
   useEffect(() => {
@@ -113,7 +124,7 @@ export default function HeaderKanban() {
             // Filtrar os usuários com base em seus IDs
             const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
             setProjectMembers(allocatedUsersData);
-          } else {
+          } else if (response.status === 409){
             console.error('Erro ao buscar membros alocados ao projeto no backend.');
           }
         } catch (error) {

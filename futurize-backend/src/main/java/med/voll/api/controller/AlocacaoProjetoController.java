@@ -27,13 +27,12 @@ public class AlocacaoProjetoController {
     @CrossOrigin("*")
     @PostMapping
     @Transactional
-    public ResponseEntity<String> CadastrarAlocacaoProjeto(@RequestBody @Valid DadosCadastroAlocacaoProjeto dadosCadastroAlocacaoProjeto, HttpServletResponse response) {
+    public ResponseEntity<String> CadastrarAlocacaoProjeto(@RequestBody @Valid DadosCadastroAlocacaoProjeto dadosCadastroAlocacaoProjeto) {
         // Verifique se já existe uma alocação com o mesmo projeto e usuário
         AlocacaoProjeto existingAlocacao = repository.findByProjetoAndUsuario(dadosCadastroAlocacaoProjeto.projeto(), dadosCadastroAlocacaoProjeto.usuario());
 
         if (existingAlocacao != null) {
-            response.setStatus(HttpStatus.CONFLICT.value()); // Define o status HTTP 409
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("400");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe uma alocação com o mesmo projeto e usuário.");
         } else {
             // Caso não exista uma alocação com os mesmos valores, você pode salvar a nova alocação
             repository.save(new AlocacaoProjeto(dadosCadastroAlocacaoProjeto));
