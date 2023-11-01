@@ -45,14 +45,15 @@ nav {
   }
   
   .HeroContent {
-    /* display: inline-block; */
-    width: 40%;
-    height: 40%;
+    margin-top: 200px;
+    width: 100%;
+    height: 100%;
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, 50%);
-    text-align: center;
+    text-align: center;  
+    
   }
   
   .Titulo p {
@@ -90,11 +91,22 @@ nav {
     max-width: 100%;
     width: 100%;
   }
+.main-content {
+  display: inline-block;
+  margin: 300px;
+  width: 100%;
 
+}
   .text-content{
-    margin-top: 200px;
+   display: auto;
+   margin-left: -100px;
+    margin-top: 600px;
     color: #3E3E3E;
-  }
+    text-align: left;
+    width: 50%;
+  }  
+  
+  
 
   /* Estilos para telas de 370px */
 @media (max-width: 370px) {

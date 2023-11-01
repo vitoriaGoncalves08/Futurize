@@ -40,9 +40,11 @@ function SiteInicial() {
           <Buttons onClick={() => navigate('/Cadastro')}>Criar Conta</Buttons>
         </div>
 
-        <div className='main'>
+      </div>
+      <div className='main-content'>
           <div className='text-content'>
             <h1> Desperte o potencial máximo dos seus projetos</h1>
+             
             <p>
               Transforme o jeito de gerenciar projetos! Visualize e organize tarefas de forma 
               intuitiva, com atualizações em tempo real e colaboração eficaz em equipe. 
@@ -63,7 +65,7 @@ function SiteInicial() {
           </div>
 
           <div className='text-content'>
-            <h1>organize-se e alcance o sucesso de forma rápida e divertida. </h1>
+            <h1>Organize-se e alcance o sucesso de forma rápida e divertida. </h1>
             <p>
               A nossa plataforma permite que você defina metas,
               atribua tarefas e estabeleça prazos de maneira descomplicada.
@@ -78,18 +80,19 @@ function SiteInicial() {
           <div className='text-content'>
             <h1>A simplicidade do arrastar e soltar </h1>
             <p>
-              Dentro da nossa plataforma, as tarefas são como peças de um 
+              Já imaginou ter total controle sobre o que precisa ser feito? 
+              Por quem e até quando?
+              </p>
+            <p>
+               Dentro da nossa plataforma, as tarefas são como peças de um 
               quebra-cabeça que compõem o seu projeto. Elas podem ser criadas,
               atribuídas a membros da equipe e definidas com prazos claros.
-              Imagine ter total controle sobre o que precisa ser feito, 
-              por quem e até quando.
-            </p>
+                  </p>
           </div>
         </div>
-      </div>
- 
+        
       {/* {<footer className="Wave">
-        <img src={wave} alt="" />
+       
       </footer> } */}
     </div>
     
