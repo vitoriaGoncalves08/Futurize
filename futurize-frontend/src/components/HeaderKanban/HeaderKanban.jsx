@@ -30,16 +30,61 @@ export default function HeaderKanban() {
   const [selectedUserId, setSelectedUserId] = useState(null); // Estado para rastrear o ID do usuário selecionado
   const [allocatedUsers, setAllocatedUsers] = useState([]);
   const [showAllocatedUsers, setShowAllocatedUsers] = useState(false);
-  const [allocationDataFetched, setAllocationDataFetched] = useState(false); // Novo estado
-  const [allocatedUserIds, setAllocatedUserIds] = useState(); // Novo estado
+  const [allocationDataFetched, setAllocationDataFetched] = useState(false); // No
+  const [newMembers, setNewMembers] = useState([]);
 
+  const [dataLoaded, setDataLoaded] = useState(false); // Estado para rastrear se os dados foram carregados
+
+  useEffect(() => {
+    const fetchUsuarios = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/Usuario');
+        if (response.status === 200) {
+          setRows(response.data);
+          setDataLoaded(true); // Marque os dados como carregados
+        } else {
+          console.error('Erro ao buscar dados de usuários no backend.');
+        }
+      } catch (error) {
+        console.error('Erro ao conectar-se ao backend:', error);
+      }
+    };
+
+    const fetchProjectMembers = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+        if (response.status === 200) {
+          const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
+          const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+          setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
+        } else if (response.status === 409) {
+          console.error('Erro ao buscar membros alocados ao projeto no backend.');
+        }
+      } catch (error) {
+        console.error('Erro ao conectar-se ao backend:', error);
+      }
+    };
+
+    if (!dataLoaded) {
+      // Se os dados não foram carregados, busque-os
+      fetchUsuarios();
+    } else {
+      // Se os dados foram carregados, busque os membros do projeto
+      fetchProjectMembers();
+    }
+  }, [projectId, allocationDataFetched, dataLoaded, allocatedUsers]);
+
+  if (!dataLoaded) {
+    // Se os dados não foram carregados, você pode exibir uma mensagem de carregamento
+    return <p>Carregando dados...</p>;
+  }
   const openAllocatedUsersDialog = () => {
     setShowAllocatedUsers(true);
   };
 
-  function addError() {
+  function addError(error) {
     ToastError({
-      text: 'Não foi possível adicionar esse usuário no projeto.',
+      text: error,
       title: 'Error!!',
     });
   }
@@ -49,6 +94,8 @@ export default function HeaderKanban() {
       text: 'Membro adicionado com sucesso ao projeto.',
       title: 'Sucesso!!',
     });
+    setNewMembers([...newMembers, newMemberData]);
+    setEditOpen(false);
   }
 
   const openEditDialog = () => {
@@ -59,86 +106,40 @@ export default function HeaderKanban() {
     setSelectedUserId(userId); // Defina o ID do usuário selecionado
   };
 
-  const addMemberToProject = () => {
+  const addMemberToProject = async () => {
     if (selectedUserId) {
       const selectedUser = rows.find((usuario) => usuario.id === selectedUserId);
       setProjectMembers([...projectMembers, selectedUser]);
       setSelectedUserId(null);
-
+  
       // Envie os dados do novo membro para o backend
       const newMemberData = {
-        usuario: { id: selectedUserId }, //selectedUserId
-        projeto: { id: projectData.id }, //projectData.id
+        usuario: { id: selectedUserId },
+        projeto: { id: projectData.id },
       };
-
-      console.log("Dados", newMemberData);
-
-      axios.post('http://localhost:8080/Alocacao_projeto', newMemberData)
-      .then((response) => {
-        if (response.status === 200) {
-          addSucesso();
-          setEditOpen(false);
-        } else {
-          // Verifique se a resposta tem status 409 (Conflito)
-          if (response.status === 409) {
-            // Verifique se a resposta tem um corpo (message) e exiba-o
-            if (response.data.message) {
-              addError(response.data.message);
-            } else {
-              // Caso contrário, exiba uma mensagem de erro genérica
-              addError('Erro ao adicionar membro ao projeto.');
-            }
-          } else {
-            // Trate outros erros de forma adequada
-            addError('Erro desconhecido ao adicionar membro ao projeto.');
-          }
-        }
-      })
-      .catch((error) => {
-        console.error('Erro ao conectar-se ao backend:', error);
-      });
-    }    
-  };
-
-  useEffect(() => {
-    const fetchUsuarios = async () => {
+  
+      console.log(newMemberData);
+  
       try {
-        const response = await axios.get('http://localhost:8080/Usuario');
-        if (response.status === 200) {
-          setRows(response.data);
+        const response = await axios.post('http://localhost:8080/Alocacao_projeto', newMemberData);
+        if (response.status === 201) {
+          // A alocação foi criada com sucesso
+          addSucesso();
+        } else if (response.status === 409) {
+          // Trate o status 409 aqui, exibindo uma mensagem específica para o usuário
+          addError(response.data.message); // Supondo que a mensagem de erro é retornada pelo backend
         } else {
-          console.error('Erro ao buscar dados de usuários no backend.');
+          // Trate outros status de resposta, se necessário
+          addSucesso();
         }
       } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
+        // addError('Erro ao conectar-se ao backend: ' + error.message);
       }
-    };
-
-    if (!allocationDataFetched) {
-      const fetchProjectMembers = async () => {
-        try {
-          const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
-          if (response.status === 200) {
-            // Obtenha os IDs dos usuários alocados
-            const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
-            // Filtrar os usuários com base em seus IDs
-            const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
-            setProjectMembers(allocatedUsersData);
-          } else if (response.status === 409){
-            console.error('Erro ao buscar membros alocados ao projeto no backend.');
-          }
-        } catch (error) {
-          console.error('Erro ao conectar-se ao backend:', error);
-        }
-        setAllocationDataFetched(true);
-      };
-
-      fetchProjectMembers();
     }
+  };
 
-    fetchUsuarios();
-  }, [projectId, allocationDataFetched]);
 
+  
   const filteredEmails = rows.filter((usuario) =>
     usuario.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -155,7 +156,6 @@ export default function HeaderKanban() {
       return ""; // Retornar uma string vazia se o nome for nulo ou indefinido
     }
   }
-  
 
   return (
     <div className="container-header-kanban">
@@ -168,13 +168,10 @@ export default function HeaderKanban() {
       </div>
 
       <div className="integrantes-header-kanban">
-        {projectMembers.map((member) => (
-          <Avatar key={member.id}>{formatMemberName(member.nome)}</Avatar>
+        {allocatedUsers.map((user) => (
+          <Avatar key={user.id}>{formatMemberName(user.nome)}</Avatar>
         ))}
         <AddCircleIcon onClick={openEditDialog} />
-        <button onClick={openAllocatedUsersDialog}>Mostrar Usuários Alocados</button>
-
-
         <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
           <DialogTitle>Adicionar Membro</DialogTitle>
           <DialogContent>
@@ -203,28 +200,33 @@ export default function HeaderKanban() {
           <DialogActions style={{ display: 'block' }}>
             <Buttons
               style={{ marginRight: 30 }}
-              onClick={() => setEditOpen(false)}
+              onClick={() => deleteAllocation()}
             >
-              Cancelar
+              Deletar
             </Buttons>
             <Buttons onClick={() => addMemberToProject()}>Adicionar</Buttons>
           </DialogActions>
         </Dialog>
-          {/* Diálogo para mostrar usuários alocados */}
-       <Dialog open={showAllocatedUsers} onClose={() => setShowAllocatedUsers(false)}>
-        <DialogTitle>Usuários Alocados</DialogTitle>
-        <DialogContent>
-          <ul>
-            {allocatedUsers.map((user) => (
-              <li key={user.id}>{user.nome}</li>
-            ))}
-          </ul>
-        </DialogContent>
-        <DialogActions>
-          <Buttons onClick={() => setShowAllocatedUsers(false)}>Fechar</Buttons>
-        </DialogActions>
-      </Dialog>
+        {/* Diálogo para mostrar usuários alocados */}
+
+        <Dialog open={showAllocatedUsers} onClose={() => setShowAllocatedUsers(false)}>
+          <DialogTitle>Usuários Alocados</DialogTitle>
+          <DialogContent>
+            <ul>
+              {allocatedUsers.map((user) => (
+                <li key={user.id}>{user.nome}</li>
+              ))}
+              {newMembers.map((newMember) => (
+                <li key={newMember.usuario.id}>{newMember.usuario.nome}</li>
+              ))}
+            </ul>
+          </DialogContent>
+          <DialogActions>
+            <Buttons onClick={() => setShowAllocatedUsers(false)}>Fechar</Buttons>
+          </DialogActions>
+        </Dialog>
       </div>
     </div>
+
   );
 }

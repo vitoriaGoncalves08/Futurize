@@ -1,4 +1,4 @@
-CREATE TABLE usuarios(
+CREATE TABLE usuario(
     id INT not null auto_increment,
     nome varchar(100) not null,
     email varchar(100) not null unique,

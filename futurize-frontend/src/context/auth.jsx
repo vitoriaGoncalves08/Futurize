@@ -80,8 +80,13 @@ export const AuthProvider = ({ children }) => {
     return localStorage.getItem('@user');
   }
 
+  const getLoginUserObject = () => {
+    const userToken = localStorage.getItem('@user');
+    return JSON.parse(userToken); // Retorne o objeto completo do usuário
+  }
+
   return (
-    <AuthContext.Provider value={{ user, signed: !!user, signIn, signup, signout, getLoginUser }}>
+    <AuthContext.Provider value={{ user, signed: !!user, signIn, signup, signout, getLoginUser, getLoginUserObject }}>
       {children}
     </AuthContext.Provider>
   );

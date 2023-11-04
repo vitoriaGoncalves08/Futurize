@@ -12,14 +12,39 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
-
+import axios from 'axios'; // Importe o Axios para fazer solicitações HTTP
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from 'react-router-dom';
 import Card from '../Card';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Container } from './styles';
 
 export default function List({ data, index: listIndex }) {
+  const navigate = useNavigate();
+  const { getLoginUserObject } = useAuth();
+  const usuarioLogado = getLoginUserObject();
   const [open, setOpen] = useState(false);
+
+  const [formTask, setFormTask] = useState({
+    id: 0,
+    titulo: "",
+    descricao: "",
+    inicio: "2018-01-01",
+    encerramento: "2015-01-01",
+    estado: "BACKLOG",
+    dificuldade: "SIMPLES",
+    prioridade: 1,
+    tempo_execucao: "00-00-20",
+    projeto: {
+      id: 1
+    },
+    responsavel: {
+      id: 1
+    }
+  });
+
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,18 +54,6 @@ export default function List({ data, index: listIndex }) {
     setOpen(false);
   };
 
-  const [formTask, setFormTask] = useState({
-    id: 0,
-    titulo: '',
-    inicio: '',
-    encerramento: '',
-    dificuldade: ' ',
-    prioridade: '',
-    integrante: '',
-    descricao: '',
-    estado: '',
-  });
-
   const handleInputChange = (e, field) => {
     setFormTask({
       ...formTask,
@@ -48,13 +61,70 @@ export default function List({ data, index: listIndex }) {
     });
   };
 
+  const handleCreateTask = async (e) => {
+    e.preventDefault();
+  
+    const {
+      id,
+      titulo,
+      descricao,
+      inicio,
+      encerramento,
+      estado,
+      dificuldade,
+      prioridade,
+      tempo_execucao,
+      projeto,
+      responsavel
+    } = formTask;
+  
+    // Verifique se encerramento é uma data válida
+    const encerramentoDate = formTask.encerramento instanceof Date
+      ? formTask.encerramento
+      : new Date(formTask.encerramento);
+  
+    // Formate a data para o formato "yyyy-MM-dd"
+    const formattedDate = `${encerramentoDate.getFullYear()}-${(encerramentoDate.getMonth() + 1).toString().padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
+  
+    const activityData = {
+      id: id,
+      titulo: titulo,
+      descricao: descricao,
+      inicio: inicio,
+      encerramento: formattedDate,
+      estado: estado,
+      dificuldade: dificuldade,
+      prioridade: prioridade,
+      tempo_execucao: tempo_execucao,
+      projeto: { id: projeto },
+      responsavel: { id: usuarioLogado },
+    };
+  
+    try {
+      console.log("atividade",activityData);
+      const response = await axios.post('http://localhost:8080/Atividade', activityData);
+  
+      if (response.status === 200) {
+        console.log('Atividade adicionada com sucesso');
+        handleClose();
+      } else {
+        console.error('Erro ao adicionar a atividade');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+  
+
   return (
-    <Container done={data.done}>
+    <Container data-done={data.done ? 'true' : 'false'}>
       <header>
         <h2>{data.title}</h2>
-       
+
         {data.creatable && (
-          <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>+</Buttons>
+          <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
+            +
+          </Buttons>
         )}
       </header>
 
@@ -75,7 +145,7 @@ export default function List({ data, index: listIndex }) {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          <form>
+          <form onSubmit={handleCreateTask}>
             <Input
               id="titulo-kanban"
               type="text"
@@ -102,9 +172,9 @@ export default function List({ data, index: listIndex }) {
                   onChange={(e) => handleInputChange(e, 'dificuldade')}
                 >
                   <MenuItem value=" ">Selecione a dificuldade</MenuItem>
-                  <MenuItem value={"FACIL"}>Fácil</MenuItem>
-                  <MenuItem value={"MEDIO"}>Médio</MenuItem>
-                  <MenuItem value={"DIFICIL"}>Difícil</MenuItem>
+                  <MenuItem value={"SIMPLES"}>Simples</MenuItem>
+                  <MenuItem value={"MODERADA"}>Moderada</MenuItem>
+                  <MenuItem value={"COMPLEXA"}>Complexa</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -118,12 +188,12 @@ export default function List({ data, index: listIndex }) {
               label="Digite a prioridade"
             />
             <Input
-              id="integrante-kanban"
+              id="responsavel-kanban"
               type="text"
-              name="integrante"
-              value={formTask.integrante}
-              onChange={(e) => handleInputChange(e, 'integrante')}
-              label="Digite o integrante"
+              name="responsavel"
+              value={formTask.responsavel}
+              onChange={(e) => handleInputChange(e, 'responsavel')}
+              label="Digite o responsavel"
             />
             <Input
               id="descricao-kanban"

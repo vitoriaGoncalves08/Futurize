@@ -27,12 +27,14 @@ public class Atividade {
     private Estado estado;
     @Enumerated(EnumType.STRING)
     private Dificuldade dificuldade;
-    @Enumerated(EnumType.STRING)
-    private Prioridade prioridade;
+    private int prioridade;
     private String tempo_execucao;
     @ManyToOne
     @JoinColumn(name = "id_projeto")
     private Projeto projeto;
+    @ManyToOne
+    @JoinColumn(name = "responsavel")
+    private Usuario responsavel;
     private Boolean ativo;
 
 
@@ -47,6 +49,7 @@ public class Atividade {
         this.prioridade = dadosCadastroAtividade.prioridade();
         this.tempo_execucao = dadosCadastroAtividade.tempo_execucao();
         this.projeto = dadosCadastroAtividade.projeto();
+        this.responsavel = dadosCadastroAtividade.responsavel();
     }
 
     public void atualizarInformacoes(DadosAtualizarAtividade dadosAtualizarAtividade) {
@@ -65,11 +68,14 @@ public class Atividade {
         if(dadosAtualizarAtividade.dificuldade() != null){
             this.dificuldade = dadosAtualizarAtividade.dificuldade();
         }
-        if(dadosAtualizarAtividade.prioridade() != null){
+        if(dadosAtualizarAtividade.prioridade() != 0){
             this.prioridade = dadosAtualizarAtividade.prioridade();
         }
-        if(dadosAtualizarAtividade.prioridade() != null){
+        if(dadosAtualizarAtividade.tempo_execucao() != null){
             this.tempo_execucao = dadosAtualizarAtividade.tempo_execucao();
+        }
+        if(dadosAtualizarAtividade.responsavel() != null){
+            this.responsavel = dadosAtualizarAtividade.responsavel();
         }
 
     }

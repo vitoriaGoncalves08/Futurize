@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import med.voll.api.projeto.DadosCadastroProjeto;
 import med.voll.api.projeto.Projeto;
 import med.voll.api.usuario.DadosCadastroUsuario;
+import med.voll.api.usuario.Usuario;
 
 import java.util.Date;
 
@@ -24,11 +25,13 @@ public record DadosCadastroAtividade(
         @NotNull
         Dificuldade dificuldade,
         @NotNull
-        Prioridade prioridade,
+        int prioridade,
         @NotBlank
         String tempo_execucao,
         @NotNull
-        Projeto projeto
+        Projeto projeto,
+        @NotNull
+        Usuario responsavel
 
  ) {
 }

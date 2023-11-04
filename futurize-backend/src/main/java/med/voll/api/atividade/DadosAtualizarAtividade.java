@@ -1,6 +1,7 @@
 package med.voll.api.atividade;
 
 import jakarta.validation.constraints.NotNull;
+import med.voll.api.usuario.Usuario;
 
 import java.util.Date;
 
@@ -12,7 +13,9 @@ public record DadosAtualizarAtividade(
         Date encerramento,
         Estado estado,
         Dificuldade dificuldade,
-        Prioridade prioridade,
-        String tempo_execucao
+        int prioridade,
+        String tempo_execucao,
+        Usuario responsavel
+
 ) {
 }

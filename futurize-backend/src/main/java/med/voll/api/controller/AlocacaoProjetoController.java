@@ -28,13 +28,12 @@ public class AlocacaoProjetoController {
     @PostMapping
     @Transactional
     public ResponseEntity<String> CadastrarAlocacaoProjeto(@RequestBody @Valid DadosCadastroAlocacaoProjeto dadosCadastroAlocacaoProjeto) {
-        // Verifique se já existe uma alocação com o mesmo projeto e usuário
         AlocacaoProjeto existingAlocacao = repository.findByProjetoAndUsuario(dadosCadastroAlocacaoProjeto.projeto(), dadosCadastroAlocacaoProjeto.usuario());
 
         if (existingAlocacao != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe uma alocação com o mesmo projeto e usuário.");
+            // Modifique a resposta de conflito para incluir informações sobre o conflito
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe uma alocação com o mesmo projeto (" + dadosCadastroAlocacaoProjeto.projeto().getId() + ") e usuário (" + dadosCadastroAlocacaoProjeto.usuario().getId() + ").");
         } else {
-            // Caso não exista uma alocação com os mesmos valores, você pode salvar a nova alocação
             repository.save(new AlocacaoProjeto(dadosCadastroAlocacaoProjeto));
             return ResponseEntity.status(HttpStatus.CREATED).body("A alocação foi criada com sucesso.");
         }

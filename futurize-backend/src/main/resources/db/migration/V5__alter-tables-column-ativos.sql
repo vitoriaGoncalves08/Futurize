@@ -1,5 +1,5 @@
-ALTER TABLE usuarios ADD ativo TINYINT;
-UPDATE usuarios SET ativo = 1;
+ALTER TABLE usuario ADD ativo TINYINT;
+UPDATE usuario SET ativo = 1;
 
 ALTER TABLE projeto ADD ativo TINYINT;
 UPDATE projeto SET ativo = 1;
