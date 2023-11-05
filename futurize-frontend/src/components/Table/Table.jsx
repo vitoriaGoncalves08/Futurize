@@ -42,6 +42,7 @@ export default function TableC() {
   const navigate = useNavigate();
   const { getLoginUser } = useAuth();
   const usuarioLogado = getLoginUser();
+  const [allocatedUsers, setAllocatedUsers] = useState([]);
 
   const handleClickOpen = () => {
     // Limpa os campos do formulário
@@ -265,7 +266,7 @@ export default function TableC() {
           +
         </Buttons>
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: '650px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
+      <TableContainer component={Paper} style={{ maxHeight: '370px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
         {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
         <Table sx={{ minWidth: 1500 }} aria-label="simple table">
           <TableHead>

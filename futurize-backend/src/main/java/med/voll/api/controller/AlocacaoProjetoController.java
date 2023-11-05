@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import med.voll.api.alocacaoProjeto.*;
 import med.voll.api.projeto.Projeto;
 import med.voll.api.projeto.ProjetoRepository;
+import med.voll.api.usuario.Usuario;
+import med.voll.api.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class AlocacaoProjetoController {
 
     @Autowired
     private ProjetoRepository projetoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @CrossOrigin("*")
     @PostMapping
@@ -53,6 +58,22 @@ public class AlocacaoProjetoController {
             return Collections.emptyList(); // Ou outra ação apropriada
         }
     }
+
+    @CrossOrigin("*")
+    @GetMapping("/porUser/{idUsuario}")
+    public List<DadosListagemAlocacaoProjeto> ListarAlocacaoProjetoPorUser(@PathVariable Long idUsuario) {
+        Usuario usuario = usuarioRepository.findAllById(idUsuario);
+        if (usuario != null) {
+            return repository.findByUsuario(usuario)
+                    .stream()
+                    .map(DadosListagemAlocacaoProjeto::new)
+                    .collect(Collectors.toList());
+        } else {
+            // Lidar com o caso em que o usuário com o ID fornecido não foi encontrado
+            return Collections.emptyList(); // Ou outra ação apropriada
+        }
+    }
+
 
     @CrossOrigin("*")
     @DeleteMapping("/{id}")

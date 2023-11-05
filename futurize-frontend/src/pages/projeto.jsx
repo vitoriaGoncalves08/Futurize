@@ -16,7 +16,7 @@ export default function Home() {
   };
   return (
     <>
-      <Header />
+      <Header style={{overflowY: 'auto'}}/>
       <SideBar>
         <Table />
         <TableAlocado />

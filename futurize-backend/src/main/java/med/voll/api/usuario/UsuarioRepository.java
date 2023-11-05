@@ -8,5 +8,9 @@ import java.util.stream.DoubleStream;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
    Usuario findByEmail(String email);
+   Usuario findAllById(Long id);
+
+
+
 //    Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
 }

@@ -6,30 +6,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Input from '../Input/input';
-import Buttons from '../Buttons/Buttons';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { isValid, format, parse } from 'date-fns';
-import "../Table/Table.css";
-import { AlertError } from '../Alert/Modal';
+import Avatar from '@mui/material/Avatar';
+import { format } from 'date-fns';
 import axios from "axios";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import { useNavigate } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import Box from '@mui/material/Box';
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from 'react-router-dom';
+import Buttons from '../Buttons/Buttons';
 
 export default function TableAlocado() {
+  const [allocatedProjects, setAllocatedProjects] = useState([]); // Atualize o nome da variável para allocatedProjects
   const [open, setOpen] = useState(false);
-  const [projectData, setProjectData] = useState(null); // Armazena os dados do projeto selecionado
+  const [projectData, setProjectData] = useState(null);
   const [titulo, setTitulo] = useState("");
   const [inicio, setinicio] = useState("");
   const [estado, setEstado] = useState("");
@@ -43,22 +30,6 @@ export default function TableAlocado() {
   const { getLoginUser } = useAuth();
   const usuarioLogado = getLoginUser();
 
-  const handleClickOpen = () => {
-    // Limpa os campos do formulário
-    setFormProjeto({
-      id: 0,
-      titulo: '',
-      inicio: '',
-      encerramento: '',
-      estado: 'ANDAMENTO',
-      gestor: '',
-    });
-
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const openDeleteConfirmation = (id) => {
     setIdToDelete(id);
     setDeleteConfirmationOpen(true);
@@ -71,29 +42,7 @@ export default function TableAlocado() {
       console.error('ID de projeto inválido:', id);
     }
   };
-  const cancelDelete = () => {
-    // Feche a caixa de diálogo de confirmação
-    setDeleteConfirmationOpen(false);
-  };
-  const handleEditClose = () => {
-    setEditOpen(false);
-  };
-  const [formProjeto, setFormProjeto] = useState({
-    titulo: '',
-    inicio: '',
-    encerramento: '',
-    estado: 'ANDAMENTO',
-    gestor: '',
-  });
 
-  const handleInputChange = (e, title) => {
-    const { value } = e.target;
-    if (title === 'titulop') {
-      setTitulo(value);
-    } else {
-      setFormProjeto({ ...formProjeto, [title]: value });
-    }
-  }
   function getStatusTagClass(estado) {
     switch (estado) {
       case 'ANDAMENTO':
@@ -107,35 +56,46 @@ export default function TableAlocado() {
     }
   }
   useEffect(() => {
-    // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
-    const fetchData = async () => {
+    const fetchProjectMembers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogado}`);
+        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogado}`);
         if (response.status === 200) {
-          setRows(response.data); // Atualize o estado 'rows' com os dados do banco
-        } else {
-          console.error("Erro ao buscar dados do banco.");
+          const allocatedUsersData = response.data.map((allocation) => allocation.usuario);
+          const allocatedProjectData = response.data.map((allocation) => allocation.projeto);
+          console.log(allocatedProjectData);
+          
+          // Atualize o estado rows com os projetos alocados
+          const projectsInRows = allocatedProjectData.map((project) => ({
+            id: project.id,
+            titulo: project.titulo,
+            inicio: project.inicio,
+            encerramento: project.encerramento,
+            estado: project.estado,
+          }));
+          setRows(projectsInRows);
+        } else if (response.status === 409) {
+          console.error('Erro ao buscar membros alocados ao projeto no backend.');
         }
       } catch (error) {
-        console.error("Erro ao conectar-se ao backend:", error);
+        console.error('Erro ao conectar-se ao backend:', error);
       }
     };
-    fetchData(); // Chame a função para buscar os dados ao carregar a página
-  }, []);
+
+    fetchProjectMembers();
+  }, [usuarioLogado]);
 
   const openProjectKanban = (project) => {
-    console.log('Dados do projeto:', project); // Verifique os dados do projeto
-    setProjectData(project); // Define os dados do projeto selecionado
-    navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
+    console.log('Dados do projeto:', project);
+    setProjectData(project);
+    navigate(`/kanban/${project.id}`, { state: { projectData: project } });
   };
-
 
   return (
     <div className='table'>
       <div className='meus-projetos'>
         <h1 className="subtitulo">Projetos que participo</h1>
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: '650px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
+      <TableContainer component={Paper} style={{ maxHeight: '370px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
         {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
         <Table sx={{ minWidth: 1500 }} aria-label="simple table">
           <TableHead>
@@ -171,6 +131,10 @@ export default function TableAlocado() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {allocatedProjects.map((project) => (
+        <Avatar key={project.id}>{project.titulo}</Avatar>
+      ))}
     </div>
   );
 }

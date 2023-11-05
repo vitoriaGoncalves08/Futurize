@@ -137,8 +137,6 @@ export default function HeaderKanban() {
       }
     }
   };
-
-
   
   const filteredEmails = rows.filter((usuario) =>
     usuario.email.toLowerCase().includes(searchTerm.toLowerCase())
