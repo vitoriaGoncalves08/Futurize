@@ -1,6 +1,7 @@
 import Buttons from '../components/Buttons/Buttons';
 import '../../public/assets/css/site-inicial.css';
 import { useNavigate } from 'react-router-dom';
+import projeto from '/assets/img/projeto.svg';
 
 function SiteInicial() {
   const navigate = useNavigate();
@@ -42,10 +43,13 @@ function SiteInicial() {
       </div>
       <div className='main-content'>
           <div id="funciona" className='text-content'>
-            <h1> Desperte o potencial máximo dos seus projetos</h1>
-            <p>
-              Transforme o jeito de gerenciar projetos! Visualize e organize tarefas de forma intuitiva, com atualizações em tempo real e colaboração eficaz em equipe. Personalize conforme sua necessidade e alcance o sucesso com facilidade. Experimente a revolução Kanban hoje! 
-            </p>
+            <div className="texto">
+              <h1> Desperte o potencial máximo dos seus projetos</h1>
+              <p>
+                Transforme o jeito de gerenciar projetos! Visualize e organize tarefas de forma intuitiva, com atualizações em tempo real e colaboração eficaz em equipe. Personalize conforme sua necessidade e alcance o sucesso com facilidade. Experimente a revolução Kanban hoje!
+              </p>
+            </div>
+            <img src={projeto} alt="" srcset="" />
           </div>
 
           <div id="modelo" className='text-content'>
