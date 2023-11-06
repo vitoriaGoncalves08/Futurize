@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Buttons from '../../components/Buttons/Buttons';
 import Input from '../../components/Input/input';
 import Dialog from '@mui/material/Dialog';
@@ -25,6 +25,8 @@ export default function List({ data, index: listIndex }) {
   const { getLoginUserObject } = useAuth();
   const usuarioLogado = getLoginUserObject();
   const [open, setOpen] = useState(false);
+  const [allocatedUsers, setAllocatedUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
 
   const [formTask, setFormTask] = useState({
     id: 0,
@@ -44,8 +46,6 @@ export default function List({ data, index: listIndex }) {
     }
   });
 
-  
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -63,7 +63,7 @@ export default function List({ data, index: listIndex }) {
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
-  
+
     const {
       id,
       titulo,
@@ -77,15 +77,15 @@ export default function List({ data, index: listIndex }) {
       projeto,
       responsavel
     } = formTask;
-  
+
     // Verifique se encerramento é uma data válida
     const encerramentoDate = formTask.encerramento instanceof Date
       ? formTask.encerramento
       : new Date(formTask.encerramento);
-  
+
     // Formate a data para o formato "yyyy-MM-dd"
     const formattedDate = `${encerramentoDate.getFullYear()}-${(encerramentoDate.getMonth() + 1).toString().padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
-  
+
     const activityData = {
       id: id,
       titulo: titulo,
@@ -99,11 +99,11 @@ export default function List({ data, index: listIndex }) {
       projeto: { id: projeto },
       responsavel: { id: usuarioLogado },
     };
-  
+
     try {
-      console.log("atividade",activityData);
+      console.log("atividade", activityData);
       const response = await axios.post('http://localhost:8080/Atividade', activityData);
-  
+
       if (response.status === 200) {
         console.log('Atividade adicionada com sucesso');
         handleClose();
@@ -114,7 +114,24 @@ export default function List({ data, index: listIndex }) {
       console.error('Erro ao conectar-se ao backend:', error);
     }
   };
-  
+  useEffect(() => {
+  const fetchProjectMembers = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+      if (response.status === 200) {
+        const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
+        const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+        console.log(allocatedUsersData);
+        setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
+      } else if (response.status === 409) {
+        console.error('Erro ao buscar membros alocados ao projeto no backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+  fetchProjectMembers();
+}, [allocatedUsers]);
 
   return (
     <Container data-done={data.done ? 'true' : 'false'}>
@@ -178,7 +195,6 @@ export default function List({ data, index: listIndex }) {
                 </Select>
               </FormControl>
             </Box>
-
             <Input
               id="prioridade-kanban"
               type="text"
@@ -204,7 +220,17 @@ export default function List({ data, index: listIndex }) {
               label="Digite o descricao"
               multiline={true}
             />
-
+            <Select
+              label="Responsavel"
+              value={selectedUser}
+              onChange={(e) => setSelectedUser(e.target.value)}
+            >
+              {allocatedUsers.map((user) => (
+                <MenuItem key={user.id} value={user.id}>
+                  {user.nome}
+                </MenuItem>
+              ))}
+            </Select>
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
             </DialogActions>
@@ -214,11 +240,11 @@ export default function List({ data, index: listIndex }) {
 
       <div className="CamadaTime">
         <div className="Camada">
-          <LayersIcon/>1
+          <LayersIcon />1
         </div>
 
         <div className="Time">
-          <WatchLaterIcon/>
+          <WatchLaterIcon />
           <p>00:00:00</p>
         </div>
       </div>
@@ -233,8 +259,8 @@ export default function List({ data, index: listIndex }) {
           />
         ))}
       </ul>
-      
+
     </Container>
   );
-  
+
 }

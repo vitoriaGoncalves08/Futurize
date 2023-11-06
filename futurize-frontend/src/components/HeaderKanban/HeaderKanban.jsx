@@ -94,8 +94,8 @@ export default function HeaderKanban() {
       text: 'Membro adicionado com sucesso ao projeto.',
       title: 'Sucesso!!',
     });
-    setNewMembers([...newMembers, newMemberData]);
     setEditOpen(false);
+    setNewMembers([...newMembers, newMemberData]);
   }
 
   const openEditDialog = () => {

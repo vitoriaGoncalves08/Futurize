@@ -20,6 +20,8 @@ export const AuthProvider = ({ children }) => {
     if (userToken) {
       setUser(userToken);
       navigate('/projeto');
+    }else{
+      navigate('/');
     }
   }, []);
 
