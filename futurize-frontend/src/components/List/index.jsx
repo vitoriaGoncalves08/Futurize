@@ -17,11 +17,13 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from 'react-router-dom';
 import Card from '../Card';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Container } from './styles';
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function List({ data, index: listIndex }) {
   const navigate = useNavigate();
+  const { projectId } = useParams();
   const { getLoginUserObject } = useAuth();
   const usuarioLogado = getLoginUserObject();
   const [open, setOpen] = useState(false);
@@ -29,7 +31,7 @@ export default function List({ data, index: listIndex }) {
   const [selectedUser, setSelectedUser] = useState("");
 
   const [formTask, setFormTask] = useState({
-    id: 0,
+    id: 1,
     titulo: "",
     descricao: "",
     inicio: "2018-01-01",
@@ -39,11 +41,11 @@ export default function List({ data, index: listIndex }) {
     prioridade: 1,
     tempo_execucao: "00-00-20",
     projeto: {
-      id: 1
+      id: ""
     },
     responsavel: {
-      id: 1
-    }
+      id: ""
+    },
   });
 
   const handleClickOpen = () => {
@@ -114,24 +116,27 @@ export default function List({ data, index: listIndex }) {
       console.error('Erro ao conectar-se ao backend:', error);
     }
   };
+
   useEffect(() => {
-  const fetchProjectMembers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
-      if (response.status === 200) {
-        const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
-        const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
-        console.log(allocatedUsersData);
-        setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
-      } else if (response.status === 409) {
-        console.error('Erro ao buscar membros alocados ao projeto no backend.');
+    const fetchProjectMembers = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+        if (response.status === 200) {
+          const allocatedUsersData = response.data;
+          const allocatedUserIds = allocatedUsersData.map((allocation) => allocation.usuario.id);
+          setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
+          console.log("aaa",allocatedUserIds);
+        } else if (response.status === 409) {
+          console.error('Erro ao buscar membros alocados ao projeto no backend.');
+        }
+      } catch (error) {
+        console.error('Erro ao conectar-se ao backend:', error);
       }
-    } catch (error) {
-      console.error('Erro ao conectar-se ao backend:', error);
-    }
-  };
-  fetchProjectMembers();
-}, [allocatedUsers]);
+    };
+  
+    fetchProjectMembers();
+  }, [projectId]);
+  
 
   return (
     <Container data-done={data.done ? 'true' : 'false'}>
@@ -231,6 +236,7 @@ export default function List({ data, index: listIndex }) {
                 </MenuItem>
               ))}
             </Select>
+
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
             </DialogActions>
