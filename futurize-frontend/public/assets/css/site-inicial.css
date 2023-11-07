@@ -3,6 +3,10 @@
   font-family: var(--font-family-sans-serif);
 }
 
+/* body{
+  overflow-x: hidden;
+} */
+
 nav {
   display: flex;
   justify-content: space-around;
@@ -75,6 +79,8 @@ a {
   margin: 2rem;
 }
 
+
+
 .main-content {
   display: inline-block;
   margin: 300px;
@@ -88,6 +94,15 @@ a {
   color: #3E3E3E;
   /* text-align: left; */
   width: 50%;
+  
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.secao.ativo {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .text-content img{
