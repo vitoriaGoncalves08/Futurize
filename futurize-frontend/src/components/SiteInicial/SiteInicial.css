@@ -31,18 +31,19 @@ nav {
 }
 
 .HeroContent {
-  text-align: center;
   position: absolute;
+  width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .Titulo p {
   font-size: 70px;
   font-weight: 800;
-  line-height: 90px;
+  line-height: 70px;
   text-transform: uppercase;
   background-image: linear-gradient(to right, #407BFF, #6AC2FF);
   color: transparent;
@@ -55,31 +56,19 @@ nav {
   color: #A1A1A1;
   font-size: 18px;
   line-height: 28px;
-  margin: 2rem;
+  margin: 1rem;
 }
 
 .MainContent {
-  display: inline-block;
-  margin: 300px;
-  width: 100%;
+  display: none;
 }
 
-.texto{
+.viseble{
+  display: block;
+}
+
+.secao{
   display: flex;
-  margin-left: -100px;
-  margin-top: 600px;
-  color: #3E3E3E;
-  /* text-align: left; */
-  width: 50%;
-  
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.secao.ativo {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .secao img{
