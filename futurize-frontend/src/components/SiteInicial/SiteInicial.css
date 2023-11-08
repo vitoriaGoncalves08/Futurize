@@ -21,10 +21,7 @@ nav {
   letter-spacing: 8px;
 }
 
-.MenuItens,
-ul,
-li,
-a {
+.MenuItens, ul, li, a {
   display: flex;
   list-style: none;
   gap: 35px;
@@ -33,31 +30,13 @@ a {
   text-decoration: none;
 }
 
-.SignUp {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90px;
-  height: 45px;
-  padding: 16px;
-  background: #407BFF;
-  border-radius: 10px;
-  color: white;
-  font-size: 18px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-}  
-
 .HeroContent {
-  width: 50%;
-  height: 50%;
-  position: relative;
+  text-align: center;
+  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 50%);
-  text-align: center;
-    
+  transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 .Titulo p {
@@ -79,15 +58,13 @@ a {
   margin: 2rem;
 }
 
-
-
-.main-content {
+.MainContent {
   display: inline-block;
   margin: 300px;
   width: 100%;
 }
 
-.text-content{
+.texto{
   display: flex;
   margin-left: -100px;
   margin-top: 600px;
@@ -105,7 +82,7 @@ a {
   transform: translateY(0);
 }
 
-.text-content img{
+.secao img{
   height: 200px;
 }
 
