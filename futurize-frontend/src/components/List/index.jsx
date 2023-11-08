@@ -12,40 +12,45 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
-import axios from 'axios'; // Importe o Axios para fazer solicitações HTTP
-import useAuth from "../../hooks/useAuth";
+import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import Card from '../Card';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import { Container } from './styles';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import InputLabel from '@mui/material/InputLabel';
+import { ToastSuccess, ToastError } from '../Alert/Toast';
 
 export default function List({ data, index: listIndex }) {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const location = useLocation();
+  const projectData = location.state && location.state.projectData;
   const { getLoginUserObject } = useAuth();
   const usuarioLogado = getLoginUserObject();
   const [open, setOpen] = useState(false);
   const [allocatedUsers, setAllocatedUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
+  const [rows, setRows] = useState([]);
 
   const [formTask, setFormTask] = useState({
     id: 1,
     titulo: "",
     descricao: "",
     inicio: "2018-01-01",
-    encerramento: "2015-01-01",
+    encerramento: '',
     estado: "BACKLOG",
-    dificuldade: "SIMPLES",
-    prioridade: 1,
+    dificuldade: '',
+    prioridade: '',
     tempo_execucao: "00-00-20",
     projeto: {
-      id: ""
+      id: projectId
     },
     responsavel: {
-      id: ""
-    },
+      id: ''
+    }
   });
 
   const handleClickOpen = () => {
@@ -55,6 +60,21 @@ export default function List({ data, index: listIndex }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  function addSucesso(success) {
+    ToastSuccess({
+      text: success,
+      title: 'Sucesso!!',
+    });
+    setOpen(false);
+  }
+
+  function addError(error) {
+    ToastError({
+      text: error,
+      title: 'Error!!',
+    });
+  }
 
   const handleInputChange = (e, field) => {
     setFormTask({
@@ -98,7 +118,7 @@ export default function List({ data, index: listIndex }) {
       dificuldade: dificuldade,
       prioridade: prioridade,
       tempo_execucao: tempo_execucao,
-      projeto: { id: projeto },
+      projeto: projeto,
       responsavel: { id: usuarioLogado },
     };
 
@@ -107,7 +127,7 @@ export default function List({ data, index: listIndex }) {
       const response = await axios.post('http://localhost:8080/Atividade', activityData);
 
       if (response.status === 200) {
-        console.log('Atividade adicionada com sucesso');
+        addSucesso('Atividade adicionada com sucesso');
         handleClose();
       } else {
         console.error('Erro ao adicionar a atividade');
@@ -122,10 +142,11 @@ export default function List({ data, index: listIndex }) {
       try {
         const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
         if (response.status === 200) {
-          const allocatedUsersData = response.data;
-          const allocatedUserIds = allocatedUsersData.map((allocation) => allocation.usuario.id);
-          setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
-          console.log("aaa",allocatedUserIds);
+          const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
+          const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+          setAllocatedUsers(allocatedUserIds);
+          console.log("ids", allocatedUserIds);
+          console.log("data", allocatedUsersData);
         } else if (response.status === 409) {
           console.error('Erro ao buscar membros alocados ao projeto no backend.');
         }
@@ -133,10 +154,10 @@ export default function List({ data, index: listIndex }) {
         console.error('Erro ao conectar-se ao backend:', error);
       }
     };
-  
+
+    // Certifique-se de que a busca de membros alocados seja acionada quando necessário
     fetchProjectMembers();
-  }, [projectId]);
-  
+  }, []);
 
   return (
     <Container data-done={data.done ? 'true' : 'false'}>
@@ -184,22 +205,21 @@ export default function List({ data, index: listIndex }) {
               onChange={(e) => handleInputChange(e, 'encerramento')}
               label="Digite a data de encerramento"
             />
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <Select
-                  labelId="dificuldade-label"
-                  id="dificuldade"
-                  name="dificuldade"
-                  value={formTask.dificuldade}
-                  onChange={(e) => handleInputChange(e, 'dificuldade')}
-                >
-                  <MenuItem value=" ">Selecione a dificuldade</MenuItem>
-                  <MenuItem value={"SIMPLES"}>Simples</MenuItem>
-                  <MenuItem value={"MODERADA"}>Moderada</MenuItem>
-                  <MenuItem value={"COMPLEXA"}>Complexa</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+            <FormControl fullWidth>
+              <InputLabel id="dificuldade-label">Selecione a dificuldade</InputLabel>
+              <Select
+                labelId="dificuldade-label"
+                id="dificuldade"
+                name="dificuldade"
+                value={formTask.dificuldade}
+                onChange={(e) => handleInputChange(e, 'dificuldade')}
+              >
+                <MenuItem value=" ">Selecione a dificuldade</MenuItem>
+                <MenuItem value={"SIMPLES"}>Simples</MenuItem>
+                <MenuItem value={"MODERADA"}>Moderada</MenuItem>
+                <MenuItem value={"COMPLEXA"}>Complexa</MenuItem>
+              </Select>
+            </FormControl>
             <Input
               id="prioridade-kanban"
               type="text"
@@ -207,14 +227,6 @@ export default function List({ data, index: listIndex }) {
               value={formTask.prioridade}
               onChange={(e) => handleInputChange(e, 'prioridade')}
               label="Digite a prioridade"
-            />
-            <Input
-              id="responsavel-kanban"
-              type="text"
-              name="responsavel"
-              value={formTask.responsavel}
-              onChange={(e) => handleInputChange(e, 'responsavel')}
-              label="Digite o responsavel"
             />
             <Input
               id="descricao-kanban"
@@ -225,18 +237,25 @@ export default function List({ data, index: listIndex }) {
               label="Digite o descricao"
               multiline={true}
             />
-            <Select
-              label="Responsavel"
-              value={selectedUser}
-              onChange={(e) => setSelectedUser(e.target.value)}
-            >
-              {allocatedUsers.map((user) => (
-                <MenuItem key={user.id} value={user.id}>
-                  {user.nome}
-                </MenuItem>
-              ))}
-            </Select>
-
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="responsavel-label">Responsável</InputLabel>
+                <Select
+                  labelId="responsavel-label"
+                  id="responsavel"
+                  name="responsavel"
+                  value={selectedUser}
+                  onChange={(e) => setSelectedUser(e.target.value)}
+                  label="Responsável"
+                >
+                  {allocatedUsers.map((user) => (
+                    <MenuItem key={user.id} value={user.id}>
+                      {user.nome}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
             <DialogActions>
               <Buttons type="submit">Criar</Buttons>
             </DialogActions>

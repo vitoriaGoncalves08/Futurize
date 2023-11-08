@@ -2,11 +2,12 @@ import React, { useRef, useContext, useState, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import BoardContext from '../Board/context';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import axios from 'axios'; // Importe o Axios
+import BoardContext from '../Board/context';
 import { Container, Label } from './styles';
 
-export default function Card({ data, index, listIndex }) {
+export default function Card({ index, listIndex }) {
   const ref = useRef();
   const { move } = useContext(BoardContext);
 
@@ -14,6 +15,7 @@ export default function Card({ data, index, listIndex }) {
   const [minutos, setMinutos] = useState(0);
   const [segundos, setSegundos] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [activityData, setActivityData] = useState(null); // Estado para armazenar os dados da atividade
 
   const [, drag] = useDrag({
     type: 'CARD',
@@ -61,31 +63,46 @@ export default function Card({ data, index, listIndex }) {
     setIsRunning(!isRunning);
   };
 
+  useEffect(() => {
+    // Realize a solicitação Axios apenas após a montagem do componente
+    axios.get('http://localhost:8080/Atividade') // Substitua pela URL correta do seu backend
+      .then((response) => {
+        // Defina os dados das atividades no estado
+        setActivityData(response.data);
+        console.log(activityData);
+      })
+      .catch((error) => {
+        console.error('Erro ao carregar as atividades:', error);
+      });
+  }, []); // Certifique-se de incluir um array de dependências vazio para garantir que isso seja executado apenas uma vez após a montagem do componente
+
   return (
     <div ref={ref}>
-      <Container isDragging={data ? false : true}>
-        {data && (
+      <Container isDragging={activityData ? false : true}>
+        {activityData && (
           <>
             <header>
-              {data.labels.map((label)  => (
-                <Label key={label} color={label} />
+              {activityData && activityData.map((activity) => (
+                <Label key={activity.id}>{activity.titulo}</Label>
               ))}
-            </header> 
-
-            <h5>{data.content}</h5>
-            <p>{data.descricao}</p>
-            
+            </header>
+            <h5>{activityData.dificuldade}</h5>
+            {activityData && activityData.map((activity) => (
+              <Label key={activity.id}>{activity.descricao}</Label>
+            ))}
             <div className="Data">
               <div className="Checkdata">
-                <CheckBoxIcon></CheckBoxIcon>
-                <p>{data.data}</p>
-              </div>  
-                 
+                <CheckBoxIcon />
+                {activityData && activityData.map((activity) => (
+                  <Label key={activity.id}>{activity.encerramento}</Label>
+                ))}
+              </div>
               <div className="Prioridade">
-                <p>{data.prioridade}</p>
+                {activityData && activityData.map((activity) => (
+                  <Label key={activity.id}>{activity.prioridade}</Label>
+                ))}
               </div>
             </div>
-           
             <div className="TempoPerfil">
               <div className="Pessoa" onClick={handlePlayClick}>
                 {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
@@ -93,9 +110,11 @@ export default function Card({ data, index, listIndex }) {
                   {String(horas).padStart(2, '0')}:{String(minutos).padStart(2, '0')}:{String(segundos).padStart(2, '0')}
                 </p>
               </div>
-
-              <div className='Perfil'>
-                <p>{data.user && <img src={data.user} alt="" />}</p>
+              <div className="Perfil">
+                {/* <p>{activityData.responsavel && <img src={activityData.responsavel} alt="" />}</p> */}
+                {activityData && activityData.map((activity) => (
+                  <Label key={activity.id}>{activity.responsavel.nome}</Label>
+                ))}
               </div>
             </div>
           </>

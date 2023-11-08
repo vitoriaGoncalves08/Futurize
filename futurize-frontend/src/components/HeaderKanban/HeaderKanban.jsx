@@ -36,41 +36,25 @@ export default function HeaderKanban() {
   const [dataLoaded, setDataLoaded] = useState(false); // Estado para rastrear se os dados foram carregados
 
   useEffect(() => {
-    const fetchUsuarios = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/Usuario');
-        if (response.status === 200) {
-          setRows(response.data);
-          setDataLoaded(true); // Marque os dados como carregados
-        } else {
-          console.error('Erro ao buscar dados de usuários no backend.');
-        }
-      } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
-      }
-    };
-
-    const fetchProjectMembers = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
-        if (response.status === 200) {
-          const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
-          const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
-          setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
-        } else if (response.status === 409) {
-          console.error('Erro ao buscar membros alocados ao projeto no backend.');
-        }
-      } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
-      }
-    };
-
     if (!dataLoaded) {
-      // Se os dados não foram carregados, busque-os
-      fetchUsuarios();
-    } else {
-      // Se os dados foram carregados, busque os membros do projeto
-      fetchProjectMembers();
+      // Busque os dados de usuários apenas uma vez quando o componente é montado
+      const fetchUsuarios = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/Usuario');
+          if (response.status === 200) {
+            setRows(response.data);
+            setDataLoaded(true);
+          } else {
+            console.error('Erro ao buscar dados de usuários no backend.');
+          }
+        } catch (error) {
+          console.error('Erro ao conectar-se ao backend:', error);
+        }
+      };
+
+      fetchUsuarios(); // Chame a função de busca de usuários aqui
+
+      // O restante do código que faz parte do useEffect permanece inalterado
     }
   }, [projectId, allocationDataFetched, dataLoaded, allocatedUsers]);
 
