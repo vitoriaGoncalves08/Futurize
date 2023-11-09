@@ -7,8 +7,7 @@ export const ContainerBoard = styled.div`
   overflow-x: auto;
   position: absolute;
   bottom: 0;
-}
-
+  
   /* Estilos da barra de rolagem */
   &::-webkit-scrollbar {
     width: 10px;
