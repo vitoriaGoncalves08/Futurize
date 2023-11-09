@@ -1,38 +1,16 @@
-import Buttons from '../Buttons/Buttons';
-import './SiteInicial.css';
-import { useNavigate } from 'react-router-dom';
-import projeto from '/assets/img/projeto.svg';
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './SiteInicial.css';
+import { addScrollAnimation } from './ScrollAnimation.jsx'
+import Buttons from '../Buttons/Buttons';
+import projeto from '/assets/img/projeto.svg';
 
 function SiteInicial() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleLinkClick = (e) => {
-      e.preventDefault();
-
-      const targetId = e.target.getAttribute('href').substring(1);
-      const targetElement = document.getElementById(targetId);
-
-      if (targetElement) {
-        window.scrollTo({
-          top: targetElement.offsetTop,
-          behavior: 'smooth',
-        });
-      }
-    };
-
-    const links = document.querySelectorAll('.MenuItens a');
-
-    links.forEach(link => {
-      link.addEventListener('click', handleLinkClick);
-    });
-
-    return () => {
-      links.forEach(link => {
-        link.removeEventListener('click', handleLinkClick);
-      });
-    };
+    const cleanup = addScrollAnimation();
+    return () => cleanup();
   }, []);
 
   return (
