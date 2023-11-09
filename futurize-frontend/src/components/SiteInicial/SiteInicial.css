@@ -3,9 +3,10 @@
   font-family: var(--font-family-sans-serif);
 }
 
-/* body{
+body{
+  max-width: 100%;
   overflow-x: hidden;
-} */
+}
 
 nav {
   display: flex;
@@ -60,19 +61,27 @@ nav {
 }
 
 .MainContent {
-  display: none;
+  /* display: none; */
+  margin-top: 32rem;
 }
 
-.viseble{
+/* .viseble{
   display: block;
-}
+} */
 
 .secao{
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 27rem;
+}
+
+.texto{
+  width: 50%;
 }
 
 .secao img{
-  height: 200px;
+  height: 400px;
 }
 
   /* Estilos para telas de 370px */

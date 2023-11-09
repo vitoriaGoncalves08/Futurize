@@ -61,7 +61,7 @@ function SiteInicial() {
 
       <div className='MainContent'>
 
-          <section id="funciona" className='secao'>
+          <div id="funciona" className='secao'>
             <div className="texto">
               <h1> Desperte o potencial máximo dos seus projetos</h1>
               <p>
@@ -69,7 +69,7 @@ function SiteInicial() {
               </p>
             </div>
             <img src={projeto} alt="" srcset="" />
-          </section>
+          </div>
 
           <div id="modelo" className='secao'>
             <div className="texto">
@@ -108,10 +108,14 @@ function SiteInicial() {
             <img src={projeto} alt="" srcset="" />
           </div>
 
-          <div id="sobre" className='secao'>
-            <h1>Sobre nós</h1>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis animi non quis nihil suscipit pariatur, vero veniam ab tempora nobis blanditiis illum autem laborum quod exercitationem debitis laudantium. Distinctio, omnis?</p>
-          </div>
+          <footer>
+            <div id="sobre" className='secao'>
+              <div className="texto">
+                <h1>Sobre nós</h1>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis animi non quis nihil suscipit pariatur, vero veniam ab tempora nobis blanditiis illum autem laborum quod exercitationem debitis laudantium. Distinctio, omnis?</p>
+              </div>
+            </div>
+          </footer>
 
         </div>
     </div>
