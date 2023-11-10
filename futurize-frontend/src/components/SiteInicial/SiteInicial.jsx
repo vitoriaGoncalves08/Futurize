@@ -4,6 +4,9 @@ import './SiteInicial.css';
 import { addScrollAnimation } from './ScrollAnimation.jsx'
 import Buttons from '../Buttons/Buttons';
 import projeto from '/assets/img/projeto.svg';
+import personalize from '/assets/img/personalize.svg';
+import organize from '/assets/img/organize.svg';
+import kanban from '/assets/img/kanban.svg';
 
 function SiteInicial() {
   const navigate = useNavigate();
@@ -61,6 +64,8 @@ function SiteInicial() {
         <img src={projeto} alt="" srcset="" />
       </div>
 
+      <section className='secao'></section>
+
       <div id="modelo" className='secao'>
         <div className="texto">
           <h1>Personalize o seu fluxo de trabalho e ajuste conforme a necessidade do seu projeto!</h1>
@@ -68,8 +73,10 @@ function SiteInicial() {
             O Kanban é como um quadro de tarefas virtual, onde você visualiza e move suas atividades de uma etapa para outra. Imagine post-its digitais que representam suas tarefas. Arraste e solte para mudar o status de: "A fazer" para "Em progresso" e finalmente para "Concluído". Simples assim!
           </p>
         </div>
-        <img src={projeto} alt="" srcset="" />
+        <img src={personalize} alt="" srcset="" />
       </div>
+
+      <section className='secao'></section>
 
       <div id="projeto" className='secao'>
         <div className="texto">
@@ -81,8 +88,10 @@ function SiteInicial() {
             Além disso, você pode monitorar o progresso em tempo real, identificando gargalos e oportunidades de otimização. Colabore de maneira eficaz, comentando diretamente nas tarefas e recebendo notificações instantâneas.
           </p>
         </div>
-        <img src={projeto} alt="" srcset="" />
+        <img src={organize} alt="" srcset="" />
       </div>
+
+      <section className='secao'></section>
 
       <div id="tarefas" className='secao'>
         <div className="texto">
@@ -94,9 +103,11 @@ function SiteInicial() {
             Dentro da nossa plataforma, as tarefas são como peças de um quebra-cabeça que compõem o seu projeto. Elas podem ser criadas, atribuídas a membros da equipe e definidas com prazos claros.
           </p>
         </div>
-        <img src={projeto} alt="" srcset="" />
+        <img src={kanban} alt="" srcset="" />
       </div>
-          
+
+      <section className='secao'></section>
+
       <div id="sobre" className='secao'>
         <div className="texto">
           <h1>Sobre nós</h1>
