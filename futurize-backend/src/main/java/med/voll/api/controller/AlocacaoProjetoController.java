@@ -76,10 +76,16 @@ public class AlocacaoProjetoController {
 
 
     @CrossOrigin("*")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idProjeto}/{idUsuario}")
     @Transactional
-    public void ExcluirAlocacaoProjeto(@PathVariable Long id){
-        repository.deleteById(id);
+    public void ExcluirAlocacaoProjeto(@PathVariable Long idProjeto, @PathVariable Long idUsuario) {
+        AlocacaoProjeto alocacaoProjeto = repository.findByIdProjetoAndIdUsuario(idProjeto, idUsuario);
+        if (alocacaoProjeto != null) {
+            repository.delete(alocacaoProjeto);
+        } else {
+            // Lidar com o caso em que a alocação não foi encontrada
+            // Você pode lançar uma exceção, retornar um status 404, etc.
+        }
     }
 
     @CrossOrigin("*")

@@ -16,12 +16,10 @@ import Input from '../Input/input';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { ToastSuccess, ToastError } from '../Alert/Toast';
-
 export default function HeaderKanban() {
   const { projectId } = useParams();
   const location = useLocation();
   const projectData = location.state && location.state.projectData;
-
   const [rows, setRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -32,32 +30,52 @@ export default function HeaderKanban() {
   const [showAllocatedUsers, setShowAllocatedUsers] = useState(false);
   const [allocationDataFetched, setAllocationDataFetched] = useState(false); // No
   const [newMembers, setNewMembers] = useState([]);
-
   const [dataLoaded, setDataLoaded] = useState(false); // Estado para rastrear se os dados foram carregados
 
+  const openDeleteConfirmationDialog = () => {
+    setDeleteConfirmationOpen(true);
+  };
+
+  const closeDeleteConfirmationDialog = () => {
+    setDeleteConfirmationOpen(false);
+  };
+
   useEffect(() => {
-    if (!dataLoaded) {
-      // Busque os dados de usuários apenas uma vez quando o componente é montado
-      const fetchUsuarios = async () => {
-        try {
-          const response = await axios.get('http://localhost:8080/Usuario');
-          if (response.status === 200) {
-            setRows(response.data);
-            setDataLoaded(true);
-          } else {
-            console.error('Erro ao buscar dados de usuários no backend.');
-          }
-        } catch (error) {
-          console.error('Erro ao conectar-se ao backend:', error);
+    const fetchUsuarios = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/Usuario');
+        if (response.status === 200) {
+          setRows(response.data);
+          setDataLoaded(true); // Marque os dados como carregados
+        } else {
+          console.error('Erro ao buscar dados de usuários no backend.');
         }
-      };
-
-      fetchUsuarios(); // Chame a função de busca de usuários aqui
-
-      // O restante do código que faz parte do useEffect permanece inalterado
+      } catch (error) {
+        console.error('Erro ao conectar-se ao backend:', error);
+      }
+    };
+    const fetchProjectMembers = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+        if (response.status === 200) {
+          const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
+          const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+          setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
+        } else if (response.status === 409) {
+          console.error('Erro ao buscar membros alocados ao projeto no backend.');
+        }
+      } catch (error) {
+        console.error('Erro ao conectar-se ao backend:', error);
+      }
+    };
+    if (!dataLoaded) {
+      // Se os dados não foram carregados, busque-os
+      fetchUsuarios();
+    } else {
+      // Se os dados foram carregados, busque os membros do projeto
+      fetchProjectMembers();
     }
   }, [projectId, allocationDataFetched, dataLoaded, allocatedUsers]);
-
   if (!dataLoaded) {
     // Se os dados não foram carregados, você pode exibir uma mensagem de carregamento
     return <p>Carregando dados...</p>;
@@ -65,14 +83,12 @@ export default function HeaderKanban() {
   const openAllocatedUsersDialog = () => {
     setShowAllocatedUsers(true);
   };
-
   function addError(error) {
     ToastError({
       text: error,
       title: 'Error!!',
     });
   }
-
   function addSucesso() {
     ToastSuccess({
       text: 'Membro adicionado com sucesso ao projeto.',
@@ -81,29 +97,26 @@ export default function HeaderKanban() {
     setEditOpen(false);
     setNewMembers([...newMembers, newMemberData]);
   }
-
   const openEditDialog = () => {
     setEditOpen(true);
   };
-
   const handleAddMemberClick = (userId) => {
     setSelectedUserId(userId); // Defina o ID do usuário selecionado
   };
-
   const addMemberToProject = async () => {
     if (selectedUserId) {
       const selectedUser = rows.find((usuario) => usuario.id === selectedUserId);
       setProjectMembers([...projectMembers, selectedUser]);
       setSelectedUserId(null);
-  
+
       // Envie os dados do novo membro para o backend
       const newMemberData = {
         usuario: { id: selectedUserId },
         projeto: { id: projectData.id },
       };
-  
+
       console.log(newMemberData);
-  
+
       try {
         const response = await axios.post('http://localhost:8080/Alocacao_projeto', newMemberData);
         if (response.status === 201) {
@@ -121,11 +134,10 @@ export default function HeaderKanban() {
       }
     }
   };
-  
+
   const filteredEmails = rows.filter((usuario) =>
     usuario.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   function formatMemberName(name) {
     if (name) {
       const names = name.split(" ");
@@ -139,6 +151,23 @@ export default function HeaderKanban() {
     }
   }
 
+  const confirmDeleteAllocation = async () => {
+    closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
+
+    try {
+      const response = await axios.delete(`http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`);
+      if (response.status === 204) {
+        // A alocação foi excluída com sucesso
+        console.log('Alocação excluída com sucesso.');
+        // Adicione qualquer lógica adicional após a exclusão, se necessário
+      } else if (response.status === 200) {
+        console.log('Alocação excluída com sucesso.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+
   return (
     <div className="container-header-kanban">
       <h3 className="nome-header-kanban">{projectData.titulo}</h3>
@@ -148,7 +177,6 @@ export default function HeaderKanban() {
       <div className="Lixo">
         <DeleteOutlineIcon></DeleteOutlineIcon>
       </div>
-
       <div className="integrantes-header-kanban">
         {allocatedUsers.map((user) => (
           <Avatar key={user.id}>{formatMemberName(user.nome)}</Avatar>
@@ -180,17 +208,13 @@ export default function HeaderKanban() {
             </div>
           </DialogContent>
           <DialogActions style={{ display: 'block' }}>
-            <Buttons
-              style={{ marginRight: 30 }}
-              onClick={() => deleteAllocation()}
-            >
+          <Buttons style={{ marginRight: 30 }} onClick={openDeleteConfirmationDialog}>
               Deletar
             </Buttons>
             <Buttons onClick={() => addMemberToProject()}>Adicionar</Buttons>
           </DialogActions>
         </Dialog>
         {/* Diálogo para mostrar usuários alocados */}
-
         <Dialog open={showAllocatedUsers} onClose={() => setShowAllocatedUsers(false)}>
           <DialogTitle>Usuários Alocados</DialogTitle>
           <DialogContent>
@@ -207,8 +231,19 @@ export default function HeaderKanban() {
             <Buttons onClick={() => setShowAllocatedUsers(false)}>Fechar</Buttons>
           </DialogActions>
         </Dialog>
+
+        {/* Diálogo de confirmação para exclusão */}
+        <Dialog open={deleteConfirmationOpen} onClose={closeDeleteConfirmationDialog}>
+          <DialogTitle>Confirmação de Exclusão</DialogTitle>
+          <DialogContent>
+            Tem certeza de que deseja excluir esta alocação?
+          </DialogContent>
+          <DialogActions>
+            <Buttons onClick={closeDeleteConfirmationDialog}>Cancelar</Buttons>
+            <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
+          </DialogActions>
+        </Dialog>
       </div>
     </div>
-
   );
 }
