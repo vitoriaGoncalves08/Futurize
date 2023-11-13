@@ -142,7 +142,7 @@ export default function TableC() {
       estado: estado.toUpperCase(),
       gestor: usuarioLogado,
     };
-    console.log(newRow);
+    // console.log(newRow);
 
     try {
       const response = await axios.post("http://localhost:8080/Projeto", newRow);
@@ -226,7 +226,7 @@ export default function TableC() {
   };
 
   const openProjectKanban = (project) => {
-    console.log('Dados do projeto:', project); // Verifique os dados do projeto
+    // console.log('Dados do projeto:', project); // Verifique os dados do projeto
     setProjectData(project); // Define os dados do projeto selecionado
     navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
   };

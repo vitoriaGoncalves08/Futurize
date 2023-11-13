@@ -6,6 +6,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import axios from 'axios'; // Importe o Axios
 import BoardContext from '../Board/context';
 import { Container, Label } from './styles';
+import Avatar from '@mui/material/Avatar';
 
 export default function Card({ index, listIndex }) {
   const ref = useRef();
@@ -69,12 +70,46 @@ export default function Card({ index, listIndex }) {
       .then((response) => {
         // Defina os dados das atividades no estado
         setActivityData(response.data);
-        console.log(activityData);
+        console.log("RD", activityData);
       })
       .catch((error) => {
         console.error('Erro ao carregar as atividades:', error);
       });
   }, []); // Certifique-se de incluir um array de dependências vazio para garantir que isso seja executado apenas uma vez após a montagem do componente
+
+  function formatEncerramento(encerramento) {
+    const encerramentoDate = new Date(encerramento);
+    const dia = encerramentoDate.getDate().toString().padStart(2, '0');
+    const mes = (encerramentoDate.getMonth() + 1).toString().padStart(2, '0');
+    const ano = encerramentoDate.getFullYear();
+    return `${dia}-${mes}-${ano}`;
+  }
+
+  function formatMemberName(name) {
+    if (name) {
+      const names = name.split(" ");
+      if (names.length === 1) {
+        return names[0].charAt(0).toUpperCase();
+      } else {
+        return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+      }
+    } else {
+      return ""; // Retornar uma string vazia se o nome for nulo ou indefinido
+    }
+  }
+
+  function getStatusTagColor(dificuldade) {
+    switch (dificuldade) {
+      case 'SIMPLES':
+        return 'yellow'; // ou qualquer outra cor que desejar
+      case 'MODERADA':
+        return 'orange'; // ou outra cor
+      case 'COMPLEXA':
+        return 'red'; // ou outra cor
+      default:
+        return 'gray'; // ou outra cor padrão
+    }
+  }
 
   return (
     <div ref={ref}>
@@ -82,19 +117,22 @@ export default function Card({ index, listIndex }) {
         {activityData && (
           <>
             <header>
-              {activityData && activityData.map((activity) => (
-                <Label key={activity.id}>{activity.titulo}</Label>
+              {activityData.map((activity) => (
+                <Label key={activity.id} color={getStatusTagColor(activity.dificuldade)}></Label>
               ))}
             </header>
-            <h5>{activityData.dificuldade}</h5>
             {activityData && activityData.map((activity) => (
-              <Label key={activity.id}>{activity.descricao}</Label>
+              <h5 key={activity.id}>{activity.titulo}</h5>
             ))}
+            {activityData && activityData.map((activity) => (
+              <p key={activity.id}>{activity.descricao || "Descrição não disponível"}</p>
+            ))}
+
             <div className="Data">
               <div className="Checkdata">
                 <CheckBoxIcon />
                 {activityData && activityData.map((activity) => (
-                  <Label key={activity.id}>{activity.encerramento}</Label>
+                  <p key={activity.id}>{formatEncerramento(activity.encerramento)}</p>
                 ))}
               </div>
               <div className="Prioridade">
@@ -111,9 +149,8 @@ export default function Card({ index, listIndex }) {
                 </p>
               </div>
               <div className="Perfil">
-                {/* <p>{activityData.responsavel && <img src={activityData.responsavel} alt="" />}</p> */}
                 {activityData && activityData.map((activity) => (
-                  <Label key={activity.id}>{activity.responsavel.nome}</Label>
+                  <Avatar key={activity.id}>{formatMemberName(activity.responsavel.nome)}</Avatar>
                 ))}
               </div>
             </div>

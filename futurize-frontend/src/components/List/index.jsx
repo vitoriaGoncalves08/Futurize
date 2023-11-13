@@ -145,8 +145,8 @@ export default function List({ data, index: listIndex }) {
           const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
           const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
           setAllocatedUsers(allocatedUserIds);
-          console.log("ids", allocatedUserIds);
-          console.log("data", allocatedUsersData);
+          // console.log("ids", allocatedUserIds);
+          // console.log("data", allocatedUsersData);
         } else if (response.status === 409) {
           console.error('Erro ao buscar membros alocados ao projeto no backend.');
         }
@@ -157,6 +157,10 @@ export default function List({ data, index: listIndex }) {
 
     // Certifique-se de que a busca de membros alocados seja acionada quando necessário
     fetchProjectMembers();
+    const intervalId = setInterval(fetchProjectMembers, 60000); // Fetch every minute
+
+    // Clean up the interval when the component is unmounted
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

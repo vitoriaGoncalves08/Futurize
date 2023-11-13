@@ -97,6 +97,14 @@ export default function HeaderKanban() {
     setEditOpen(false);
     setNewMembers([...newMembers, newMemberData]);
   }
+
+  function addSucessoGeneral(suc) {
+    ToastSuccess({
+      text: suc,
+      title: 'Sucesso!',
+    });
+    setEditOpen(false);
+  }
   const openEditDialog = () => {
     setEditOpen(true);
   };
@@ -115,7 +123,7 @@ export default function HeaderKanban() {
         projeto: { id: projectData.id },
       };
 
-      console.log(newMemberData);
+      // console.log(newMemberData);
 
       try {
         const response = await axios.post('http://localhost:8080/Alocacao_projeto', newMemberData);
@@ -153,7 +161,7 @@ export default function HeaderKanban() {
 
   const confirmDeleteAllocation = async () => {
     closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
-
+    addSucessoGeneral("Membro excluído com sucesso!");
     try {
       const response = await axios.delete(`http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`);
       if (response.status === 204) {

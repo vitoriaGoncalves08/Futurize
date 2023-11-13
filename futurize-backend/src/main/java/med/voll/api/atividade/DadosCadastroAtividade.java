@@ -13,7 +13,7 @@ import java.util.Date;
 
 public record DadosCadastroAtividade(
         @NotBlank
-        String titulo, 
+        String titulo,
         @NotBlank
         String descricao,
         @NotNull

@@ -56,8 +56,8 @@ public class Atividade {
         if(dadosAtualizarAtividade.titulo() != null){
             this.titulo = dadosAtualizarAtividade.titulo();
         }
-        if(dadosAtualizarAtividade.descricaco() != null){
-            this.descricao = dadosAtualizarAtividade.descricaco();
+        if(dadosAtualizarAtividade.descricao() != null){
+            this.descricao = dadosAtualizarAtividade.descricao();
         }
         if(dadosAtualizarAtividade.encerramento() != null){
             this.encerramento = dadosAtualizarAtividade.encerramento();

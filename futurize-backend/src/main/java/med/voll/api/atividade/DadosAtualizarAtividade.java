@@ -9,7 +9,7 @@ public record DadosAtualizarAtividade(
         @NotNull
         Long id,
         String titulo,
-        String descricaco,
+        String descricao,
         Date encerramento,
         Estado estado,
         Dificuldade dificuldade,

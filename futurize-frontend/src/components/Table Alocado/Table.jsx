@@ -62,7 +62,7 @@ export default function TableAlocado() {
         if (response.status === 200) {
           const allocatedUsersData = response.data.map((allocation) => allocation.usuario);
           const allocatedProjectData = response.data.map((allocation) => allocation.projeto);
-          console.log(allocatedProjectData);
+          // console.log(allocatedProjectData);
           
           // Atualize o estado rows com os projetos alocados
           const projectsInRows = allocatedProjectData.map((project) => ({
@@ -85,7 +85,7 @@ export default function TableAlocado() {
   }, [usuarioLogado]);
 
   const openProjectKanban = (project) => {
-    console.log('Dados do projeto:', project);
+    // console.log('Dados do projeto:', project);
     setProjectData(project);
     navigate(`/kanban/${project.id}`, { state: { projectData: project } });
   };
