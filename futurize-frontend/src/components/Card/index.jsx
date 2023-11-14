@@ -23,7 +23,7 @@ export default function Card({ index, listIndex }) {
   const [minutos, setMinutos] = useState(0);
   const [segundos, setSegundos] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [activityData, setActivityData] = useState(null); // Estado para armazenar os dados da atividade
+  const [activityData, setActivityData] = useState(null); // Estado para armazenar os dados da atividade    
 
   const [, drag] = useDrag({
     type: 'CARD',
@@ -71,18 +71,18 @@ export default function Card({ index, listIndex }) {
     setIsRunning(!isRunning);
   };
 
-  useEffect(() => {
-    // Realize a solicitação Axios apenas após a montagem do componente
-    axios.get(`http://localhost:8080/Atividade/${projectId}`) // Substitua pela URL correta do seu backend
-      .then((response) => {
-        // Defina os dados das atividades no estado
-        setActivityData(response.data);
-        console.log("RD", activityData);
-      })
-      .catch((error) => {
-        console.error('Erro ao carregar as atividades:', error);
-      });
-  }, []); // Certifique-se de incluir um array de dependências vazio para garantir que isso seja executado apenas uma vez após a montagem do componente
+useEffect(() => {
+  // Realize a solicitação Axios apenas após a montagem do componente
+  axios.get(`http://localhost:8080/Atividade/${projectId}`) // Substitua pela URL correta do seu backend
+    .then((response) => {
+      // Defina os dados das atividades no estado
+      setActivityData(response.data);
+      console.log("RD", activityData);
+    })
+    .catch((error) => {
+      console.error('Erro ao carregar as atividades:', error);
+    });
+}, [projectId]); 
 
   function formatEncerramento(encerramento) {
     const encerramentoDate = new Date(encerramento);
@@ -108,13 +108,13 @@ export default function Card({ index, listIndex }) {
   function getStatusTagColor(dificuldade) {
     switch (dificuldade) {
       case 'SIMPLES':
-        return 'yellow'; // ou qualquer outra cor que desejar
+        return 'yellow';
       case 'MODERADA':
-        return 'orange'; // ou outra cor
+        return 'orange';
       case 'COMPLEXA':
-        return 'red'; // ou outra cor
+        return 'red';
       default:
-        return 'gray'; // ou outra cor padrão
+        return 'gray';
     }
   }
 
