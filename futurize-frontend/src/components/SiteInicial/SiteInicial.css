@@ -41,15 +41,21 @@ body{
 nav {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   padding: 50px;
 }
   
-.LogoFuturize p {
+/* .LogoFuturize p {
   color: #3E3E3E;
   font-size: 26px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 8px;
+} */
+
+.LogoFuturize img {
+  width: 10rem;
+  display: flex;
 }
 
 .MenuItens, ul, li, a {

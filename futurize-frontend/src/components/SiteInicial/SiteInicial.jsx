@@ -4,7 +4,8 @@ import Buttons from '../Buttons/Buttons';
 import secao1 from '/assets/img/secao1.svg';
 import secao2 from '/assets/img/secao2.svg';
 import secao3 from '/assets/img/secao3.svg';
-import kanban from '/assets/img/kanban.svg';
+import secao4 from '/assets/img/secao4.svg';
+import logo from '/assets/img/logoProjeto.png';
 
 function SiteInicial() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function SiteInicial() {
   <div className="SiteInicial">
     <nav>
       <div className="LogoFuturize">
-        <p>FUTURIZE</p>
+        <img src={logo} alt="" />
       </div>
 
       <div className="MenuItens">
@@ -103,7 +104,7 @@ function SiteInicial() {
             Dentro da nossa plataforma, as tarefas são como peças de um quebra-cabeça que compõem o seu projeto. Elas podem ser criadas, atribuídas a membros da equipe e definidas com prazos claros.
           </p>
         </div>
-        <img src={kanban} alt="" />
+        <img src={secao4} alt="" />
       </div>
 
       <section className='secao'></section>
