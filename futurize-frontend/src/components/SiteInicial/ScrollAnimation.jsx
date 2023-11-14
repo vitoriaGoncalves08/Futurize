@@ -1,3 +1,6 @@
+// ScrollAnimation.jsx
+import React, { useEffect } from 'react';
+
 export const addScrollAnimation = () => {
   const handleLinkClick = (e) => {
     e.preventDefault();
