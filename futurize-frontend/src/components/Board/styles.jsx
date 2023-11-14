@@ -4,6 +4,7 @@ export const ContainerBoard = styled.div`
   display: flex;
   padding: 30px 0;
   height: calc(100vh - 102px);
+  width: 100%;
   overflow-x: auto;
   position: absolute;
   bottom: 0;

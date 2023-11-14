@@ -7,8 +7,15 @@ import axios from 'axios'; // Importe o Axios
 import BoardContext from '../Board/context';
 import { Container, Label } from './styles';
 import Avatar from '@mui/material/Avatar';
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Card({ index, listIndex }) {
+  const navigate = useNavigate();
+  const { projectId } = useParams();
+  const location = useLocation();
+
   const ref = useRef();
   const { move } = useContext(BoardContext);
 
@@ -66,7 +73,7 @@ export default function Card({ index, listIndex }) {
 
   useEffect(() => {
     // Realize a solicitação Axios apenas após a montagem do componente
-    axios.get('http://localhost:8080/Atividade') // Substitua pela URL correta do seu backend
+    axios.get(`http://localhost:8080/Atividade/${projectId}`) // Substitua pela URL correta do seu backend
       .then((response) => {
         // Defina os dados das atividades no estado
         setActivityData(response.data);

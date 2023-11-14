@@ -124,7 +124,7 @@ export default function List({ data, index: listIndex }) {
 
     try {
       console.log("atividade", activityData);
-      const response = await axios.post('http://localhost:8080/Atividade', activityData);
+      const response = await axios.post(`http://localhost:8080/Atividade`, activityData);
 
       if (response.status === 200) {
         addSucesso('Atividade adicionada com sucesso');
@@ -137,32 +137,55 @@ export default function List({ data, index: listIndex }) {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchProjectMembers = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+  //       if (response.status === 200) {
+  //         const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
+  //         const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+  //         setAllocatedUsers(allocatedUserIds);
+  //         // console.log("ids", allocatedUserIds);
+  //         // console.log("data", allocatedUsersData);
+  //       } else if (response.status === 409) {
+  //         console.error('Erro ao buscar membros alocados ao projeto no backend.');
+  //       }
+  //     } catch (error) {
+  //       console.error('Erro ao conectar-se ao backend:', error);
+  //     }
+  //   };
+
+  //   // Certifique-se de que a busca de membros alocados seja acionada quando necessário
+  //   fetchProjectMembers();
+  //   const intervalId = setInterval(fetchProjectMembers, 60000); // Fetch every minute
+
+  //   // Clean up the interval when the component is unmounted
+  //   return () => clearInterval(intervalId);
+  // }, []);
+
+
   useEffect(() => {
-    const fetchProjectMembers = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
-        if (response.status === 200) {
-          const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
-          const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
-          setAllocatedUsers(allocatedUserIds);
-          // console.log("ids", allocatedUserIds);
-          // console.log("data", allocatedUsersData);
-        } else if (response.status === 409) {
-          console.error('Erro ao buscar membros alocados ao projeto no backend.');
+    const fetchActivities = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/Atividade/${projectId}`);
+            if (response.status === 200) {
+                const activities = response.data.map(activity => ({
+                    id: activity.id,
+                    titulo: activity.titulo,
+                    descricao: activity.descricao,
+                    // ... outras propriedades que você deseja incluir
+                }));
+                setRows(activities);
+            } else {
+                console.error('Erro ao buscar atividades');
+            }
+        } catch (error) {
+            console.error('Erro ao conectar-se ao backend:', error);
         }
-      } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
-      }
     };
 
-    // Certifique-se de que a busca de membros alocados seja acionada quando necessário
-    fetchProjectMembers();
-    const intervalId = setInterval(fetchProjectMembers, 60000); // Fetch every minute
-
-    // Clean up the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, []);
-
+    fetchActivities();
+}, [projectId]);
   return (
     <Container data-done={data.done ? 'true' : 'false'}>
       <header>
