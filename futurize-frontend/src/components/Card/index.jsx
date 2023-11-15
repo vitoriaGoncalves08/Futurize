@@ -1,29 +1,15 @@
-import React, { useRef, useContext, useState, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react'; // Import useContext
 import { useDrag, useDrop } from 'react-dnd';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import axios from 'axios'; // Importe o Axios
-import BoardContext from '../Board/context';
 import { Container, Label } from './styles';
 import Avatar from '@mui/material/Avatar';
-import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import BoardContext from '../Board/context';
 
-export default function Card({ index, listIndex }) {
-  const navigate = useNavigate();
-  const { projectId } = useParams();
-  const location = useLocation();
-
+export default function Card({ index, listIndex, data }) {
   const ref = useRef();
   const { move } = useContext(BoardContext);
-
-  const [horas, setHoras] = useState(0);
-  const [minutos, setMinutos] = useState(0);
-  const [segundos, setSegundos] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [activityData, setActivityData] = useState(null); // Estado para armazenar os dados da atividade    
 
   const [, drag] = useDrag({
     type: 'CARD',
@@ -45,6 +31,11 @@ export default function Card({ index, listIndex }) {
 
   drag(ref);
   drop(ref);
+
+  const [horas, setHoras] = useState(0);
+  const [minutos, setMinutos] = useState(0);
+  const [segundos, setSegundos] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -71,19 +62,6 @@ export default function Card({ index, listIndex }) {
     setIsRunning(!isRunning);
   };
 
-useEffect(() => {
-  // Realize a solicitação Axios apenas após a montagem do componente
-  axios.get(`http://localhost:8080/Atividade/${projectId}`) // Substitua pela URL correta do seu backend
-    .then((response) => {
-      // Defina os dados das atividades no estado
-      setActivityData(response.data);
-      console.log("RD", activityData);
-    })
-    .catch((error) => {
-      console.error('Erro ao carregar as atividades:', error);
-    });
-}, [projectId]); 
-
   function formatEncerramento(encerramento) {
     const encerramentoDate = new Date(encerramento);
     const dia = encerramentoDate.getDate().toString().padStart(2, '0');
@@ -101,7 +79,7 @@ useEffect(() => {
         return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
       }
     } else {
-      return ""; // Retornar uma string vazia se o nome for nulo ou indefinido
+      return ""; // Return an empty string if the name is null or undefined
     }
   }
 
@@ -120,49 +98,35 @@ useEffect(() => {
 
   return (
     <div ref={ref}>
-      <Container isDragging={activityData ? false : true}>
-        {activityData && (
-          <>
-            <header>
-              {activityData.map((activity) => (
-                <Label key={activity.id} color={getStatusTagColor(activity.dificuldade)}></Label>
-              ))}
-            </header>
-            {activityData && activityData.map((activity) => (
-              <h5 key={activity.id}>{activity.titulo}</h5>
-            ))}
-            {activityData && activityData.map((activity) => (
-              <p key={activity.id}>{activity.descricao || "Descrição não disponível"}</p>
-            ))}
+      <Container isDragging={false}>
+        <>
+          <header>
+            <Label color={getStatusTagColor(data.dificuldade)}></Label>
+          </header>
+          <h5>{data.titulo}</h5>
+          <p>{data.descricao || "Descrição não disponível"}</p>
 
-            <div className="Data">
-              <div className="Checkdata">
-                <CheckBoxIcon />
-                {activityData && activityData.map((activity) => (
-                  <p key={activity.id}>{formatEncerramento(activity.encerramento)}</p>
-                ))}
-              </div>
-              <div className="Prioridade">
-                {activityData && activityData.map((activity) => (
-                  <Label key={activity.id}>{activity.prioridade}</Label>
-                ))}
-              </div>
+          <div className="Data">
+            <div className="Checkdata">
+              <CheckBoxIcon />
+              <p>{formatEncerramento(data.encerramento)}</p>
             </div>
-            <div className="TempoPerfil">
-              <div className="Pessoa" onClick={handlePlayClick}>
-                {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
-                <p>
-                  {String(horas).padStart(2, '0')}:{String(minutos).padStart(2, '0')}:{String(segundos).padStart(2, '0')}
-                </p>
-              </div>
-              <div className="Perfil">
-                {activityData && activityData.map((activity) => (
-                  <Avatar key={activity.id}>{formatMemberName(activity.responsavel.nome)}</Avatar>
-                ))}
-              </div>
+            <div className="Prioridade">
+              <Label>{data.prioridade}</Label>
             </div>
-          </>
-        )}
+          </div>
+          <div className="TempoPerfil">
+            <div className="Pessoa" onClick={handlePlayClick}>
+              {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
+              <p>
+                {String(horas).padStart(2, '0')}:{String(minutos).padStart(2, '0')}:{String(segundos).padStart(2, '0')}
+              </p>
+            </div>
+            <div className="Perfil">
+              <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
+            </div>
+          </div>
+        </>
       </Container>
     </div>
   );

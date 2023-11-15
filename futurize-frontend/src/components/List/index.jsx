@@ -162,7 +162,7 @@
 //     // Clean up the interval when the component is unmounted
 //     return () => clearInterval(intervalId);
 //   }, []);
-  
+
 
 
 // //   useEffect(() => {
@@ -481,16 +481,6 @@ export default function List({ data, index: listIndex }) {
       }
     };
 
-    // Certifique-se de que a busca de membros alocados seja acionada quando necessário
-    fetchProjectMembers();
-    const intervalId = setInterval(fetchProjectMembers, 60000); // Fetch every minute
-
-    // Clean up the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    // Função para buscar as listas da API
     const fetchLists = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/Atividade/${projectId}`); // Substitua pela sua URL de API
@@ -503,10 +493,15 @@ export default function List({ data, index: listIndex }) {
         console.error('Erro ao conectar-se ao backend:', error);
       }
     };
-
-    // Chamamos a função para buscar as listas
     fetchLists();
-  }, []); // A dependência vazia significa que essa chamada ocorrerá apenas uma vez, semelhante ao componentDidMount
+    // Certifique-se de que a busca de membros alocados seja acionada quando necessário
+    fetchProjectMembers();
+    const intervalId = setInterval(fetchProjectMembers, 60000); // Fetch every minute
+
+    // Clean up the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, []);
+
 
   return (
     <Container data-done={data.done ? 'true' : 'false'}>
@@ -538,7 +533,7 @@ export default function List({ data, index: listIndex }) {
         </IconButton>
         <DialogContent>
           <form onSubmit={handleCreateTask}>
-          <Input
+            <Input
               id="titulo-kanban"
               type="text"
               name="titulo"
@@ -624,15 +619,16 @@ export default function List({ data, index: listIndex }) {
       </div>
 
       <ul>
-        {data.cards.map((card, index) => (
+        {lists.map((activityData) => (
           <Card
-            key={card.id}
+            key={activityData.id}
             listIndex={listIndex}
-            index={index}
-            data={card}
+            index={activityData.id} // Use a unique identifier for the index
+            data={activityData}
           />
         ))}
       </ul>
+
     </Container>
   );
 }
