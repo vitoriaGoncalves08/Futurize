@@ -19,13 +19,13 @@ body{
 }
 
 /* Estilos da barra de rolagem */
-&::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 10px;
   height: 10px;
   padding: 5px;
 }
 
-&::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #F4F4F4;
   position: absolute;
   top: 0;
@@ -33,7 +33,7 @@ body{
   bottom: 0;
 }
 
-&::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #79A2FE;
   border-radius: 10px;
 }
