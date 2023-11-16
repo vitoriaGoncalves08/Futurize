@@ -235,7 +235,6 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                 value={formTask.dificuldade}
                 onChange={(e) => handleInputChange(e, 'dificuldade')}
               >
-                <MenuItem value=" ">Selecione a dificuldade</MenuItem>
                 <MenuItem value={'SIMPLES'}>Simples</MenuItem>
                 <MenuItem value={'MODERADA'}>Moderada</MenuItem>
                 <MenuItem value={'COMPLEXA'}>Complexa</MenuItem>
@@ -287,7 +286,6 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                   value={formTask.estado}
                   onChange={(e) => handleInputChange(e, 'estado')}
                 >
-                  <MenuItem value=" ">Selecione o estado</MenuItem>
                   <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
                   <MenuItem value={'SPRINT_BACKLOG'}>Sprint Backlog</MenuItem>
                   <MenuItem value={'DEVELOPMENT'}>Development</MenuItem>

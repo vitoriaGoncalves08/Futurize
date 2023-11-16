@@ -108,7 +108,7 @@ export default function Card({ index, listIndex, data }) {
   function getStatusTagColor(dificuldade) {
     switch (dificuldade) {
       case 'SIMPLES':
-        return 'yellow';
+        return 'green';
       case 'MODERADA':
         return 'orange';
       case 'COMPLEXA':
