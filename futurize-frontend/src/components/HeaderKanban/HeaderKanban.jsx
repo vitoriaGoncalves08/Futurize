@@ -56,10 +56,16 @@ export default function HeaderKanban() {
     };
     const fetchProjectMembers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+        const response = await axios.get(
+          `http://localhost:8080/Alocacao_projeto/${projectId}`
+        );
         if (response.status === 200) {
-          const allocatedUserIds = response.data.map((allocation) => allocation.usuario.id);
-          const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+          const allocatedUserIds = response.data.map(
+            (allocation) => allocation.usuario.id
+          );
+          const allocatedUsersData = rows.filter((usuario) =>
+            allocatedUserIds.includes(usuario.id)
+          );
           setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
         } else if (response.status === 409) {
           console.error('Erro ao buscar membros alocados ao projeto no backend.');
@@ -75,7 +81,7 @@ export default function HeaderKanban() {
       // Se os dados foram carregados, busque os membros do projeto
       fetchProjectMembers();
     }
-  }, [projectId, allocationDataFetched, dataLoaded, allocatedUsers]);
+  }, [projectId, allocationDataFetched, dataLoaded]);
   if (!dataLoaded) {
     // Se os dados não foram carregados, você pode exibir uma mensagem de carregamento
     return <p>Carregando dados...</p>;
@@ -126,7 +132,10 @@ export default function HeaderKanban() {
       // console.log(newMemberData);
 
       try {
-        const response = await axios.post('http://localhost:8080/Alocacao_projeto', newMemberData);
+        const response = await axios.post(
+          'http://localhost:8080/Alocacao_projeto',
+          newMemberData
+        );
         if (response.status === 201) {
           // A alocação foi criada com sucesso
           addSucesso();
@@ -148,22 +157,24 @@ export default function HeaderKanban() {
   );
   function formatMemberName(name) {
     if (name) {
-      const names = name.split(" ");
+      const names = name.split(' ');
       if (names.length === 1) {
         return names[0].charAt(0).toUpperCase();
       } else {
         return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
       }
     } else {
-      return ""; // Retornar uma string vazia se o nome for nulo ou indefinido
+      return ''; // Retornar uma string vazia se o nome for nulo ou indefinido
     }
   }
 
   const confirmDeleteAllocation = async () => {
     closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
-    addSucessoGeneral("Membro excluído com sucesso!");
+    addSucessoGeneral('Membro excluído com sucesso!');
     try {
-      const response = await axios.delete(`http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`);
+      const response = await axios.delete(
+        `http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`
+      );
       if (response.status === 204) {
         // A alocação foi excluída com sucesso
         console.log('Alocação excluída com sucesso.');
@@ -216,14 +227,20 @@ export default function HeaderKanban() {
             </div>
           </DialogContent>
           <DialogActions style={{ display: 'block' }}>
-          <Buttons style={{ marginRight: 30 }} onClick={openDeleteConfirmationDialog}>
+            <Buttons
+              style={{ marginRight: 30 }}
+              onClick={openDeleteConfirmationDialog}
+            >
               Deletar
             </Buttons>
             <Buttons onClick={() => addMemberToProject()}>Adicionar</Buttons>
           </DialogActions>
         </Dialog>
         {/* Diálogo para mostrar usuários alocados */}
-        <Dialog open={showAllocatedUsers} onClose={() => setShowAllocatedUsers(false)}>
+        <Dialog
+          open={showAllocatedUsers}
+          onClose={() => setShowAllocatedUsers(false)}
+        >
           <DialogTitle>Usuários Alocados</DialogTitle>
           <DialogContent>
             <ul>
@@ -241,7 +258,10 @@ export default function HeaderKanban() {
         </Dialog>
 
         {/* Diálogo de confirmação para exclusão */}
-        <Dialog open={deleteConfirmationOpen} onClose={closeDeleteConfirmationDialog}>
+        <Dialog
+          open={deleteConfirmationOpen}
+          onClose={closeDeleteConfirmationDialog}
+        >
           <DialogTitle>Confirmação de Exclusão</DialogTitle>
           <DialogContent>
             Tem certeza de que deseja excluir esta alocação?

@@ -8,8 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
 import { format } from 'date-fns';
-import axios from "axios";
-import useAuth from "../../hooks/useAuth";
+import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import Buttons from '../Buttons/Buttons';
 
@@ -17,9 +17,9 @@ export default function TableAlocado() {
   const [allocatedProjects, setAllocatedProjects] = useState([]); // Atualize o nome da variável para allocatedProjects
   const [open, setOpen] = useState(false);
   const [projectData, setProjectData] = useState(null);
-  const [titulo, setTitulo] = useState("");
-  const [inicio, setinicio] = useState("");
-  const [estado, setEstado] = useState("");
+  const [titulo, setTitulo] = useState('');
+  const [inicio, setinicio] = useState('');
+  const [estado, setEstado] = useState('');
   const [error, setError] = useState();
   const [rows, setRows] = useState([]);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -58,12 +58,18 @@ export default function TableAlocado() {
   useEffect(() => {
     const fetchProjectMembers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogado}`);
+        const response = await axios.get(
+          `http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogado}`
+        );
         if (response.status === 200) {
-          const allocatedUsersData = response.data.map((allocation) => allocation.usuario);
-          const allocatedProjectData = response.data.map((allocation) => allocation.projeto);
+          const allocatedUsersData = response.data.map(
+            (allocation) => allocation.usuario
+          );
+          const allocatedProjectData = response.data.map(
+            (allocation) => allocation.projeto
+          );
           // console.log(allocatedProjectData);
-          
+
           // Atualize o estado rows com os projetos alocados
           const projectsInRows = allocatedProjectData.map((project) => ({
             id: project.id,
@@ -91,20 +97,28 @@ export default function TableAlocado() {
   };
 
   return (
-    <div className='table'>
-      <div className='meus-projetos'>
+    <div className="table">
+      <div className="meus-projetos">
         <h1 className="subtitulo">Projetos que participo</h1>
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: '370px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
+      <TableContainer
+        component={Paper}
+        style={{
+          maxHeight: '370px',
+          minHeight: '50px',
+          overflowY: 'auto',
+          overflowX: 'auto',
+        }}
+      >
         {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
         <Table sx={{ minWidth: 1500 }} aria-label="simple table">
           <TableHead>
-            <TableRow className='row'>
-              <TableCell className='cel'>TÍtulo</TableCell>
-              <TableCell className='cel'>Data de Início</TableCell>
-              <TableCell className='cel'>Data de Término</TableCell>
-              <TableCell className='cel'>Status</TableCell>
-              <TableCell className='cel'>Ações</TableCell>
+            <TableRow className="row">
+              <TableCell className="cel">TÍtulo</TableCell>
+              <TableCell className="cel">Data de Início</TableCell>
+              <TableCell className="cel">Data de Término</TableCell>
+              <TableCell className="cel">Status</TableCell>
+              <TableCell className="cel">Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -117,7 +131,9 @@ export default function TableAlocado() {
                   {row.titulo}
                 </TableCell>
                 <TableCell>{format(new Date(row.inicio), 'dd-MM-yyyy')}</TableCell>
-                <TableCell>{format(new Date(row.encerramento), 'dd-MM-yyyy')}</TableCell>
+                <TableCell>
+                  {format(new Date(row.encerramento), 'dd-MM-yyyy')}
+                </TableCell>
                 <TableCell>
                   <span className={`tag-status ${getStatusTagClass(row.estado)}`}>
                     {row.estado}
