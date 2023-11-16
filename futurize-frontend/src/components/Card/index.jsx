@@ -11,26 +11,48 @@ export default function Card({ index, listIndex, data }) {
   const ref = useRef();
   const { move } = useContext(BoardContext);
 
-  const [, drag] = useDrag({
-    type: 'CARD',
-    item: { type: 'CARD', index, listIndex },
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'CARD', index, listIndex ,
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
 
-  const [, drop] = useDrop({
+  const [, dropRef] = useDrop({
     accept: 'CARD',
-    hover: (item, monitor) => {
-      if (item.index === index && item.listIndex === listIndex) {
+    hover(item, monitor) {
+      const draggedListIndex = item.listIndex;
+      const targetListIndex = listIndex;
+
+      const draggedIndex = item.index;
+      const targetIndex = index;
+
+      if (draggedIndex === targetIndex && draggedListIndex === targetListIndex) {
         return;
       }
 
-      move(item.listIndex, listIndex, item.index, index);
-      item.index = index;
-      item.listIndex = listIndex;
-    },
-  });
+      const targetSize = ref.current.getBoundingClientRect();
+      const targetCenter = (targetSize.bottom - targetSize.top) / 2;
 
-  drag(ref);
-  drop(ref);
+      const draggedOffset = monitor.getClientOffset();
+      const draggedTop = draggedOffset.y - targetSize.top;
+
+      if (draggedIndex < targetIndex && draggedTop < targetCenter) {
+        return;
+      }
+
+      if (draggedIndex > targetIndex && draggedTop > targetCenter) {
+        return;
+      }
+
+      move(draggedListIndex, targetListIndex, draggedIndex, targetIndex);
+
+      item.index = targetIndex;
+      item.listIndex = targetListIndex;
+    }
+  })
+
+  dragRef(dropRef(ref));
 
   const [horas, setHoras] = useState(0);
   const [minutos, setMinutos] = useState(0);
@@ -97,8 +119,8 @@ export default function Card({ index, listIndex, data }) {
   }
 
   return (
-    <div ref={ref}>
-      <Container isDragging={false}>
+    <div>
+      <Container ref={ref} isDragging={isDragging}>
         <>
           <header>
             <Label color={getStatusTagColor(data.dificuldade)}></Label>
