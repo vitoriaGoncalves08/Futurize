@@ -6,13 +6,23 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { Container, Label } from './styles';
 import Avatar from '@mui/material/Avatar';
 import BoardContext from '../Board/context';
+import Buttons from '../Buttons/Buttons';
+import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios';
+import { ToastSuccess, ToastError } from '../Alert/Toast';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export default function Card({ index, listIndex, data }) {
   const ref = useRef();
   const { move } = useContext(BoardContext);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  
 
   const [{ isDragging }, dragRef] = useDrag({
-    type: 'CARD', index, listIndex ,
+    type: 'CARD', index, listIndex,
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
@@ -118,12 +128,56 @@ export default function Card({ index, listIndex, data }) {
     }
   }
 
+  const openDeleteConfirmationDialog = () => {
+    setDeleteConfirmationOpen(true);
+  };
+
+  const closeDeleteConfirmationDialog = () => {
+    setDeleteConfirmationOpen(false);
+  };
+
+  function addSucessoGeneral(suc) {
+    ToastSuccess({
+      text: suc,
+      title: 'Sucesso!',
+    });
+    setDeleteConfirmationOpen(false);
+  }
+
+  const confirmDeleteAllocation = async (e) => {
+    e.preventDefault();
+    closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
+    addSucessoGeneral('Membro excluído com sucesso!');
+
+    try {
+      // Certifique-se de ter o 'id' da atividade disponível em 'data'
+      const idToDelete = data.id;
+      console.log(idToDelete);
+
+      if (!idToDelete) {
+        console.error("ID da atividade não encontrado");
+        return;
+      }
+
+      // Faça a chamada de API para excluir a atividade no backend
+      await axios.delete(`http://localhost:8080/Atividade/${idToDelete}`);
+
+      console.log('Atividade excluída com sucesso!');
+    } catch (error) {
+      console.error('Erro ao excluir a atividade:', error);
+    }
+  };
+
   return (
     <div>
       <Container ref={ref} isDragging={isDragging}>
         <>
           <header>
             <Label color={getStatusTagColor(data.dificuldade)}></Label>
+            <button onClick={openDeleteConfirmationDialog}>
+              <DeleteIcon />
+            </button>
+
           </header>
           <h5>{data.titulo}</h5>
           <p>{data.descricao || "Descrição não disponível"}</p>
@@ -150,6 +204,20 @@ export default function Card({ index, listIndex, data }) {
           </div>
         </>
       </Container>
+        {/* Diálogo de confirmação para exclusão */}
+        <Dialog
+          open={deleteConfirmationOpen}
+          onClose={closeDeleteConfirmationDialog}
+        >
+          <DialogTitle>Confirmação de Exclusão</DialogTitle>
+          <DialogContent>
+            Tem certeza de que deseja excluir esta alocação?
+          </DialogContent>
+          <DialogActions>
+            <Buttons onClick={closeDeleteConfirmationDialog}>Cancelar</Buttons>
+            <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
+          </DialogActions>
+        </Dialog>
     </div>
   );
 }

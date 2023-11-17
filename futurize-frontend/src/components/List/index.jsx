@@ -144,6 +144,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       if (response.status === 200) {
         addSucesso('Atividade adicionada com sucesso');
         handleClose();
+        setTasks([...tasks, response.data]); 
       } else {
         console.error('Erro ao adicionar a atividade');
       }
