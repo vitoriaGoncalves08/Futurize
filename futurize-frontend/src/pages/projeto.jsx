@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import SideBar from '../components/SideBar/SideBar';
 import Table from '../components/Table/Table';
+import TableAlocado from '../components/Table Alocado/Table';
 
 export default function Home() {
   const { signout } = useAuth();
@@ -15,9 +16,10 @@ export default function Home() {
   };
   return (
     <>
-      <Header />
+      <Header style={{overflowY: 'auto'}}/>
       <SideBar>
         <Table />
+        <TableAlocado />
       </SideBar>
     </>
   );

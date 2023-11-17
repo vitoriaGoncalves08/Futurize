@@ -42,6 +42,7 @@ export default function TableC() {
   const navigate = useNavigate();
   const { getLoginUser } = useAuth();
   const usuarioLogado = getLoginUser();
+  const [allocatedUsers, setAllocatedUsers] = useState([]);
 
   const handleClickOpen = () => {
     // Limpa os campos do formulário
@@ -141,7 +142,7 @@ export default function TableC() {
       estado: estado.toUpperCase(),
       gestor: usuarioLogado,
     };
-    console.log(newRow);
+    // console.log(newRow);
 
     try {
       const response = await axios.post("http://localhost:8080/Projeto", newRow);
@@ -223,11 +224,40 @@ export default function TableC() {
     setEditProjectData(project);
     setEditOpen(true);
   };
+
   const openProjectKanban = (project) => {
-    console.log('Dados do projeto:', project); // Verifique os dados do projeto
+    // console.log('Dados do projeto:', project); // Verifique os dados do projeto
     setProjectData(project); // Define os dados do projeto selecionado
     navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
   };
+
+  const addMemberToProject = () => {
+    if (selectedUserId) {
+      const selectedUser = rows.find((usuario) => usuario.id === selectedUserId);
+      const newMemberData = {
+        usuario: { id: selectedUserId },
+        projeto: { id: projectData.id },
+      };
+
+      axios
+        .post('http://localhost:8080/Alocacao_projeto', newMemberData)
+        .then((response) => {
+          if (response.status === 200) {
+            addSucesso();
+            setEditOpen(false);
+
+            // Atualize o estado projectMembers após uma alocação bem-sucedida
+            setProjectMembers([...projectMembers, selectedUser]);
+          } else {
+            addError();
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao conectar-se ao backend:', error);
+        });
+    }
+  };
+
   return (
     <div className='table'>
       <div className='meus-projetos'>
@@ -236,7 +266,7 @@ export default function TableC() {
           +
         </Buttons>
       </div>
-      <TableContainer component={Paper} style={{ maxHeight: '650px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
+      <TableContainer component={Paper} style={{ maxHeight: '370px', minHeight: '50px', overflowY: 'auto', overflowX: 'auto' }}>
         {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
         <Table sx={{ minWidth: 1500 }} aria-label="simple table">
           <TableHead>

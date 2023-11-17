@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -27,9 +28,12 @@ public class AtividadeController {
     }
 
     @CrossOrigin("*")
-    @GetMapping
-    public List<DadosListagemAtividade> listarAtividade(){
-        return repository.findAll().stream().map(DadosListagemAtividade::new).toList();
+    @GetMapping("/{id}")
+    public List<DadosListagemAtividade> listarAtividade(@PathVariable Long id){
+        return repository.findByProjeto_Id(id)
+                .stream()
+                .map(DadosListagemAtividade::new)
+                .collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")

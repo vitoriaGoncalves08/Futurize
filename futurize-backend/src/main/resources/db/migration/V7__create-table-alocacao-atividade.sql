@@ -6,6 +6,6 @@ CREATE TABLE alocacao_atividade (
     id_atividade INT,
     id_usuario INT,
     CONSTRAINT id_projeto_alocacao_atividade FOREIGN KEY (id_atividade) REFERENCES futurize.atividade(id),
-    CONSTRAINT id_usuario_alocaco_atividade FOREIGN KEY (id_usuario) REFERENCES futurize.usuarios(id),
+    CONSTRAINT id_usuario_alocaco_atividade FOREIGN KEY (id_usuario) REFERENCES futurize.usuario(id),
     primary key (id)
 )

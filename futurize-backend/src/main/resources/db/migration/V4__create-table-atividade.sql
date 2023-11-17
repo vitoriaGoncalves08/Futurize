@@ -6,6 +6,8 @@ CREATE TABLE atividade(
      encerramento DATE NOT NULL,
      estado varchar(100) not null,
      id_projeto INT,
+     responsavel INT,
      CONSTRAINT id_projeto_atividade FOREIGN KEY (id_projeto) REFERENCES futurize.projeto(id),
+     CONSTRAINT responsavel FOREIGN KEY (responsavel) REFERENCES futurize.usuario(id),
      primary key (id)
 );

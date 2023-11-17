@@ -2,8 +2,11 @@ package med.voll.api.atividade;
 
 public enum Estado {
     BACKLOG,
-    TO_DO,
-    DESENVOLVIMENTO,
-    FEITO
-
+    SPRINT_BACKLOG,
+    DEVELOPMENT,
+    DONE_DEVELOPMENT,
+    TEST,
+    DONE_TEST,
+    REWORK,
+    DONE
 }
