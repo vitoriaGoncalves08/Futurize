@@ -1,6 +1,12 @@
 :root {
   background-color: var(--found-light-blue);
   font-family: var(--font-family-sans-serif);
+
+  --primary: #407BFF;
+  --primary-white: #6AC2FF;
+  --secondary: #F5F8FF;
+  --secondary-menu: #79A2FE;
+  --font-dark: #3E3E3E;
 }
 
 html{
@@ -26,7 +32,7 @@ body{
 }
 
 ::-webkit-scrollbar-track {
-  background: #F4F4F4;
+  background: var(--secondary);
   position: absolute;
   top: 0;
   right: 0;
@@ -34,7 +40,7 @@ body{
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #79A2FE;
+  background: var(--secondary-menu);
   border-radius: 10px;
 }
 
@@ -63,7 +69,7 @@ nav {
   list-style: none;
   gap: 35px;
   font-size: 20px;
-  color: #3e3e3e;
+  color: var(--font-dark);
   text-decoration: none;
 }
 
@@ -82,7 +88,7 @@ nav {
   font-weight: 800;
   line-height: 70px;
   text-transform: uppercase;
-  background-image: linear-gradient(to right, #407BFF, #6AC2FF);
+  background-image: linear-gradient(to right, var(--primary), var(--primary-white));
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
@@ -103,24 +109,28 @@ nav {
   top: 100vh;
 }
 
-.secao{
+.Secao{
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 100%;
   height: 400px;
 }
 
-.texto{
+.Texto{
   width: 50%;
+  color: #3E3E3E;
 }
 
-.secao img{
+.Secao img {
   height: 400px;
 }
 
-  /* Estilos para telas de 370px */
+#sobre{
+  border: 2px solid #000;
+}
+
+/* Estilos para telas de 370px */
 @media (max-width: 370px) {
   .HeroContent p {
     font-size: 36px;

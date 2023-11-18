@@ -55,8 +55,8 @@ function SiteInicial() {
     </div>
 
     <div className='MainContent'>
-      <div id='funciona' className='secao'>
-        <div className="texto">
+      <div id='funciona' className='Secao'>
+        <div className="Texto">
           <h1> Desperte o potencial máximo dos seus projetos</h1>
           <p>
             Transforme o jeito de gerenciar projetos! Visualize e organize tarefas de forma intuitiva, com atualizações em tempo real e colaboração eficaz em equipe. Personalize conforme sua necessidade e alcance o sucesso com facilidade. Experimente a revolução Kanban hoje!
@@ -65,10 +65,10 @@ function SiteInicial() {
         <img src={secao1} alt="" />
       </div>
 
-      <section className='secao'></section>
+      <section className='Secao'></section>
 
-      <div id='modelos' className='secao'>
-        <div className="texto">
+      <div id='modelos' className='Secao'>
+        <div className="Texto">
           <h1>Personalize o seu fluxo de trabalho e ajuste conforme a necessidade do seu projeto!</h1>
           <p>
             O Kanban é como um quadro de tarefas virtual, onde você visualiza e move suas atividades de uma etapa para outra. Imagine post-its digitais que representam suas tarefas. Arraste e solte para mudar o status de: "A fazer" para "Em progresso" e finalmente para "Concluído". Simples assim!
@@ -77,10 +77,10 @@ function SiteInicial() {
         <img src={secao2} alt="" />
       </div>
 
-      <section className='secao'></section>
+      <section className='Secao'></section>
 
-      <div id='projetos' className='secao'>
-        <div className="texto">
+      <div id='projetos' className='Secao'>
+        <div className="Texto">
           <h1>Organize-se e alcance o sucesso de forma rápida e divertida. </h1>
           <p>
             A nossa plataforma permite que você defina metas, atribua tarefas e estabeleça prazos de maneira descomplicada. Imagine reunir sua equipe em um ambiente digital onde todos têm uma visão clara do que precisa ser feito.
@@ -92,10 +92,10 @@ function SiteInicial() {
         <img src={secao3} alt="" />
       </div>
 
-      <section className='secao'></section>
+      <section className='Secao'></section>
 
-      <div id='tarefas' className='secao'>
-        <div className="texto">
+      <div id='tarefas' className='Secao'>
+        <div className="Texto">
           <h1>A simplicidade do arrastar e soltar </h1>
           <p>
             Já imaginou ter total controle sobre o que precisa ser feito? Por quem e até quando?
@@ -107,10 +107,10 @@ function SiteInicial() {
         <img src={secao4} alt="" />
       </div>
 
-      <section className='secao'></section>
+      <section className='Secao'></section>
 
-      <div id='sobre' className='secao'>
-        <div className="texto">
+      <div id='sobre' className='Secao'>
+        <div className="Texto">
           <h1>Sobre nós</h1>
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis animi non quis nihil suscipit pariatur, vero veniam ab tempora nobis blanditiis illum autem laborum quod exercitationem debitis laudantium. Distinctio, omnis?</p>
         </div>
