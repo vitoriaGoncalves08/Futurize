@@ -55,6 +55,20 @@ export const Container = styled.div`
     border: 1px solid;
     margin-top: 7px;
   }
+  .acoes-card {
+    align-items: center;
+  }
+  .edit-card{
+    color: #407BFF;
+    cursor: pointer;
+  }
+  .delete-card{
+    color: #407BFF;
+    margin-right: 1rem;
+    margin-left: 12rem;
+    margin-top: 0.7rem;
+    cursor: pointer;
+  }
 
   ${props => props.isDragging && css`
     border: 2px dashed rgba(0, 0, 0, 0.2);

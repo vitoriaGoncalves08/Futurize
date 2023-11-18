@@ -14,12 +14,16 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 export default function Card({ index, listIndex, data }) {
   const ref = useRef();
   const { move } = useContext(BoardContext);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-  
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingData, setEditingData] = useState(null);
+  const [editedTitle, setEditedTitle] = useState(data.titulo);
+  const [editedDescription, setEditedDescription] = useState(data.descricao);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'CARD', index, listIndex,
@@ -63,6 +67,65 @@ export default function Card({ index, listIndex, data }) {
   })
 
   dragRef(dropRef(ref));
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setEditingData(data);
+  };
+
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setEditingData(null);
+    // Resetar os estados dos campos editados
+    setEditedTitle(data.titulo);
+    setEditedDescription(data.descricao);
+    // Resetar outros campos, se necessário
+  };
+
+  const [, setFormAtividade] = useState({
+    id: '',
+    titulo: '',
+    descricao: '',
+    inicio: '',
+    encerramento: '',
+    estado: '',
+    dificuldade: '',
+    prioridade: '',
+    tempo_execucao: '',
+    projeto: '',
+    responsavel: {id: ''},
+  });
+
+  const saveEdit = async () => {
+
+    const { id, titulo, descricao, inicio, encerramento, estado, dificuldade, prioridade, tempo_execucao, projeto, responsavel, } = formAtividade;
+
+    const dataEditActivity = {
+      id: id,
+      titulo: titulo,
+      descricao: descricao,
+      inicio: dataInicial,
+      encerramento: formattedDate,
+      estado: estado,
+      dificuldade: dificuldade,
+      prioridade: prioridade,
+      tempo_execucao: tempo_execucao,
+      projeto: projeto,
+      responsavel: {id: selectedUser},
+    }
+    try {
+      // Realizar a chamada de API para atualizar a atividade no backend
+      await axios.put(`http://localhost:8080/Atividade`, data);
+
+      setIsEditing(false);
+      setEditingData(null);
+      // Atualizar os dados da atividade no estado ou realizar uma nova busca no backend
+      // para obter os dados atualizados, dependendo da sua lógica
+    } catch (error) {
+      console.error('Erro ao editar a atividade:', error);
+    }
+  };
+
 
   const [horas, setHoras] = useState(0);
   const [minutos, setMinutos] = useState(0);
@@ -111,7 +174,7 @@ export default function Card({ index, listIndex, data }) {
         return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
       }
     } else {
-      return ""; // Return an empty string if the name is null or undefined
+      return "";
     }
   }
 
@@ -158,7 +221,6 @@ export default function Card({ index, listIndex, data }) {
         console.error("ID da atividade não encontrado");
         return;
       }
-
       // Faça a chamada de API para excluir a atividade no backend
       await axios.delete(`http://localhost:8080/Atividade/${idToDelete}`);
 
@@ -168,16 +230,19 @@ export default function Card({ index, listIndex, data }) {
     }
   };
 
+  function aaa(){
+    console.log(data);
+  }
   return (
     <div>
-      <Container ref={ref} isDragging={isDragging}>
+      {/* <Container ref={ref} isDragging={isDragging}>
         <>
           <header>
             <Label color={getStatusTagColor(data.dificuldade)}></Label>
-            <button onClick={openDeleteConfirmationDialog}>
-              <DeleteIcon />
-            </button>
-
+            <div className='acoes-card'>
+              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog}/>
+              <ModeEditIcon className="edit-card" onClick={aaa} />
+            </div>
           </header>
           <h5>{data.titulo}</h5>
           <p>{data.descricao || "Descrição não disponível"}</p>
@@ -203,7 +268,171 @@ export default function Card({ index, listIndex, data }) {
             </div>
           </div>
         </>
+      </Container> */}
+
+<Container ref={ref} isDragging={isDragging}>
+        <>
+          <header>
+            <Label color={getStatusTagColor(data.dificuldade)}></Label>
+            <div className='acoes-card'>
+              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
+              {isEditing ? (
+                <>
+                  <ModeEditIcon className="edit-card" onClick={saveEdit} />
+                  <Buttons onClick={cancelEdit}>Cancelar</Buttons>
+                  
+                </>
+              ) : (
+                <ModeEditIcon className="edit-card" onClick={handleEditClick} />
+              )}
+            </div>
+          </header>
+          {isEditing ? (
+            <>
+             <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          <h1 className="titulo">Editar Atividade</h1>
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent>
+          <form onSubmit={handleCreateTask}>
+            <Input
+              id="titulo-kanban"
+              type="text"
+              name="titulo"
+              value={formTask.titulo}
+              onChange={(e) => handleInputChange(e, 'titulo')}
+              label="Digite seu titulo"
+            />
+            <Input
+              id="encerramento-kanban"
+              type="date"
+              name="encerramento"
+              value={formTask.encerramento}
+              onChange={(e) => handleInputChange(e, 'encerramento')}
+              label="Digite a data de encerramento"
+            />
+            <FormControl fullWidth>
+              <InputLabel id="dificuldade-label">Selecione a dificuldade</InputLabel>
+              <Select
+                labelId="dificuldade-label"
+                id="dificuldade"
+                name="dificuldade"
+                value={formTask.dificuldade}
+                onChange={(e) => handleInputChange(e, 'dificuldade')}
+              >
+                <MenuItem value={'SIMPLES'}>Simples</MenuItem>
+                <MenuItem value={'MODERADA'}>Moderada</MenuItem>
+                <MenuItem value={'COMPLEXA'}>Complexa</MenuItem>
+              </Select>
+            </FormControl>
+            <Input
+              id="prioridade-kanban"
+              type="text"
+              name="prioridade"
+              value={formTask.prioridade}
+              onChange={(e) => handleInputChange(e, 'prioridade')}
+              label="Digite a prioridade"
+            />
+            <Input
+              id="descricao-kanban"
+              type="text"
+              name="descricao"
+              value={formTask.descricao}
+              onChange={(e) => handleInputChange(e, 'descricao')}
+              label="Digite o descricao"
+              multiline={true}
+            />
+             <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="responsavel-label">Responsável</InputLabel>
+                <Select
+                  labelId="responsavel-label"
+                  id="responsavel"
+                  name="responsavel"
+                  value={selectedUser}
+                  onChange={(e) => setSelectedUser(e.target.value)}
+                  label="Responsável"
+                >
+                  {allocatedUser.map((user) => (
+                    <MenuItem key={user.id} value={user.id}>
+                      {user.nome}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              </Box>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="estado-label">Selecione a estado</InputLabel>
+                <Select
+                  labelId="estado-label"
+                  id="estado"
+                  name="estado"
+                  value={formTask.estado}
+                  onChange={(e) => handleInputChange(e, 'estado')}
+                >
+                  <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
+                  <MenuItem value={'SPRINT_BACKLOG'}>Sprint Backlog</MenuItem>
+                  <MenuItem value={'DEVELOPMENT'}>Development</MenuItem>
+                  <MenuItem value={'DONE_DEVELOPMENT'}>Done Development</MenuItem>
+                  <MenuItem value={'TEST'}>Test</MenuItem>
+                  <MenuItem value={'DONE_TEST'}>Done Test</MenuItem>
+                  <MenuItem value={'REWORK'}>Rework</MenuItem>
+                  <MenuItem value={'DONE'}>Done</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
+            <DialogActions>
+              <Buttons type="submit">Editar</Buttons>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+            </>
+          ) : (
+            <>
+              <h5>{data.titulo}</h5>
+          <p>{data.descricao || "Descrição não disponível"}</p>
+
+          <div className="Data">
+            <div className="Checkdata">
+              <CheckBoxIcon />
+              <p>{formatEncerramento(data.encerramento)}</p>
+            </div>
+            <div className="Prioridade">
+              <Label>{data.prioridade}</Label>
+            </div>
+          </div>
+          <div className="TempoPerfil">
+            <div className="Pessoa" onClick={handlePlayClick}>
+              {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
+              <p>
+                {String(horas).padStart(2, '0')}:{String(minutos).padStart(2, '0')}:{String(segundos).padStart(2, '0')}
+              </p>
+            </div>
+            <div className="Perfil">
+              <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
+            </div>
+          </div>
+            </>
+          )}
+        </>
       </Container>
+
+
         {/* Diálogo de confirmação para exclusão */}
         <Dialog
           open={deleteConfirmationOpen}
