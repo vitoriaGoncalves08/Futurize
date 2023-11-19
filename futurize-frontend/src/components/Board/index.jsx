@@ -113,8 +113,8 @@ export default function Board() {
   };
 
   const getFilteredTasks = (code) => {
-    console.log({ code, tasks });
     return tasks?.filter((task) => task.estado === code);
+    // console.log( "ihh",tasks?.filter((task) => task.estado === code));
   };
 
   useEffect(() => {

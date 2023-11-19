@@ -189,7 +189,6 @@ export default function HeaderKanban() {
 
   return (
     <div className="container-header-kanban">
-      <h3 className="nome-header-kanban">{projectData.titulo}</h3>
       <div className="Estrela">
         <StarBorderIcon></StarBorderIcon>
       </div>

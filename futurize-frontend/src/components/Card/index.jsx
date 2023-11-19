@@ -15,15 +15,38 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Input from '../../components/Input/input';
+import { format } from 'date-fns';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import { useParams } from 'react-router-dom';
 
 export default function Card({ index, listIndex, data }) {
   const ref = useRef();
+  const { projectId } = useParams();
   const { move } = useContext(BoardContext);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingData, setEditingData] = useState(null);
-  const [editedTitle, setEditedTitle] = useState(data.titulo);
-  const [editedDescription, setEditedDescription] = useState(data.descricao);
+  const [open, setOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [allocatedUser, setAllocatedUser] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [editedResponsavel, setEditedResponsavel] = useState('');
+
+
+  useEffect(() => {
+    // Certifique-se de que a busca de membros alocados seja acionada quando necessário
+    fetchProjectMembers();
+    const intervalId = setInterval(fetchProjectMembers, 60000); // Fetch every minute
+    // Clean up the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, []);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'CARD', index, listIndex,
@@ -82,7 +105,7 @@ export default function Card({ index, listIndex, data }) {
     // Resetar outros campos, se necessário
   };
 
-  const [, setFormAtividade] = useState({
+  const [formAtividade, setFormAtividade] = useState({
     id: '',
     titulo: '',
     descricao: '',
@@ -93,39 +116,8 @@ export default function Card({ index, listIndex, data }) {
     prioridade: '',
     tempo_execucao: '',
     projeto: '',
-    responsavel: {id: ''},
+    responsavel: { id: '' },
   });
-
-  const saveEdit = async () => {
-
-    const { id, titulo, descricao, inicio, encerramento, estado, dificuldade, prioridade, tempo_execucao, projeto, responsavel, } = formAtividade;
-
-    const dataEditActivity = {
-      id: id,
-      titulo: titulo,
-      descricao: descricao,
-      inicio: dataInicial,
-      encerramento: formattedDate,
-      estado: estado,
-      dificuldade: dificuldade,
-      prioridade: prioridade,
-      tempo_execucao: tempo_execucao,
-      projeto: projeto,
-      responsavel: {id: selectedUser},
-    }
-    try {
-      // Realizar a chamada de API para atualizar a atividade no backend
-      await axios.put(`http://localhost:8080/Atividade`, data);
-
-      setIsEditing(false);
-      setEditingData(null);
-      // Atualizar os dados da atividade no estado ou realizar uma nova busca no backend
-      // para obter os dados atualizados, dependendo da sua lógica
-    } catch (error) {
-      console.error('Erro ao editar a atividade:', error);
-    }
-  };
-
 
   const [horas, setHoras] = useState(0);
   const [minutos, setMinutos] = useState(0);
@@ -199,6 +191,15 @@ export default function Card({ index, listIndex, data }) {
     setDeleteConfirmationOpen(false);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+    openEditActivity(data);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   function addSucessoGeneral(suc) {
     ToastSuccess({
       text: suc,
@@ -210,7 +211,7 @@ export default function Card({ index, listIndex, data }) {
   const confirmDeleteAllocation = async (e) => {
     e.preventDefault();
     closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
-    addSucessoGeneral('Membro excluído com sucesso!');
+    addSucessoGeneral('Atividade excluída com sucesso!');
 
     try {
       // Certifique-se de ter o 'id' da atividade disponível em 'data'
@@ -230,21 +231,118 @@ export default function Card({ index, listIndex, data }) {
     }
   };
 
-  function aaa(){
-    console.log(data);
-  }
+  const handleEditSubmit = async () => {
+    const {
+      id,
+      titulo,
+      descricao,
+      inicio,
+      encerramento,
+      estado,
+      dificuldade,
+      prioridade,
+      tempo_execucao,
+      projeto,
+      responsavel,
+    } = formAtividade;
+  
+    const dataEditActivity = {
+      id: id,
+      titulo: titulo,
+      descricao: descricao,
+      inicio: dataInicial,
+      encerramento: formattedDate,
+      estado: estado,
+      dificuldade: dificuldade,
+      prioridade: prioridade,
+      tempo_execucao: tempo_execucao,
+      projeto: projeto,
+      responsavel: { id: selectedUser },
+    };
+  
+    try {
+      // Realizar a chamada de API para atualizar a atividade no backend
+      const response = await axios.put(
+        `http://localhost:8080/Atividade/${data.id}`,
+        dataEditActivity
+      );
+  
+      if (response.status === 200) {
+        // Atualize o estado `rows` após a edição
+        const updatedRows = rows.map((row) =>
+          row.id === editActivityData.id ? { ...row, ...dataEditActivity } : row
+        );
+        setRows(updatedRows);
+        // Feche o modal de edição
+        handleClose();
+        addSucessoGeneral('Atividade editada com sucesso!');
+      } else {
+        console.error('Erro ao atualizar os dados no backend.');
+        addError('Erro ao atualizar os dados no backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+      addError('Erro ao conectar-se ao backend: ' + error.message);
+    }
+  };
+  console.log(data.id, data);
+
+  const openEditActivity = (activity) => {
+    setFormAtividade({
+      id: activity.id,
+      titulo: activity.titulo,
+      descricao: activity.descricao,
+      inicio: format(new Date(activity.inicio), 'dd-MM-yyyy'),
+      encerramento: format(new Date(activity.encerramento), 'dd-MM-yyyy'),
+      estado: activity.estado,
+      dificuldade: activity.dificuldade,
+      prioridade: activity.prioridade,
+      tempo_execucao: activity.tempo_execucao,
+      projeto: activity.projeto,
+      responsavel: { id: activity.responsavel.id },
+    });
+    setEditedResponsavel(activity.responsavel.id);
+    setSelectedUser(activity.responsavel.id);
+    setOpen(true);
+  };
+
+  const handleInputChange = (e, field) => {
+    if (field === 'responsavel') {
+      setEditedResponsavel(e.target.value);
+    } else {
+      setFormAtividade({
+        ...formAtividade,
+        [field]: e.target.value,
+      });
+    }
+  };
+
+  const fetchProjectMembers = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+      if (response.status === 200) {
+        const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
+        setAllocatedUser(allocatedUserIds);
+      } else if (response.status === 409) {
+        console.error('Erro ao buscar membros alocados ao projeto no backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+
   return (
     <div>
-      {/* <Container ref={ref} isDragging={isDragging}>
+      <Container ref={ref} isDragging={isDragging}>
         <>
           <header>
             <Label color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
-              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog}/>
-              <ModeEditIcon className="edit-card" onClick={aaa} />
+              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
+              <ModeEditIcon className="edit-card" onClick={handleClickOpen} />
             </div>
           </header>
-          <h5>{data.titulo}</h5>
+          <h5>{data && data.titulo ? data.titulo : 'Título não disponível'}</h5>
           <p>{data.descricao || "Descrição não disponível"}</p>
 
           <div className="Data">
@@ -268,28 +366,11 @@ export default function Card({ index, listIndex, data }) {
             </div>
           </div>
         </>
-      </Container> */}
+      </Container>
 
-<Container ref={ref} isDragging={isDragging}>
-        <>
-          <header>
-            <Label color={getStatusTagColor(data.dificuldade)}></Label>
-            <div className='acoes-card'>
-              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
-              {isEditing ? (
-                <>
-                  <ModeEditIcon className="edit-card" onClick={saveEdit} />
-                  <Buttons onClick={cancelEdit}>Cancelar</Buttons>
-                  
-                </>
-              ) : (
-                <ModeEditIcon className="edit-card" onClick={handleEditClick} />
-              )}
-            </div>
-          </header>
-          {isEditing ? (
-            <>
-             <Dialog open={open} onClose={handleClose}>
+      {/* Diálogo de confirmação para edição */}
+      <Dialog open={open}
+        onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Editar Atividade</h1>
         </DialogTitle>
@@ -305,13 +386,14 @@ export default function Card({ index, listIndex, data }) {
         >
           <CloseIcon />
         </IconButton>
+        {/* Diálog de edição da atividade */}
         <DialogContent>
-          <form onSubmit={handleCreateTask}>
+          <form onSubmit={handleEditSubmit}>
             <Input
               id="titulo-kanban"
               type="text"
               name="titulo"
-              value={formTask.titulo}
+              value={formAtividade.titulo}
               onChange={(e) => handleInputChange(e, 'titulo')}
               label="Digite seu titulo"
             />
@@ -319,7 +401,7 @@ export default function Card({ index, listIndex, data }) {
               id="encerramento-kanban"
               type="date"
               name="encerramento"
-              value={formTask.encerramento}
+              value={formAtividade.encerramento}
               onChange={(e) => handleInputChange(e, 'encerramento')}
               label="Digite a data de encerramento"
             />
@@ -329,7 +411,7 @@ export default function Card({ index, listIndex, data }) {
                 labelId="dificuldade-label"
                 id="dificuldade"
                 name="dificuldade"
-                value={formTask.dificuldade}
+                value={formAtividade.dificuldade}
                 onChange={(e) => handleInputChange(e, 'dificuldade')}
               >
                 <MenuItem value={'SIMPLES'}>Simples</MenuItem>
@@ -341,7 +423,7 @@ export default function Card({ index, listIndex, data }) {
               id="prioridade-kanban"
               type="text"
               name="prioridade"
-              value={formTask.prioridade}
+              value={formAtividade.prioridade}
               onChange={(e) => handleInputChange(e, 'prioridade')}
               label="Digite a prioridade"
             />
@@ -349,20 +431,20 @@ export default function Card({ index, listIndex, data }) {
               id="descricao-kanban"
               type="text"
               name="descricao"
-              value={formTask.descricao}
+              value={formAtividade.descricao}
               onChange={(e) => handleInputChange(e, 'descricao')}
               label="Digite o descricao"
               multiline={true}
             />
-             <Box sx={{ minWidth: 120 }}>
+            <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <InputLabel id="responsavel-label">Responsável</InputLabel>
                 <Select
                   labelId="responsavel-label"
                   id="responsavel"
                   name="responsavel"
-                  value={selectedUser}
-                  onChange={(e) => setSelectedUser(e.target.value)}
+                  value={editedResponsavel}
+                  onChange={(e) => handleInputChange(e, 'responsavel')}
                   label="Responsável"
                 >
                   {allocatedUser.map((user) => (
@@ -372,7 +454,7 @@ export default function Card({ index, listIndex, data }) {
                   ))}
                 </Select>
               </FormControl>
-              </Box>
+            </Box>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <InputLabel id="estado-label">Selecione a estado</InputLabel>
@@ -380,7 +462,7 @@ export default function Card({ index, listIndex, data }) {
                   labelId="estado-label"
                   id="estado"
                   name="estado"
-                  value={formTask.estado}
+                  value={formAtividade.estado}
                   onChange={(e) => handleInputChange(e, 'estado')}
                 >
                   <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
@@ -401,52 +483,21 @@ export default function Card({ index, listIndex, data }) {
           </form>
         </DialogContent>
       </Dialog>
-            </>
-          ) : (
-            <>
-              <h5>{data.titulo}</h5>
-          <p>{data.descricao || "Descrição não disponível"}</p>
 
-          <div className="Data">
-            <div className="Checkdata">
-              <CheckBoxIcon />
-              <p>{formatEncerramento(data.encerramento)}</p>
-            </div>
-            <div className="Prioridade">
-              <Label>{data.prioridade}</Label>
-            </div>
-          </div>
-          <div className="TempoPerfil">
-            <div className="Pessoa" onClick={handlePlayClick}>
-              {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
-              <p>
-                {String(horas).padStart(2, '0')}:{String(minutos).padStart(2, '0')}:{String(segundos).padStart(2, '0')}
-              </p>
-            </div>
-            <div className="Perfil">
-              <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
-            </div>
-          </div>
-            </>
-          )}
-        </>
-      </Container>
-
-
-        {/* Diálogo de confirmação para exclusão */}
-        <Dialog
-          open={deleteConfirmationOpen}
-          onClose={closeDeleteConfirmationDialog}
-        >
-          <DialogTitle>Confirmação de Exclusão</DialogTitle>
-          <DialogContent>
-            Tem certeza de que deseja excluir esta alocação?
-          </DialogContent>
-          <DialogActions>
-            <Buttons onClick={closeDeleteConfirmationDialog}>Cancelar</Buttons>
-            <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
-          </DialogActions>
-        </Dialog>
+      {/* Diálogo de confirmação para exclusão */}
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={closeDeleteConfirmationDialog}
+      >
+        <DialogTitle>Confirmação de Exclusão</DialogTitle>
+        <DialogContent>
+          Tem certeza de que deseja excluir esta atividade?
+        </DialogContent>
+        <DialogActions>
+          <Buttons onClick={closeDeleteConfirmationDialog}>Cancelar</Buttons>
+          <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

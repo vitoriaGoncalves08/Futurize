@@ -25,6 +25,7 @@ import { ToastSuccess, ToastError } from '../Alert/Toast';
 import { LIST_CODES } from '../../utils/constants';
 import { isValid, format, parse } from 'date-fns';
 
+
 export default function List({ data, index: listIndex, tasks, allocatedUsers }) {
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -111,21 +112,27 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
         : new Date(formTask.encerramento);
 
     // Formate a data para o formato "yyyy-MM-dd"
-    const formattedDate = `${encerramentoDate.getFullYear()}-${(
-      encerramentoDate.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
+    // const formattedDate = `${encerramentoDate.getFullYear()}-${(
+    //   encerramentoDate.getMonth() + 1
+    // )
+    //   .toString()
+    //   .padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
+
 
     const dataInicial = inicio
       ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
       : format(new Date(), 'yyyy-MM-dd');
+
+      const dataEncerramento = encerramento
+      ? format(parse(encerramento, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
+      : format(new Date(), 'yyyy-MM-dd');
+
     const activityData = {
       id: id,
       titulo: titulo,
       descricao: descricao,
       inicio: dataInicial,
-      encerramento: formattedDate,
+      encerramento: dataEncerramento,
       estado: estado,
       dificuldade: dificuldade,
       prioridade: prioridade,
@@ -136,10 +143,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
 
     try {
       console.log('atividade', activityData);
-      const response = await axios.post(
-        `http://localhost:8080/Atividade`,
-        activityData
-      );
+      const response = await axios.post(`http://localhost:8080/Atividade`, activityData);
 
       if (response.status === 200) {
         addSucesso('Atividade adicionada com sucesso');
