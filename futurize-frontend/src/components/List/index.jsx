@@ -26,7 +26,7 @@ import { LIST_CODES } from '../../utils/constants';
 import { isValid, format, parse } from 'date-fns';
 
 
-export default function List({ data, index: listIndex, tasks, allocatedUsers }) {
+export default function List({ data, index: listIndex, tasks, allocatedUsers, setTasks }) {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const location = useLocation();
@@ -111,14 +111,6 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
         ? formTask.encerramento
         : new Date(formTask.encerramento);
 
-    // Formate a data para o formato "yyyy-MM-dd"
-    // const formattedDate = `${encerramentoDate.getFullYear()}-${(
-    //   encerramentoDate.getMonth() + 1
-    // )
-    //   .toString()
-    //   .padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
-
-
     const dataInicial = inicio
       ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
       : format(new Date(), 'yyyy-MM-dd');
@@ -148,13 +140,14 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       if (response.status === 200) {
         addSucesso('Atividade adicionada com sucesso');
         handleClose();
-        setTasks([...tasks, response.data]); 
+        setTasks([...tasks, response.data]);
       } else {
         console.error('Erro ao adicionar a atividade');
       }
     } catch (error) {
       console.error('Erro ao conectar-se ao backend:', error);
     }
+
   };
 
   useEffect(() => {
