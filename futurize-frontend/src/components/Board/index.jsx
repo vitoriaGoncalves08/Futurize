@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { produce } from 'immer';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+
 import axios from 'axios';
 
-import BoardContext from './context';
+import * as DndKit from '@dnd-kit/core';
+import * as Sortable from '@dnd-kit/sortable';
 
 import List from '../List';
 
 import { ContainerBoard } from './styles';
 import { LIST_CODES } from '../../utils/constants';
 import { useParams } from 'react-router-dom';
+
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function loadLists() {
   return [
@@ -59,20 +62,11 @@ function loadLists() {
 const data = loadLists();
 
 export default function Board() {
-  const [lists, setLists] = useState(data);
+  const [lists] = useState(data);
   const [tasks, setTasks] = useState([]);
   const [allocatedUsers, setAllocatedUsers] = useState([]);
 
   const { projectId } = useParams();
-
-  function move(fromList, toList, from, to) {
-    setLists(produce(lists, draft => {
-      const dragged = draft[fromList].cards[from];
-
-      draft[fromList].cards.splice(from, 1);
-      draft[toList].cards.splice(to, 0, dragged);
-    }))
-  }
 
   const fetchProjectMembers = async () => {
     try {
@@ -112,10 +106,10 @@ export default function Board() {
     }
   };
 
-  const getFilteredTasks = (code) => {
-    return tasks?.filter((task) => task.estado === code);
-    // console.log( "ihh",tasks?.filter((task) => task.estado === code));
-  };
+  const getFilteredTasks = useCallback(
+    (code) => tasks?.filter((task) => task.estado === code),
+    [tasks]
+  );
 
   useEffect(() => {
     const intervalId = setInterval(fetchProjectMembers, 60000);
@@ -124,9 +118,30 @@ export default function Board() {
     return () => clearInterval(intervalId);
   }, []);
 
+  function onDragEnd(event) {
+    console.log(event);
+
+    const draggedTaskIdx = tasks.findIndex((task) => task.id == event.draggableId);
+
+    if (draggedTaskIdx === -1) return;
+
+    const newTasks = [...tasks];
+
+    newTasks[draggedTaskIdx].estado = event.destination.droppableId;
+
+    setTasks(newTasks);
+
+    /*
+    só tá mudando no client-side, precisa agora salvar a alteração no banco, pra isso tu pode
+    criar um endpoint que atualiza uma task específica, daqui a gente manda o id da task a ser
+    atualizada (newTasks[draggedTaskIdx].id) e o novo estado dela (event.destination.droppableId).
+    Esse endpoint pode ser um PATCH ou PUT.
+    */
+  }
+
   return (
-    <BoardContext.Provider value={{ lists, move }}>
-      <ContainerBoard>
+    <DragDropContext onDragEnd={onDragEnd} key={tasks}>
+      <ContainerBoard key={tasks}>
         {lists.map((list, index) => (
           <List
             key={list.title}
@@ -137,6 +152,6 @@ export default function Board() {
           />
         ))}
       </ContainerBoard>
-    </BoardContext.Provider>
+    </DragDropContext>
   );
 }

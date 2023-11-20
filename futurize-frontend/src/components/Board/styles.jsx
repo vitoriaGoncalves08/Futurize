@@ -8,7 +8,6 @@ export const ContainerBoard = styled.div`
   overflow-x: auto;
   position: absolute;
   bottom: 0;
-}
 
   /* Estilos da barra de rolagem */
   &::-webkit-scrollbar {
@@ -18,7 +17,7 @@ export const ContainerBoard = styled.div`
   }
 
   &::-webkit-scrollbar-track {
-    background: #F4F4F4;
+    background: #f4f4f4;
     position: absolute;
     top: 0;
     right: 0;
@@ -26,7 +25,7 @@ export const ContainerBoard = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #79A2FE;
+    background: #79a2fe;
     border-radius: 10px;
   }
 `;
