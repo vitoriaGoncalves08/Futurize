@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Buttons from '../../components/Buttons/Buttons';
 import Input from '../../components/Input/input';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import { CSS } from '@dnd-kit/utilities';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -24,6 +25,9 @@ import InputLabel from '@mui/material/InputLabel';
 import { ToastSuccess, ToastError } from '../Alert/Toast';
 import { LIST_CODES } from '../../utils/constants';
 import { isValid, format, parse } from 'date-fns';
+
+import * as Sortable from '@dnd-kit/sortable';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 export default function List({ data, index: listIndex, tasks, allocatedUsers }) {
   const navigate = useNavigate();
@@ -131,7 +135,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       prioridade: prioridade,
       tempo_execucao: tempo_execucao,
       projeto: projeto,
-      responsavel: {id: selectedUser},
+      responsavel: { id: selectedUser },
     };
 
     try {
@@ -144,7 +148,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       if (response.status === 200) {
         addSucesso('Atividade adicionada com sucesso');
         handleClose();
-        setTasks([...tasks, response.data]); 
+        setTasks([...tasks, response.data]);
       } else {
         console.error('Erro ao adicionar a atividade');
       }
@@ -156,12 +160,18 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
   useEffect(() => {
     const fetchProjectMembers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+        const response = await axios.get(
+          `http://localhost:8080/Alocacao_projeto/${projectId}`
+        );
         if (response.status === 200) {
-          const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
-          const allocatedUsersData = rows.filter((usuario) => allocatedUserIds.includes(usuario.id));
+          const allocatedUserIds = response.data.map(
+            (allocation) => allocation.usuario
+          );
+          const allocatedUsersData = rows.filter((usuario) =>
+            allocatedUserIds.includes(usuario.id)
+          );
           setAllocatedUser(allocatedUserIds);
-          // console.log("ids", allocatedUserIds);
+          console.log("idss", allocatedUserIds);
           // console.log("data", allocatedUsersData);
         } else if (response.status === 409) {
           console.error('Erro ao buscar membros alocados ao projeto no backend.');
@@ -178,155 +188,178 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
   }, []);
 
   return (
-    <Container data-done={data.done ? 'true' : 'false'}>
-      <header>
-        <h2>{data.title}</h2>
+    <Droppable key={data.code} droppableId={`${data.code}`}>
+      {(provided, snapshot) => (
+        <Container>
+          <header>
+            <h2>{data.title}</h2>
 
-        {data.creatable && (
-          <Buttons
-            variant="outlined"
-            className="button-circle"
-            onClick={handleClickOpen}
-          >
-            +
-          </Buttons>
-        )}
-      </header>
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-          <h1 className="titulo">Criar Atividade</h1>
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent>
-          <form onSubmit={handleCreateTask}>
-            <Input
-              id="titulo-kanban"
-              type="text"
-              name="titulo"
-              value={formTask.titulo}
-              onChange={(e) => handleInputChange(e, 'titulo')}
-              label="Digite seu titulo"
-            />
-            <Input
-              id="encerramento-kanban"
-              type="date"
-              name="encerramento"
-              value={formTask.encerramento}
-              onChange={(e) => handleInputChange(e, 'encerramento')}
-              label="Digite a data de encerramento"
-            />
-            <FormControl fullWidth>
-              <InputLabel id="dificuldade-label">Selecione a dificuldade</InputLabel>
-              <Select
-                labelId="dificuldade-label"
-                id="dificuldade"
-                name="dificuldade"
-                value={formTask.dificuldade}
-                onChange={(e) => handleInputChange(e, 'dificuldade')}
+            {data.creatable && (
+              <Buttons
+                variant="outlined"
+                className="button-circle"
+                onClick={handleClickOpen}
               >
-                <MenuItem value={'SIMPLES'}>Simples</MenuItem>
-                <MenuItem value={'MODERADA'}>Moderada</MenuItem>
-                <MenuItem value={'COMPLEXA'}>Complexa</MenuItem>
-              </Select>
-            </FormControl>
-            <Input
-              id="prioridade-kanban"
-              type="text"
-              name="prioridade"
-              value={formTask.prioridade}
-              onChange={(e) => handleInputChange(e, 'prioridade')}
-              label="Digite a prioridade"
-            />
-            <Input
-              id="descricao-kanban"
-              type="text"
-              name="descricao"
-              value={formTask.descricao}
-              onChange={(e) => handleInputChange(e, 'descricao')}
-              label="Digite o descricao"
-              multiline={true}
-            />
-             <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="responsavel-label">Responsável</InputLabel>
-                <Select
-                  labelId="responsavel-label"
-                  id="responsavel"
-                  name="responsavel"
-                  value={selectedUser}
-                  onChange={(e) => setSelectedUser(e.target.value)}
-                  label="Responsável"
-                >
-                  {allocatedUser.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.nome}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              </Box>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="estado-label">Selecione a estado</InputLabel>
-                <Select
-                  labelId="estado-label"
-                  id="estado"
-                  name="estado"
-                  value={formTask.estado}
-                  onChange={(e) => handleInputChange(e, 'estado')}
-                >
-                  <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
-                  <MenuItem value={'SPRINT_BACKLOG'}>Sprint Backlog</MenuItem>
-                  <MenuItem value={'DEVELOPMENT'}>Development</MenuItem>
-                  <MenuItem value={'DONE_DEVELOPMENT'}>Done Development</MenuItem>
-                  <MenuItem value={'TEST'}>Test</MenuItem>
-                  <MenuItem value={'DONE_TEST'}>Done Test</MenuItem>
-                  <MenuItem value={'REWORK'}>Rework</MenuItem>
-                  <MenuItem value={'DONE'}>Done</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+                +
+              </Buttons>
+            )}
+          </header>
 
-            <DialogActions>
-              <Buttons type="submit">Criar</Buttons>
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>
+              <h1 className="titulo">Criar Atividade</h1>
+            </DialogTitle>
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <DialogContent>
+              <form onSubmit={handleCreateTask}>
+                <Input
+                  id="titulo-kanban"
+                  type="text"
+                  name="titulo"
+                  value={formTask.titulo}
+                  onChange={(e) => handleInputChange(e, 'titulo')}
+                  label="Digite seu titulo"
+                />
+                <Input
+                  id="encerramento-kanban"
+                  type="date"
+                  name="encerramento"
+                  value={formTask.encerramento}
+                  onChange={(e) => handleInputChange(e, 'encerramento')}
+                  label="Digite a data de encerramento"
+                />
+                <FormControl fullWidth>
+                  <InputLabel id="dificuldade-label">
+                    Selecione a dificuldade
+                  </InputLabel>
+                  <Select
+                    labelId="dificuldade-label"
+                    id="dificuldade"
+                    name="dificuldade"
+                    value={formTask.dificuldade}
+                    onChange={(e) => handleInputChange(e, 'dificuldade')}
+                  >
+                    <MenuItem value={'SIMPLES'}>Simples</MenuItem>
+                    <MenuItem value={'MODERADA'}>Moderada</MenuItem>
+                    <MenuItem value={'COMPLEXA'}>Complexa</MenuItem>
+                  </Select>
+                </FormControl>
+                <Input
+                  id="prioridade-kanban"
+                  type="text"
+                  name="prioridade"
+                  value={formTask.prioridade}
+                  onChange={(e) => handleInputChange(e, 'prioridade')}
+                  label="Digite a prioridade"
+                />
+                <Input
+                  id="descricao-kanban"
+                  type="text"
+                  name="descricao"
+                  value={formTask.descricao}
+                  onChange={(e) => handleInputChange(e, 'descricao')}
+                  label="Digite o descricao"
+                  multiline={true}
+                />
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="responsavel-label">Responsável</InputLabel>
+                    <Select
+                      labelId="responsavel-label"
+                      id="responsavel"
+                      name="responsavel"
+                      value={selectedUser}
+                      onChange={(e) => setSelectedUser(e.target.value)}
+                      label="Responsável"
+                    >
+                      {allocatedUser.map((user) => (
+                        <MenuItem key={user.id} value={user.id}>
+                          {user.nome}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="estado-label">Selecione a estado</InputLabel>
+                    <Select
+                      labelId="estado-label"
+                      id="estado"
+                      name="estado"
+                      value={formTask.estado}
+                      onChange={(e) => handleInputChange(e, 'estado')}
+                    >
+                      <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
+                      <MenuItem value={'SPRINT_BACKLOG'}>Sprint Backlog</MenuItem>
+                      <MenuItem value={'DEVELOPMENT'}>Development</MenuItem>
+                      <MenuItem value={'DONE_DEVELOPMENT'}>
+                        Done Development
+                      </MenuItem>
+                      <MenuItem value={'TEST'}>Test</MenuItem>
+                      <MenuItem value={'DONE_TEST'}>Done Test</MenuItem>
+                      <MenuItem value={'REWORK'}>Rework</MenuItem>
+                      <MenuItem value={'DONE'}>Done</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
 
-      <div className="CamadaTime">
-        <div className="Camada">
-          <LayersIcon />1
-        </div>
+                <DialogActions>
+                  <Buttons type="submit">Criar</Buttons>
+                </DialogActions>
+              </form>
+            </DialogContent>
+          </Dialog>
 
-        <div className="Time">
-          <WatchLaterIcon />
-          <p>00:00:00</p>
-        </div>
-      </div>
+          <div className="CamadaTime">
+            <div className="Camada">
+              <LayersIcon />
+            </div>
 
-      <ul>
-        {tasks.map((task) => (
-          <Card
-            key={task.id}
-            listIndex={listIndex}
-            index={task.id} // Use a unique identifier for the index
-            data={task}
-          />
-        ))}
-      </ul>
-    </Container>
+            <div className="Time">
+              <WatchLaterIcon />
+              <p>00:00:00</p>
+            </div>
+          </div>
+
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            style={{ height: '100%' }}
+          >
+            {tasks.map((task, index) => (
+              <Draggable key={task.id} draggableId={`${task.id}`} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                  >
+                    <Card
+                      key={task.id}
+                      listIndex={listIndex}
+                      index={task.id}
+                      data={task}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        </Container>
+      )}
+    </Droppable>
   );
 }

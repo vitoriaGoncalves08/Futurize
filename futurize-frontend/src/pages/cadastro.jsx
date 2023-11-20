@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Input from '../components/Input/input';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Buttons from '../components/Buttons/Buttons';
 import '../../public/assets/css/cadastro-login.css';
@@ -183,9 +183,9 @@ export default function Cadastro() {
           />
           <div className="conta">
             <h3 className="info">Já tem uma conta?</h3>
-            <Link className="link" to="/login">
+            <NavLink className="link" to="/login">
               &nbsp;Entre aqui!
-            </Link>
+            </NavLink>
           </div>
         </div>
         <Buttons onClick={handleSignup}>Cadastrar</Buttons>
