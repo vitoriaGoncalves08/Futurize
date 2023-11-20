@@ -171,7 +171,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
             allocatedUserIds.includes(usuario.id)
           );
           setAllocatedUser(allocatedUserIds);
-          // console.log("ids", allocatedUserIds);
+          console.log("idss", allocatedUserIds);
           // console.log("data", allocatedUsersData);
         } else if (response.status === 409) {
           console.error('Erro ao buscar membros alocados ao projeto no backend.');
@@ -324,7 +324,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
 
           <div className="CamadaTime">
             <div className="Camada">
-              <LayersIcon />1
+              <LayersIcon />
             </div>
 
             <div className="Time">
