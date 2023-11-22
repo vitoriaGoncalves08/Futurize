@@ -130,6 +130,7 @@ export default function Board() {
     newTasks[draggedTaskIdx].estado = event.destination.droppableId;
 
     setTasks(newTasks);
+    updateTask(newTasks[draggedTaskIdx].id, event.destination.droppableId);
 
     /*
     só tá mudando no client-side, precisa agora salvar a alteração no banco, pra isso tu pode
@@ -137,6 +138,26 @@ export default function Board() {
     atualizada (newTasks[draggedTaskIdx].id) e o novo estado dela (event.destination.droppableId).
     Esse endpoint pode ser um PATCH ou PUT.
     */
+  }
+
+  async function updateTask(taskId, newState) {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/Atividade/${taskId}`,
+        {
+          id: taskId, // Certifique-se de incluir o ID aqui
+          estado: newState,
+        }
+      );
+  
+      if (response.status === 200) {
+        console.log('Tarefa atualizada com sucesso no servidor.');
+      } else {
+        console.error('Erro ao atualizar a tarefa no servidor.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
   }
 
   return (
