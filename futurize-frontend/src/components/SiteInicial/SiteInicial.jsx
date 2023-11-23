@@ -65,8 +65,6 @@ function SiteInicial() {
         <img src={secao1} alt="" />
       </div>
 
-      <section className='Secao'></section>
-
       <div id='modelos' className='Secao'>
         <div className="Texto">
           <h1>Personalize o seu fluxo de trabalho e ajuste conforme a necessidade do seu projeto!</h1>
@@ -76,8 +74,6 @@ function SiteInicial() {
         </div>
         <img src={secao2} alt="" />
       </div>
-
-      <section className='Secao'></section>
 
       <div id='projetos' className='Secao'>
         <div className="Texto">
@@ -92,8 +88,6 @@ function SiteInicial() {
         <img src={secao3} alt="" />
       </div>
 
-      <section className='Secao'></section>
-
       <div id='tarefas' className='Secao'>
         <div className="Texto">
           <h1>A simplicidade do arrastar e soltar </h1>
@@ -106,8 +100,6 @@ function SiteInicial() {
         </div>
         <img src={secao4} alt="" />
       </div>
-
-      <section className='Secao'></section>
 
       <div id='sobre' className='Secao'>
         <div className="Texto">

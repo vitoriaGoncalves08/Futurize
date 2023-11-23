@@ -1,29 +1,17 @@
  :root {
   background-color: var(--found-light-blue);
   font-family: var(--font-family-sans-serif);
-
-  /* azul */
-  --primary: #407BFF;
-  --secondary-menu: #79A2FE;
-  --primary-white: #6AC2FF;
-
-  /* preto, branco e cinza */
-  --secondary: #F5F8FF;
-  --font-dark: #3E3E3E;
-  --gray-light: #d1d1d1;
 }
 
 html{
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
+  font-size: 62.5%;
 }
 
 body{
-  perspective: 1px;
   transform-style: preserve-3d;
-  height: 100%;
-  width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -52,16 +40,8 @@ nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 50px;
+  padding: 1rem;
 }
-  
-/* .LogoFuturize p {
-  color: var(--font-dark);
-  font-size: 26px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 8px;
-} */
 
 .LogoFuturize img {
   width: 10rem;
@@ -72,7 +52,7 @@ nav {
   display: flex;
   list-style: none;
   gap: 35px;
-  font-size: 20px;
+  font-size: 2.0rem;
   color: var(--font-dark);
   text-decoration: none;
 }
@@ -88,7 +68,7 @@ nav {
 }
 
 .Titulo p {
-  font-size: 70px;
+  font-size: 7.0rem;
   font-weight: 800;
   line-height: 70px;
   text-transform: uppercase;
@@ -101,7 +81,7 @@ nav {
 .Subtitulo p {
   text-align: center;
   color: var(--gray-light);
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 28px;
   margin: 1rem;
 }
@@ -114,201 +94,23 @@ nav {
 }
 
 .Secao{
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 400px;
 }
 
 .Texto{
+  font-size: 1.5rem;
   width: 50%;
   color: #3E3E3E;
 }
 
 .Secao img {
-  height: 400px;
+  height: 60%;
 }
 
 #sobre{
   border: 2px solid #000;
-}
-
-/* Estilos para telas de 370px */
-@media (max-width: 370px) {
-  .HeroContent p {
-    font-size: 36px;
-    line-height: 40px;
-  }
-
-  .Subtitulo p {
-    font-size: 12px;
-    line-height: 18px;
-    margin: 0.5rem;
-  }
-
-  .LogoFuturize p {
-    font-size: 16px;
-    letter-spacing: 4px;
-  }
-
-  .MenuItens,
-  .InicialUl,
-  li,
-  a {
-    display: none;
-  }
-
-  .SignUp {
-    font-size: 12px;
-  }
-}
-
-/* Estilos para telas de 500px */
-@media (max-width: 500px) {
-  .HeroContent p {
-    font-size: 42px;
-    line-height: 46px;
-  }
-
-  .Subtitulo p {
-    font-size: 14px;
-    line-height: 22px;
-    margin: 0.5rem;
-  }
-
-  .LogoFuturize p {
-    font-size: 18px;
-    letter-spacing: 4px;
-  }
-
-  .MenuItens,
-  .InicialUl,
-  li,
-  a {
-    display: none;
-  }
-
-  .SignUp {
-    font-size: 14px;
-  }
-}
-
-/* Estilos para telas de 600px */
-@media (max-width: 600px) {
-  .HeroContent p{
-    height: 100%;
-    font-size: 46px;
-    line-height: 50px;
-  }
-
-  .Subtitulo p {
-    font-size: 16px;
-    line-height: 24px;
-    margin: 0.5rem;
-  }
-
-  .LogoFuturize p {
-    font-size: 20px;
-    letter-spacing: 4px;
-  }
-
-  .MenuItens,
-  .InicialUl,
-  li,
-  a {
-    display: none;
-  }
-
-  .SignUp {
-    font-size: 16px;
-  }
-}
-
-/* Estilos para tablets (exemplo: tela com largura máxima de 768px) */
-@media (max-width: 768px) {
-  .HeroContent p {
-    font-size: 50px;
-    line-height: 54px;
-  }
-
-  .Subtitulo p {
-    font-size: 16px;
-    line-height: 24px;
-    margin: 1rem;
-  }
-  
-  .LogoFuturize p {
-    font-size: 20px;
-  }
-
-  .MenuItens,
-  .InicialUl,
-  li,
-  a {
-    font-size: 16px;
-  }
-
-  .SignUp {
-    font-size: 16px;
-  }
-}
-
-/* Estilos para telas de 900px */
-@media (max-width: 900px) {
-  .HeroContent p {
-    font-size: 54px;
-    line-height: 58px;
-  }
-
-  .Subtitulo p {
-    font-size: 18px;
-    line-height: 26px;
-    margin: 0.5rem;
-  }
-
-  .LogoFuturize p {
-    font-size: 24px;
-    letter-spacing: 4px;
-  }
-
-  .MenuItens,
-  .InicialUl,
-  li,
-  a {
-    font-size: 18px;
-    gap: 12px;
-  }
-
-  .SignUp {
-    font-size: 18px;
-  }
-}
-
-/* Estilos para telas de 1200px */
-@media (max-width: 1200px) {
-  
-  .Subtitulo p {
-    font-size: 20px;
-    line-height: 28px;
-    margin: 0.5rem;
-  }
-
-  .LogoFuturize p {
-    font-size: 26px;
-    letter-spacing: 4px;
-  }
-
-  .MenuItens,
-  .InicialUl,
-  li,
-  a {
-    font-size: 20px;
-    gap: 14px;
-  }
-
-  .SignUp {
-    font-size: 20px;
-  }
 }
   
