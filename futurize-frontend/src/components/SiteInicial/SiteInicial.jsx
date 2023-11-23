@@ -25,6 +25,7 @@ function SiteInicial() {
       </div>
 
       <div className="MenuItens">
+        
         <ul>
           <li><a href="#" onClick={() => scrollToSection('funciona')}>Funcionamento</a></li>
           <li><a href="#" onClick={() => scrollToSection('modelos')}>Modelos</a></li>

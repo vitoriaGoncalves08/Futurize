@@ -114,7 +114,7 @@ nav {
 }
 
 .Secao img {
-  height: 60%;
+  height: 50%;
 }
 
 footer .Sobre {
@@ -123,4 +123,198 @@ footer .Sobre {
   font-size: 1.5rem;
   color: #3E3E3E;
 }
+
+/* Estilos para telas de 1200px */
+@media (max-width: 1200px) {
+  
+  .Subtitulo p {
+    font-size: 20px;
+    line-height: 28px;
+    margin: 0.5rem;
+  }
+  .LogoFuturize p {
+    font-size: 26px;
+    letter-spacing: 4px;
+  }
+  .MenuItens,
+  .InicialUl,
+  li,
+  a {
+    font-size: 20px;
+    gap: 14px;
+  }
+  .SignUp {
+    font-size: 20px;
+  }
+}
+
+/* Estilos para telas de 900px */
+@media (max-width: 900px) {
+  .HeroContent p {
+    font-size: 54px;
+    line-height: 58px;
+  }
+  .Subtitulo p {
+    font-size: 18px;
+    line-height: 26px;
+    margin: 0.5rem;
+  }
+  .LogoFuturize p {
+    font-size: 24px;
+    letter-spacing: 4px;
+  }
+  .MenuItens,
+  .InicialUl,
+  li,
+  a {
+    font-size: 18px;
+    gap: 12px;
+  }
+  .SignUp {
+    font-size: 18px;
+  }
+
+  .MainContent{
+    padding: 0;
+  }
+
+  .Secao {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .Texto{
+    width: 90%;
+  }
+}
+
+/* Estilos para tablets  */
+@media (max-width: 800px) {
+  .HeroContent p {
+    font-size: 50px;
+    line-height: 54px;
+  }
+  .Subtitulo p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 1rem;
+  }
+  
+  .LogoFuturize p {
+    font-size: 20px;
+  }
+  .MenuItens,
+  .InicialUl,
+  li,
+  a {
+    font-size: 14px;
+  }
+  .SignUp {
+    font-size: 16px;
+  }
+
+  .Texto{
+    width: 90%;
+  }
+
+  .Secao img {
+    height: 50%;
+  }
+}
+
+/* Estilos para telas de 600px */
+@media (max-width: 600px) {
+  .HeroContent p{
+    height: 100%;
+    font-size: 46px;
+    line-height: 50px;
+  }
+  .Subtitulo p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0.5rem;
+  }
+  .LogoFuturize p {
+    font-size: 20px;
+    letter-spacing: 4px;
+  }
+  .MenuItens,
+  .InicialUl,
+  li,
+  a {
+    display: none;
+  }
+  .SignUp {
+    font-size: 16px;
+  }
+
+  .Texto{
+    width: 70%;
+  }
+
+  .Secao img {
+    height: 30%;
+  }
+}
+
+/* Estilos para telas de 500px */
+@media (max-width: 500px) {
+  .HeroContent p {
+    font-size: 42px;
+    line-height: 46px;
+  }
+  .Subtitulo p {
+    font-size: 14px;
+    line-height: 22px;
+    margin: 0.5rem;
+  }
+  .LogoFuturize p {
+    font-size: 18px;
+    letter-spacing: 4px;
+  }
+  .MenuItens,
+  .InicialUl,
+  li,
+  a {
+    display: none;
+  }
+  .SignUp {
+    font-size: 14px;
+  }
+}
+
+/* Estilos para telas de 370px */
+@media (max-width: 370px) {
+  .HeroContent p {
+    font-size: 36px;
+    line-height: 40px;
+  }
+  .Subtitulo p {
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0.5rem;
+  }
+  .LogoFuturize p {
+    font-size: 16px;
+    letter-spacing: 4px;
+  }
+  .MenuItens,
+  .InicialUl,
+  li,
+  a {
+    display: none;
+  }
+  .SignUp {
+    font-size: 12px;
+  }
+
+  .Secao{
+    height: 65vh
+  }
+
+  .Secao img {
+    display: none;
+  }
+}
+
   
