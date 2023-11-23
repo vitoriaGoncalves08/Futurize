@@ -16,6 +16,12 @@ body{
   overflow-x: hidden;
 }
 
+.SiteInicial {
+  position: relative;
+  min-height: 100vh;
+}
+
+
 /* Estilos da barra de rolagem */
 ::-webkit-scrollbar {
   width: 10px;
@@ -90,6 +96,7 @@ nav {
   z-index: 2;
   position: absolute;
   padding: 40px;
+  padding-bottom: 120px;
   top: 100vh;
 }
 
@@ -110,7 +117,10 @@ nav {
   height: 60%;
 }
 
-#sobre{
-  border: 2px solid #000;
+footer .Sobre {
+  width: 100%;
+  padding: 5%;
+  font-size: 1.5rem;
+  color: #3E3E3E;
 }
   

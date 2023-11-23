@@ -101,12 +101,12 @@ function SiteInicial() {
         <img src={secao4} alt="" />
       </div>
 
-      <div id='sobre' className='Secao'>
-        <div className="Texto">
-          <h1>Sobre nós</h1>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis animi non quis nihil suscipit pariatur, vero veniam ab tempora nobis blanditiis illum autem laborum quod exercitationem debitis laudantium. Distinctio, omnis?</p>
+      <footer>
+        <div id='sobre' className='Sobre'>
+            <h1>Sobre nós</h1>
+            <p>O Projeto Futurize surgiu da crescente área de Tecnologia da Informação e da necessidade do entendimento do uso de ferramentas tecnológicas no momento de inserção do estudante ao mercado de trabalho, para o mesmo compreender como funciona o ciclo das atividades realizadas de forma eficaz por uma equipe. Trata-se de um gerenciador de projetos acadêmicos que visa auxiliar os usuários na organização de suas atividades, permitindo que acompanhem e realizem suas atividades dentro do prazo estabelecido. Apresentado um sistema muito semelhante a lógica de desenvolvimento de mercado, seguindo os moldes do método Scrum. O sistema oferece diversas funcionalidades, como a designação de responsáveis por cada tarefa/atividade, definição de prazos, avaliação da dificuldade e acompanhamento do status das atividades. </p>
         </div>
-      </div>
+      </footer>
 
     </div>
   </div>
