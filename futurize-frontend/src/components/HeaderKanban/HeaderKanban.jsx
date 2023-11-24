@@ -43,7 +43,7 @@ export default function HeaderKanban() {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/Usuario');
+        const response = await axios.get('https://futurizedeploy-production.up.railway.app/Usuario');
         if (response.status === 200) {
           setRows(response.data);
           setDataLoaded(true); // Marque os dados como carregados
@@ -57,7 +57,7 @@ export default function HeaderKanban() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/${projectId}`
+          `https://futurizedeploy-production.up.railway.app/Alocacao_projeto/${projectId}`
         );
         if (response.status === 200) {
           const allocatedUserIds = response.data.map(
@@ -133,7 +133,7 @@ export default function HeaderKanban() {
 
       try {
         const response = await axios.post(
-          'http://localhost:8080/Alocacao_projeto',
+          'https://futurizedeploy-production.up.railway.app/Alocacao_projeto',
           newMemberData
         );
         if (response.status === 201) {
@@ -173,7 +173,7 @@ export default function HeaderKanban() {
     addSucessoGeneral('Membro excluído com sucesso!');
     try {
       const response = await axios.delete(
-        `http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`
+        `https://futurizedeploy-production.up.railway.app/Alocacao_projeto/${projectId}/${selectedUserId}`
       );
       if (response.status === 204) {
         // A alocação foi excluída com sucesso

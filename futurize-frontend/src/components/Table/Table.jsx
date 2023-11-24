@@ -111,7 +111,7 @@ export default function TableC() {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogado}`);
+        const response = await axios.get(`https://futurizedeploy-production.up.railway.app/Projeto/porUsuario/${usuarioLogado}`);
         if (response.status === 200) {
           setRows(response.data); // Atualize o estado 'rows' com os dados do banco
         } else {
@@ -145,7 +145,7 @@ export default function TableC() {
     // console.log(newRow);
 
     try {
-      const response = await axios.post("http://localhost:8080/Projeto", newRow);
+      const response = await axios.post("https://futurizedeploy-production.up.railway.app/Projeto", newRow);
 
       if (response.status === 200) {
         const updatedRows = [...rows, newRow];
@@ -163,7 +163,7 @@ export default function TableC() {
     if (idToDelete !== null && idToDelete !== undefined && !isNaN(idToDelete)) {
       try {
         // Faça a chamada de exclusão para o backend
-        await axios.delete(`http://localhost:8080/Projeto/${idToDelete}`);
+        await axios.delete(`https://futurizedeploy-production.up.railway.app/Projeto/${idToDelete}`);
         // Atualize o estado `rows` após a exclusão
         const updatedRows = rows.filter((row) => row.id !== idToDelete);
         setRows(updatedRows);
@@ -198,7 +198,7 @@ export default function TableC() {
     };
 
     try {
-      const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData);
+      const response = await axios.put(`https://futurizedeploy-production.up.railway.app/Projeto/${id}`, updatedProjectData);
       if (response.status === 200) {
         // Atualize o estado `rows` após a edição
         const updatedRows = rows.map((row) => (row.id === editProjectData.id ? { ...row, ...updatedProjectData } : row));
@@ -240,7 +240,7 @@ export default function TableC() {
       };
 
       axios
-        .post('http://localhost:8080/Alocacao_projeto', newMemberData)
+        .post('https://futurizedeploy-production.up.railway.app/Alocacao_projeto', newMemberData)
         .then((response) => {
           if (response.status === 200) {
             addSucesso();
