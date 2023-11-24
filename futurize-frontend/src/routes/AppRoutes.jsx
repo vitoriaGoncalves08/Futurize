@@ -20,12 +20,12 @@ export default function AppRoutes() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="https://futurize-8kzp54a03-vitoriagoncalves08.vercel.app/" element={<SiteInicial />} />
-          <Route path="https://futurize-8kzp54a03-vitoriagoncalves08.vercel.app/cadastro" element={<Cadastro />} />
-          <Route path="https://futurize-8kzp54a03-vitoriagoncalves08.vercel.app/login" element={<Login />} />
-          <Route path="https://futurize-8kzp54a03-vitoriagoncalves08.vercel.app/app" element={<App />} />
+          <Route path="/" element={<SiteInicial />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/app" element={<App />} />
           <Route
-            path="https://futurize-8kzp54a03-vitoriagoncalves08.vercel.app/projeto"
+            path="/projeto"
             element={
               <PrivateRoute>
                 <Projeto />
@@ -33,7 +33,7 @@ export default function AppRoutes() {
             }
           />
           <Route
-          path="https://futurize-8kzp54a03-vitoriagoncalves08.vercel.app/kanban/:projectId" 
+          path="/kanban/:projectId" 
           element={
             <PrivateRoute>
               <Kanban />
