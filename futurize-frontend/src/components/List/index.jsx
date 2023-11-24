@@ -23,10 +23,8 @@ import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import { ToastSuccess, ToastError } from '../Alert/Toast';
-import { LIST_CODES } from '../../utils/constants';
 import { isValid, format, parse } from 'date-fns';
 
-import * as Sortable from '@dnd-kit/sortable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 export default function List({ data, index: listIndex, tasks, allocatedUsers }) {
@@ -171,7 +169,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
             allocatedUserIds.includes(usuario.id)
           );
           setAllocatedUser(allocatedUserIds);
-          console.log("idss", allocatedUserIds);
+          // console.log("idss", allocatedUserIds);
           // console.log("data", allocatedUsersData);
         } else if (response.status === 409) {
           console.error('Erro ao buscar membros alocados ao projeto no backend.');
@@ -182,8 +180,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     };
     // Certifique-se de que a busca de membros alocados seja acionada quando necessário
     fetchProjectMembers();
-    const intervalId = setInterval(fetchProjectMembers, 60000); // Fetch every minute
-    // Clean up the interval when the component is unmounted
+    const intervalId = setInterval(fetchProjectMembers, 60000);
     return () => clearInterval(intervalId);
   }, []);
 

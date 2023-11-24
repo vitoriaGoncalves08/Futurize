@@ -37,6 +37,7 @@ export const Container = styled.div`
     margin-left: 10px;
     color: #c8c8c8;
     gap: 25px;
+    margin-bottom: 15px;
   }
 
   .Camada {

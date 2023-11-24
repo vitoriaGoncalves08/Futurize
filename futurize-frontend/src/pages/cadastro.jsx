@@ -95,7 +95,7 @@ export default function Cadastro() {
 
     try {
       // Faça a chamada Axios para o endpoint do backend
-      const response = await axios.post('http://localhost:8080/Usuario', userData);
+      const response = await axios.post('https://futurizedeploy-production.up.railway.app/Usuario', userData);
 
       if (response.data.error) {
         setError(response.data.error);

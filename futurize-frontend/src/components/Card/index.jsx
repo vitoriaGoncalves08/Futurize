@@ -97,7 +97,7 @@ export default function Card({ index, listIndex, data }) {
         );
       }
     } else {
-      return ""; // Return an empty string if the name is null or undefined
+      return "";
     }
   }
 
@@ -170,9 +170,6 @@ export default function Card({ index, listIndex, data }) {
     setIsEditing(false);
     setEditingData(null);
     // Resetar os estados dos campos editados
-    setEditedTitle(data.titulo);
-    setEditedDescription(data.descricao);
-    // Resetar outros campos, se necessário
   };
   const [formAtividade, setFormAtividade] = useState({
     id: '',

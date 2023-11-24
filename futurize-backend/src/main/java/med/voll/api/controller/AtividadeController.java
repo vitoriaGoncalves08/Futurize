@@ -44,9 +44,9 @@ public class AtividadeController {
     }
 
     @Transactional
-    @PutMapping
-    public void AtualizarAtividade(@RequestBody @Valid DadosAtualizarAtividade dadosAtualizarAtividade){
-        var atividade = repository.getReferenceById(dadosAtualizarAtividade.id());
+    @PutMapping("/{id}")
+    public void AtualizarAtividade(@PathVariable Long id, @RequestBody @Valid DadosAtualizarAtividade dadosAtualizarAtividade){
+        var atividade = repository.getReferenceById(id);
         atividade.atualizarInformacoes(dadosAtualizarAtividade);
     }
 
