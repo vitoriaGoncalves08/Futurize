@@ -154,7 +154,7 @@ export default function Card({ index, listIndex, data }) {
       }
 
       // Faça a chamada de API para excluir a atividade no backend
-      await axios.delete(`http://localhost:8080/Atividade/${idToDelete}`);
+      await axios.delete(`https://futurizedeploy-production.up.railway.app/Atividade/${idToDelete}`);
 
       console.log("Atividade excluída com sucesso!");
     } catch (error) {
@@ -218,7 +218,7 @@ export default function Card({ index, listIndex, data }) {
     try {
       // Realizar a chamada de API para atualizar a atividade no backend
       const response = await axios.put(
-        `http://localhost:8080/Atividade/${data.id}`,
+        `https://futurizedeploy-production.up.railway.app/Atividade/${data.id}`,
         dataEditActivity
       );
   
@@ -272,7 +272,7 @@ export default function Card({ index, listIndex, data }) {
 
   const fetchProjectMembers = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`);
+      const response = await axios.get(`https://futurizedeploy-production.up.railway.app/Alocacao_projeto/${projectId}`);
       if (response.status === 200) {
         const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
         setAllocatedUser(allocatedUserIds);
