@@ -14,7 +14,6 @@ const PrivateRoute = ({ children }) => {
 
   return signed ? children : <Login />;
 };
-
 // Crie o componente de rota
 export default function AppRoutes() {
   return (
