@@ -99,7 +99,6 @@ nav {
 .MainContent{
   z-index: 2;
   position: absolute;
-  padding: 40px;
   top: 100vh;
 }
 
@@ -297,4 +296,240 @@ nav {
     font-size: 20px;
   }
 }
-  
+/* statusss */
+
+
+.status {
+  width: 100%;
+  height: 110vh;
+}
+.status .t-status {
+  color: #407BFF;
+  font-size: 4vh;
+  font-weight: 900;
+  width: 100%;
+  text-align: center;
+  background-color: transparent;
+  padding-top: 4%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+@media (max-width: 838px) {
+  .status .t-status {
+    padding-top: 2%;
+  }
+}
+.status .t-status .barra {
+  width: 60px;
+  height: 5px;
+  background-color: #3767D4;
+}
+.status .cards-status {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.status .cards-status .backlog, .status .cards-status .sprint, .status .cards-status .dev, .status .cards-status .done-dev, .status .cards-status .test, .status .cards-status .done-test, .status .cards-status .done, .status .cards-status .rework {
+  margin: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  height: 40vh;
+  background-color: #ECF1F8;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.021);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  transition: 0.4s;
+}
+.status .cards-status .backlog:hover, .status .cards-status .sprint:hover, .status .cards-status .dev:hover, .status .cards-status .done-dev:hover, .status .cards-status .test:hover, .status .cards-status .done-test:hover, .status .cards-status .done:hover, .status .cards-status .rework:hover{
+  background: linear-gradient(45deg, #9bb9fc, #DFE8FF);
+  transform: translateY(-5px) !important;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.116);
+  transition: 0.4s;
+  color: #fff;
+}
+@media (max-width: 838px) {
+  .status .cards-status .backlog, .status .cards-status .sprint, .status .cards-status .dev, .status .cards-status .done-dev, .status .cards-status .test, .status .cards-status .done-test, .status .cards-status .rework, .status .cards-status .done {
+    width: 150px;
+    height: 20vh;
+  }
+}
+.status .cards-status .backlog .img-backlog {
+  width: 90%;
+  height: 90%;
+  background-image: url("../../../public/assets/img/1.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .backlog .img-backlog {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.status .cards-status .sprint .img-sprint {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/assets/img/2.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .sprint .img-sprint {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.status .cards-status .dev .img-dev {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/assets/img/3.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .dev .img-dev {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.status .cards-status .done-dev .img-done-dev {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/assets/img/4.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .done-dev .img-done-dev {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.status .cards-status .test .img-test {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/assets/img/5.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .test .img-test {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.status .cards-status .done-test .img-done-test {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/assets/img/6.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .done-test .img-done-test {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.status .cards-status .rework .img-rework {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/assets/img/7.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .rework .img-rework {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.title-status{
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.status .cards-status .done .img-done {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/assets/img/8.png");
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-size: cover; /* Garante que a imagem cubra todo o elemento */
+  image-rendering: auto;
+  background-size: 80%;
+  margin: 0 auto;
+  background-position: center;
+}
+@media (max-width: 838px) {
+  .status .cards-status .done .img-done {
+    width: 50px;
+    height: 50px;
+    background-size: 50px;
+  }
+}
+.title-status{
+  font-size: 25px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+span{
+  margin-bottom: 30px;
+}
+.Wave {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+footer img {
+  position: fixed;
+  bottom: 0;
+  left: 0;  
+  max-width: 100%;
+  width: 100%;
+}
