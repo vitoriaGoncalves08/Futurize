@@ -25,7 +25,12 @@ function SiteInicial() {
       </div>
 
       <div className="MenuItens">
-        
+        <div className="MenuToggle">
+          <div className="Um"></div>
+          <div className="Dois"></div>
+          <div className="Tres"></div>
+        </div>
+
         <ul>
           <li><a href="#" onClick={() => scrollToSection('funciona')}>Funcionamento</a></li>
           <li><a href="#" onClick={() => scrollToSection('modelos')}>Modelos</a></li>
