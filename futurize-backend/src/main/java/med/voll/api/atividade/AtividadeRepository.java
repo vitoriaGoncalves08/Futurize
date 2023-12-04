@@ -1,10 +1,6 @@
 package med.voll.api.atividade;
 
-import med.voll.api.projeto.Projeto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 
 

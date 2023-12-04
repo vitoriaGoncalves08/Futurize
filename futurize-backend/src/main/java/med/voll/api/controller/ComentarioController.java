@@ -26,7 +26,7 @@ public class ComentarioController {
     @CrossOrigin("*")
     @GetMapping("/{id}")
     public List<DadosListagemComentario> listarComentario(@PathVariable Long id){
-        return repository.findByComentario_Id(id)
+        return repository.findByAtividadecomentada_Id(id)
                 .stream()
                 .map(DadosListagemComentario::new)
                 .collect(Collectors.toList());

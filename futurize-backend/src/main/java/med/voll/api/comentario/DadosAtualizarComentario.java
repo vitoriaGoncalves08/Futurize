@@ -13,7 +13,7 @@ public record DadosAtualizarComentario(
         Long id,
         String titulo,
         String descricao,
-        Date data,
+        Date data_comentario,
         Atividade atividadecomentada,
         Usuario usuario
 ) {

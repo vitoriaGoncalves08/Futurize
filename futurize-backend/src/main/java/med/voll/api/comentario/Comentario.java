@@ -22,18 +22,18 @@ public class Comentario {
     private Long Id;
     private String titulo;
     private String descricao;
-    private Date data;
-    @OneToMany
+    private Date data_comentario;
+    @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "id_atividade")
     private Atividade atividadecomentada;
 
     public Comentario(DadosCadastroComentario dadosCadastroComentario){
         this.titulo = dadosCadastroComentario.titulo();
         this.descricao = dadosCadastroComentario.descricao();
-        this.data = dadosCadastroComentario.data();
+        this.data_comentario = dadosCadastroComentario.data_comentario();
         this.usuario= dadosCadastroComentario.usuario();
         this.atividadecomentada = dadosCadastroComentario.atividadecomentada();
     }
@@ -45,8 +45,8 @@ public class Comentario {
         if(dadosAtualizarComentario.descricao() != null){
             this.descricao = dadosAtualizarComentario.descricao();
         }
-        if(dadosAtualizarComentario.data() != null){
-            this.data = dadosAtualizarComentario.data();
+        if(dadosAtualizarComentario.data_comentario() != null){
+            this.data_comentario = dadosAtualizarComentario.data_comentario();
         }
         if(dadosAtualizarComentario.usuario() != null){
             this.usuario = dadosAtualizarComentario.usuario();
