@@ -59,7 +59,7 @@ export default function TableAlocado() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `https://futurizedeploy-production.up.railway.app/Alocacao_projeto/porUser/${usuarioLogado}`
+          `https://deployfuturize-production.up.railway.app/Alocacao_projeto/porUser/${usuarioLogado}`
         );
         if (response.status === 200) {
           const allocatedUsersData = response.data.map(
