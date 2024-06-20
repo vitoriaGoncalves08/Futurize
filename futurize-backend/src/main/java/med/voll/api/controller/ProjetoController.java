@@ -1,22 +1,16 @@
 package med.voll.api.controller;
 import jakarta.validation.Valid;
-import med.voll.api.projeto.*;
-import med.voll.api.usuario.Usuario;
-import med.voll.api.usuario.UsuarioRepository;
+import med.voll.api.domain.projeto.*;
+import med.voll.api.domain.projeto.DadosAtualizarProjeto;
+import med.voll.api.domain.projeto.DadosListagemProjeto;
+import med.voll.api.domain.projeto.Projeto;
+import med.voll.api.domain.projeto.ProjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 

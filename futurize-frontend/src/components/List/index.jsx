@@ -139,7 +139,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     try {
       console.log('atividade', activityData);
       const response = await axios.post(
-        `https://futurizedeploy-production.up.railway.app/Atividade`,
+        `http://localhost:8080/Atividade`,
         activityData
       );
 
@@ -159,7 +159,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `https://futurizedeploy-production.up.railway.app/Alocacao_projeto/${projectId}`
+          `http://localhost:8080/Alocacao_projeto/${projectId}`
         );
         if (response.status === 200) {
           const allocatedUserIds = response.data.map(

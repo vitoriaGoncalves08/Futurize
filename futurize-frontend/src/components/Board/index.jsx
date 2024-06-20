@@ -71,7 +71,7 @@ export default function Board() {
   const fetchProjectMembers = async () => {
     try {
       const response = await axios.get(
-        `https://futurizedeploy-production.up.railway.app/Alocacao_projeto/${projectId}`
+        `http://localhost:8080/Alocacao_projeto/${projectId}`
       );
       if (response.status === 200) {
         const allocatedUserIds = response.data.map(
@@ -94,7 +94,7 @@ export default function Board() {
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        `https://futurizedeploy-production.up.railway.app/Atividade/${projectId}`
+        `http://localhost:8080/Atividade/${projectId}`
       ); // Substitua pela sua URL de API
       if (response.status === 200) {
         setTasks(response.data);
@@ -143,7 +143,7 @@ export default function Board() {
   async function updateTask(taskId, newState) {
     try {
       const response = await axios.put(
-        `https://futurizedeploy-production.up.railway.app/Atividade/${taskId}`,
+        `http://localhost:8080/Atividade/${taskId}`,
         {
           id: taskId, // Certifique-se de incluir o ID aqui
           estado: newState,

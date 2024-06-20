@@ -1,12 +1,13 @@
 package med.voll.api.controller;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import med.voll.api.alocacaoProjeto.*;
-import med.voll.api.projeto.Projeto;
-import med.voll.api.projeto.ProjetoRepository;
-import med.voll.api.usuario.Usuario;
-import med.voll.api.usuario.UsuarioRepository;
+import med.voll.api.domain.alocacaoProjeto.*;
+import med.voll.api.domain.alocacaoProjeto.AlocacaoProjeto;
+import med.voll.api.domain.alocacaoProjeto.AlocacaoProjetoRepository;
+import med.voll.api.domain.projeto.Projeto;
+import med.voll.api.domain.projeto.ProjetoRepository;
+import med.voll.api.domain.usuario.Usuario;
+import med.voll.api.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
