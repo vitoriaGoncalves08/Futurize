@@ -33,12 +33,12 @@ public class TratadorDeErros {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity tratarErroBadCredentials() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas - Senha incorreta");
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity tratarErroAuthentication() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha na autenticação");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha na autenticação - Email inexistente");
     }
 
     @ExceptionHandler(AccessDeniedException.class)

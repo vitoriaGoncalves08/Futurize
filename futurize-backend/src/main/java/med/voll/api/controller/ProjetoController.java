@@ -5,6 +5,8 @@ import med.voll.api.domain.projeto.DadosAtualizarProjeto;
 import med.voll.api.domain.projeto.DadosListagemProjeto;
 import med.voll.api.domain.projeto.Projeto;
 import med.voll.api.domain.projeto.ProjetoRepository;
+import med.voll.api.domain.usuario.DadosAtualizarUsuario;
+import med.voll.api.domain.usuario.DadosListagemUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,18 +37,19 @@ public class ProjetoController {
                 .collect(Collectors.toList());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping()
     @Transactional
-    public ResponseEntity<Object> atualizarProjeto(@PathVariable Long id, @RequestBody DadosAtualizarProjeto dadosAtualizarProjeto) {
+    public ResponseEntity atualizarProjeto(@Valid @RequestBody DadosAtualizarProjeto dadosAtualizarProjeto) {
         var projeto = repository.getReferenceById(dadosAtualizarProjeto.id());
         projeto.atualizarInformacoes(dadosAtualizarProjeto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new DadosListagemProjeto(projeto));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void ExcluirProjeto(@PathVariable Long id){
+    public ResponseEntity ExcluirProjeto(@PathVariable Long id){
         repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
     //PAGINAÇÂO
 /*

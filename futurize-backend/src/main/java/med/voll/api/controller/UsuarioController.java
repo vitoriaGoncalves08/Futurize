@@ -4,6 +4,7 @@ import med.voll.api.domain.usuario.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,11 +21,16 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository repository;
 
-    @CrossOrigin("*")
-    @PostMapping
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @CrossOrigin()
+    @PostMapping("/cadastro")
     @Transactional
+
     public ResponseEntity<?> CadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder) {
         Usuario usuario = new Usuario(dados);
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         repository.save(usuario);
         var uri = uriBuilder.path("/Usuario/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosListagemUsuario(usuario));
