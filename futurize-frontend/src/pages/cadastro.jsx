@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Input from '../components/Input/input';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Buttons from '../components/Buttons/Buttons';
 import '../../public/assets/css/cadastro-login.css';
 import { ToastError, ToastSuccess } from '../components/Alert/Toast';
@@ -72,18 +72,18 @@ export default function Cadastro() {
       setSenhaError('A senha deve ter 1 caractere minúsculo, 1 maiúsculo e 8 dígitos totais');
       return;
     }
-  
+
     // Crie um objeto com os dados a serem enviados para o backend
     const userData = {
       nome: nome,
       email: email,
       senha: senha,
     };
-  
+
     try {
       // Faça a chamada Axios para o endpoint do backend
       const response = await axios.post('http://localhost:8080/Usuario/cadastro', userData);
-  
+
       if (response.data.error) {
         setError(response.data.error);
       } else {

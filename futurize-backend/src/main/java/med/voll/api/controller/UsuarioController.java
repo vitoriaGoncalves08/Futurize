@@ -12,6 +12,7 @@ import med.voll.api.domain.usuario.Usuario;
 import med.voll.api.domain.usuario.UsuarioRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,14 +25,20 @@ public class UsuarioController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @CrossOrigin()
     @PostMapping("/cadastro")
     @Transactional
-
     public ResponseEntity<?> CadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder) {
+        // Verificar se o e-mail já está cadastrado
+        Usuario usuarioExistente = repository.findByEmail(dados.email());
+        if (usuarioExistente != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já cadastrado");
+        }
+
+        // Criar o usuário e salvar
         Usuario usuario = new Usuario(dados);
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         repository.save(usuario);
+
         var uri = uriBuilder.path("/Usuario/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosListagemUsuario(usuario));
     }
