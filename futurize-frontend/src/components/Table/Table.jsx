@@ -42,6 +42,7 @@ export default function TableC() {
   const navigate = useNavigate();
   const { getLoginUser } = useAuth();
   const usuarioLogado = getLoginUser();
+  const usuarioLogadoId = usuarioLogado.id;
   const [allocatedUsers, setAllocatedUsers] = useState([]);
 
   const handleClickOpen = () => {
@@ -111,7 +112,7 @@ export default function TableC() {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogado}`);
+        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogadoId}`);
         if (response.status === 200) {
           setRows(response.data); // Atualize o estado 'rows' com os dados do banco
         } else {
@@ -126,27 +127,38 @@ export default function TableC() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+  
     const { titulo, inicio, encerramento, estado, gestor } = formProjeto;
-
-    // Se o campo "inicio" estiver vazio, preencha com a data atual
+  
     const dataInicial = inicio
       ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
       : format(new Date(), 'yyyy-MM-dd');
     const encerramentoEmData = parse(encerramento, 'dd-MM-yyyy', new Date());
     const dataFinal = format(encerramentoEmData, 'yyyy-MM-dd');
+  
     const newRow = {
       titulo: titulo,
       inicio: dataInicial,
       encerramento: dataFinal,
       estado: estado.toUpperCase(),
-      gestor: usuarioLogado,
+      gestor: usuarioLogadoId,
     };
-    // console.log(newRow);
-
+  
     try {
-      const response = await axios.post("http://localhost:8080/Projeto", newRow);
-
+      const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+  
+      if (!token) {
+        console.error('Token JWT não encontrado no localStorage.');
+        return;
+      }
+      console.log("aaaa"+token);
+  
+      const response = await axios.post("http://localhost:8080/Projeto", newRow, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Certifique-se de que o token está no formato correto
+        },
+      });
+  
       if (response.status === 200) {
         const updatedRows = [...rows, newRow];
         setRows(updatedRows);
@@ -159,6 +171,7 @@ export default function TableC() {
       console.error('Erro ao conectar-se ao backend:', error);
     }
   };
+  
   const confirmDelete = async () => {
     if (idToDelete !== null && idToDelete !== undefined && !isNaN(idToDelete)) {
       try {

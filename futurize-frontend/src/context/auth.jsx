@@ -62,17 +62,22 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getLoginUser = () => {
-    return localStorage.getItem('@user');
-  }
-
-  const getLoginUserObject = () => {
     const userToken = localStorage.getItem('@user');
-    return JSON.parse(userToken); // Retorne o objeto completo do usuário
-  }
+    if (userToken) {
+      try {
+        const tokenPayload = JSON.parse(atob(userToken.split('.')[1])); // Decodifica o payload do token JWT
+        return tokenPayload;
+      } catch (error) {
+        console.error('Erro ao decodificar o token JWT:', error);
+        return null;
+      }
+    }
+    return null;
+  };
 
   return (
-    <AuthContext.Provider value={{ user, signed: !!user, signIn, signup, signout, getLoginUser, getLoginUserObject }}>
+    <AuthContext.Provider value={{ user, signed: !!user, signIn, signup, signout, getLoginUser }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};

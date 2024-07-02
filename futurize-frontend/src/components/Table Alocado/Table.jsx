@@ -29,6 +29,7 @@ export default function TableAlocado() {
   const navigate = useNavigate();
   const { getLoginUser } = useAuth();
   const usuarioLogado = getLoginUser();
+  const usuarioLogadoId = usuarioLogado.id;
 
   const openDeleteConfirmation = (id) => {
     setIdToDelete(id);
@@ -59,7 +60,7 @@ export default function TableAlocado() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogado}`
+          `http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogadoId}`
         );
         if (response.status === 200) {
           const allocatedUsersData = response.data.map(
@@ -88,7 +89,7 @@ export default function TableAlocado() {
     };
 
     fetchProjectMembers();
-  }, [usuarioLogado]);
+  }, [usuarioLogadoId]);
 
   const openProjectKanban = (project) => {
     // console.log('Dados do projeto:', project);
