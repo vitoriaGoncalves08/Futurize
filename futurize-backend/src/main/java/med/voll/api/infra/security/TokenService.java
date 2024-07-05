@@ -26,7 +26,7 @@ public class TokenService {
                     .withIssuer("API Voll.med")
                     .withSubject(usuario.getEmail())
                     .withClaim("id", usuario.getId())
-                    .withExpiresAt(dataExpiracao())
+                    //.withExpiresAt(dataExpiracao())
                     .sign(algoritmo);
         } catch (JWTCreationException exception){
             throw new RuntimeException("Erro ao gerar token jwt", exception);
@@ -48,7 +48,7 @@ public class TokenService {
     }
 
     //Duração do token é de 2 horas
-    private Instant dataExpiracao(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
-    }
+    //private Instant dataExpiracao(){
+    //return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    //}
 }

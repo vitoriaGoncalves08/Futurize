@@ -37,12 +37,24 @@ public class ProjetoController {
                 .collect(Collectors.toList());
     }
 
-    @PutMapping()
+    @CrossOrigin("*")
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizarProjeto(@Valid @RequestBody DadosAtualizarProjeto dadosAtualizarProjeto) {
-        var projeto = repository.getReferenceById(dadosAtualizarProjeto.id());
-        projeto.atualizarInformacoes(dadosAtualizarProjeto);
-        return ResponseEntity.ok(new DadosListagemProjeto(projeto));
+    public ResponseEntity<?> atualizarProjeto(@PathVariable Long id, @Valid @RequestBody DadosAtualizarProjeto dadosAtualizarProjeto) {
+        try {
+            var projeto = repository.findById(id);
+
+            if (projeto.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            projeto.get().atualizarInformacoes(dadosAtualizarProjeto);
+            repository.save(projeto.get());
+
+            return ResponseEntity.ok(new DadosListagemProjeto(projeto.get()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao atualizar o projeto: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
