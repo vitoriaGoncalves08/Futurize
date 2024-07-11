@@ -53,6 +53,8 @@ export default function Card({ index, listIndex, data }) {
   const [segundos, setSegundos] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+
   useEffect(() => {
     let interval;
 
@@ -154,7 +156,12 @@ export default function Card({ index, listIndex, data }) {
       }
 
       // Faça a chamada de API para excluir a atividade no backend
-      await axios.delete(`https://futurizedeploy-production.up.railway.app/Atividade/${idToDelete}`);
+      await axios.delete(`http://localhost:8080/Atividade/${idToDelete}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
       console.log("Atividade excluída com sucesso!");
     } catch (error) {
@@ -218,8 +225,13 @@ export default function Card({ index, listIndex, data }) {
     try {
       // Realizar a chamada de API para atualizar a atividade no backend
       const response = await axios.put(
-        `https://futurizedeploy-production.up.railway.app/Atividade/${data.id}`,
-        dataEditActivity
+        `http://localhost:8080/Atividade/${data.id}`,
+        dataEditActivity, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
   
       if (response.status === 200) {
@@ -272,7 +284,12 @@ export default function Card({ index, listIndex, data }) {
 
   const fetchProjectMembers = async () => {
     try {
-      const response = await axios.get(`https://futurizedeploy-production.up.railway.app/Alocacao_projeto/${projectId}`);
+      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (response.status === 200) {
         const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
         setAllocatedUser(allocatedUserIds);

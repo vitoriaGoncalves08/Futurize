@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import Input from '../components/Input/input';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Buttons from '../components/Buttons/Buttons';
 import '../../public/assets/css/cadastro-login.css';
-import { ToastError } from '../components/Alert/Toast';
-import { AlertSuccess } from '../components/Alert/Modal';
+import { ToastError, ToastSuccess } from '../components/Alert/Toast';
 import axios from 'axios';
 
 export default function Cadastro() {
@@ -13,15 +11,13 @@ export default function Cadastro() {
   const [email, setEmail] = useState('');
   const [senhaConf, setSenhaConf] = useState('');
   const [senha, setSenha] = useState('');
-  const [error, setError] = useState('');
   const [nomeError, setNomeError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [senhaError, setSenhaError] = useState('');
   const [senhaConfError, setSenhaConfError] = useState('');
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
-
-  const { signup } = useAuth();
 
   // Função para validar o formato do email
   const isEmailValid = (email) => {
@@ -29,16 +25,7 @@ export default function Cadastro() {
     return emailRegex.test(email);
   };
 
-  // Função para verificar se o e-mail já existe (simulando no frontend)
-  const checkIfEmailExists = async (emailToCheck) => {
-    const usersStorage = JSON.parse(localStorage.getItem('users_bd')) || [];
-
-    const hasUser = usersStorage.filter((user) => user.email === emailToCheck);
-
-    return !!hasUser.length;
-  };
-
-  //função para mostrar o alerta caso os campos não estejam preenchidos
+  // Função para mostrar o alerta caso os campos não estejam preenchidos
   function isFilled(error) {
     ToastError({
       text: error,
@@ -46,12 +33,11 @@ export default function Cadastro() {
     });
   }
 
-  function isSuccess() {
-    AlertSuccess({
-      text: 'Usuário cadastrado com sucesso!',
+  function isSuccess(msg) {
+    ToastSuccess({
+      text: msg,
       title: 'Sucesso!',
     });
-    navigate('/login');
   }
 
   // Função para validar a senha
@@ -70,8 +56,9 @@ export default function Cadastro() {
     }
     return true;
   };
+
   const handleSignup = async () => {
-    if (!email | !senhaConf | !senha | !nome) {
+    if (!email || !senhaConf || !senha || !nome) {
       isFilled('Preencha todos os campos!');
       return;
     } else if (senha !== senhaConf) {
@@ -82,7 +69,7 @@ export default function Cadastro() {
       setEmailError('Email inválido');
       return;
     } else if (!isSenhaValida(senha)) {
-      setSenhaError('Tenha 1 caracter minúsculo, 1 maiúsculo e 8 digitos totais');
+      setSenhaError('A senha deve ter 1 caractere minúsculo, 1 maiúsculo e 8 dígitos totais');
       return;
     }
 
@@ -95,37 +82,21 @@ export default function Cadastro() {
 
     try {
       // Faça a chamada Axios para o endpoint do backend
-      const response = await axios.post('https://futurizedeploy-production.up.railway.app/Usuario', userData);
+      const response = await axios.post('http://localhost:8080/Usuario/cadastro', userData);
 
       if (response.data.error) {
         setError(response.data.error);
       } else {
-        isSuccess();
+        isSuccess("Usuário cadastrado com sucesso!");
+        navigate('/login');
       }
     } catch (error) {
-      console.error(error);
-      setError('Ocorreu um erro durante o cadastro.');
-    }
-
-    // Verifica se o e-mail já existe
-    const emailExists = await checkIfEmailExists(email);
-
-    if (emailExists) {
-      setEmailError('Este e-mail já está cadastrado');
-      return;
-    }
-
-    try {
-      const res = await signup(nome, email, senha);
-
-      if (res && res.error) {
-        setError(res.error);
+      if (error.response && error.response.status === 409) {
+        setEmailError('E-mail já cadastrado');
       } else {
-        isSuccess();
+        console.error(error);
+        setError('Ocorreu um erro durante o cadastro.');
       }
-    } catch (error) {
-      console.error(error);
-      setError('Ocorreu um erro durante o cadastro.');
     }
   };
 
@@ -167,7 +138,6 @@ export default function Cadastro() {
             helperText={senhaError}
             error={Boolean(senhaError)}
           />
-
           <Input
             id="senhaConf"
             type="password"

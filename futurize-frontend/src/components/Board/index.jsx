@@ -65,13 +65,20 @@ export default function Board() {
   const [lists] = useState(data);
   const [tasks, setTasks] = useState([]);
   const [allocatedUsers, setAllocatedUsers] = useState([]);
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
   const { projectId } = useParams();
 
   const fetchProjectMembers = async () => {
     try {
       const response = await axios.get(
-        `https://futurizedeploy-production.up.railway.app/Alocacao_projeto/${projectId}`
+        `http://localhost:8080/Alocacao_projeto/${projectId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+        
       );
       if (response.status === 200) {
         const allocatedUserIds = response.data.map(
@@ -94,7 +101,12 @@ export default function Board() {
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        `https://futurizedeploy-production.up.railway.app/Atividade/${projectId}`
+        `http://localhost:8080/Atividade/${projectId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       ); // Substitua pela sua URL de API
       if (response.status === 200) {
         setTasks(response.data);
@@ -143,10 +155,14 @@ export default function Board() {
   async function updateTask(taskId, newState) {
     try {
       const response = await axios.put(
-        `https://futurizedeploy-production.up.railway.app/Atividade/${taskId}`,
+        `http://localhost:8080/Atividade/${taskId}`,
         {
           id: taskId, // Certifique-se de incluir o ID aqui
           estado: newState,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         }
       );
   

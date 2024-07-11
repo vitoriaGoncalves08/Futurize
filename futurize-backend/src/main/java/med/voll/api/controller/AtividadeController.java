@@ -1,12 +1,12 @@
 package med.voll.api.controller;
 
 import jakarta.validation.Valid;
-import med.voll.api.atividade.*;
-import med.voll.api.projeto.DadosListagemProjeto;
+import med.voll.api.domain.atividade.*;
+import med.voll.api.domain.atividade.Atividade;
+import med.voll.api.domain.atividade.AtividadeRepository;
+import med.voll.api.domain.atividade.DadosListagemAtividade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,18 +36,19 @@ public class AtividadeController {
                 .collect(Collectors.toList());
     }
 
-    @DeleteMapping("/{id}")
-    @Transactional
-    public void ExcluirAtividade(@PathVariable Long id){
-        repository.deleteById(id);
-        
-    }
-
     @Transactional
     @PutMapping("/{id}")
-    public void AtualizarAtividade(@PathVariable Long id, @RequestBody @Valid DadosAtualizarAtividade dadosAtualizarAtividade){
+    public ResponseEntity AtualizarAtividade(@PathVariable Long id, @RequestBody @Valid DadosAtualizarAtividade dadosAtualizarAtividade){
         var atividade = repository.getReferenceById(id);
         atividade.atualizarInformacoes(dadosAtualizarAtividade);
+        return ResponseEntity.ok(new DadosListagemAtividade(atividade));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity ExcluirAtividade(@PathVariable Long id){
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 
