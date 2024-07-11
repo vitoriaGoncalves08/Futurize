@@ -31,6 +31,7 @@ export default function HeaderKanban() {
   const [allocationDataFetched, setAllocationDataFetched] = useState(false); // No
   const [newMembers, setNewMembers] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false); // Estado para rastrear se os dados foram carregados
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
   const openDeleteConfirmationDialog = () => {
     setDeleteConfirmationOpen(true);
@@ -41,9 +42,14 @@ export default function HeaderKanban() {
   };
 
   useEffect(() => {
-    const fetchUsuarios = async () => {
+    const fetchUsuarios = async () => { 
       try {
-        const response = await axios.get('http://localhost:8080/Usuario');
+        const response = await axios.get('http://localhost:8080/Usuario',{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
         if (response.status === 200) {
           setRows(response.data);
           setDataLoaded(true); // Marque os dados como carregados
@@ -57,7 +63,12 @@ export default function HeaderKanban() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/${projectId}`
+          `http://localhost:8080/Alocacao_projeto/${projectId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
         );
         if (response.status === 200) {
           const allocatedUserIds = response.data.map(
@@ -133,8 +144,12 @@ export default function HeaderKanban() {
 
       try {
         const response = await axios.post(
-          'http://localhost:8080/Alocacao_projeto',
-          newMemberData
+          'http://localhost:8080/Alocacao_projeto', newMemberData ,{
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
         );
         if (response.status === 201) {
           // A alocação foi criada com sucesso
@@ -173,7 +188,12 @@ export default function HeaderKanban() {
     addSucessoGeneral('Membro excluído com sucesso!');
     try {
       const response = await axios.delete(
-        `http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`
+        `http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
       if (response.status === 204) {
         // A alocação foi excluída com sucesso

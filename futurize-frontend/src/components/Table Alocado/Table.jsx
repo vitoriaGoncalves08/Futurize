@@ -31,6 +31,8 @@ export default function TableAlocado() {
   const usuarioLogado = getLoginUser();
   const usuarioLogadoId = usuarioLogado.id;
 
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+
   const openDeleteConfirmation = (id) => {
     setIdToDelete(id);
     setDeleteConfirmationOpen(true);
@@ -60,7 +62,12 @@ export default function TableAlocado() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogadoId}`
+          `http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogadoId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
         );
         if (response.status === 200) {
           const allocatedUsersData = response.data.map(

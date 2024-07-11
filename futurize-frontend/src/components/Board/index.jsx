@@ -65,13 +65,20 @@ export default function Board() {
   const [lists] = useState(data);
   const [tasks, setTasks] = useState([]);
   const [allocatedUsers, setAllocatedUsers] = useState([]);
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
   const { projectId } = useParams();
 
   const fetchProjectMembers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/Alocacao_projeto/${projectId}`
+        `http://localhost:8080/Alocacao_projeto/${projectId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+        
       );
       if (response.status === 200) {
         const allocatedUserIds = response.data.map(
@@ -94,7 +101,12 @@ export default function Board() {
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/Atividade/${projectId}`
+        `http://localhost:8080/Atividade/${projectId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       ); // Substitua pela sua URL de API
       if (response.status === 200) {
         setTasks(response.data);
@@ -147,6 +159,10 @@ export default function Board() {
         {
           id: taskId, // Certifique-se de incluir o ID aqui
           estado: newState,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         }
       );
   

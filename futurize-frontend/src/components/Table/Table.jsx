@@ -46,6 +46,8 @@ export default function TableC() {
   const usuarioLogadoName = usuarioLogado.sub;
   const [allocatedUsers, setAllocatedUsers] = useState([]);
 
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+
   const handleClickOpen = () => {
     // Limpa os campos do formulário
     setFormProjeto({
@@ -113,8 +115,6 @@ export default function TableC() {
     // Função para buscar os dados do banco e preencher o estado 'rows' ao carregar a página
     const fetchData = async () => {
       try {
-        const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
-
         if (!token) {
             console.error('Token JWT não encontrado no localStorage.');
             return;
@@ -123,6 +123,7 @@ export default function TableC() {
         const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogadoId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
         });
 
@@ -158,8 +159,6 @@ export default function TableC() {
     };
 
     try {
-        const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
-
         if (!token) {
             console.error('Token JWT não encontrado no localStorage.');
             return;
@@ -188,8 +187,6 @@ export default function TableC() {
   const confirmDelete = async () => {
     if (idToDelete !== null && idToDelete !== undefined && !isNaN(idToDelete)) {
       try {
-        const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
-
         if (!token) {
             console.error('Token JWT não encontrado no localStorage.');
             return;
@@ -241,13 +238,10 @@ export default function TableC() {
     };
 
     try {
-        const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
-
         if (!token) {
             console.error('Token JWT não encontrado no localStorage.');
             return;
         }
-
         const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -268,9 +262,13 @@ export default function TableC() {
   };
 
   const openProjectKanban = (project) => {
-    // console.log('Dados do projeto:', project); // Verifique os dados do projeto
-    setProjectData(project); // Define os dados do projeto selecionado
-    navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
+    if (project && project.id) {
+      console.log('Dados do projeto:', project); // Verifique os dados do projeto
+      setProjectData(project); // Define os dados do projeto selecionado
+      navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
+    } else {
+      console.error('Projeto inválido:', project);
+    }
   };
 
   const addMemberToProject = () => {
@@ -282,7 +280,12 @@ export default function TableC() {
       };
 
       axios
-        .post('http://localhost:8080/Alocacao_projeto', newMemberData)
+        .post('http://localhost:8080/Alocacao_projeto', newMemberData,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
         .then((response) => {
           if (response.status === 200) {
             addSucesso();

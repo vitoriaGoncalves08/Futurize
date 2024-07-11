@@ -32,14 +32,16 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
   const { projectId } = useParams();
   const location = useLocation();
   const projectData = location.state && location.state.projectData;
-  const { getLoginUserObject } = useAuth();
-  const usuarioLogado = getLoginUserObject();
+  const { getLoginUser } = useAuth();
+  const usuarioLogado = getLoginUser();
   const [open, setOpen] = useState(false);
   const [allocatedUser, setAllocatedUser] = useState([]);
 
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedEstado, setSelectedEstado] = useState('');
   const [rows, setRows] = useState([]);
+
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
   const [formTask, setFormTask] = useState({
     id: 1,
@@ -140,7 +142,12 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       console.log('atividade', activityData);
       const response = await axios.post(
         `http://localhost:8080/Atividade`,
-        activityData
+        activityData,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
 
       if (response.status === 200) {
@@ -159,7 +166,12 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/${projectId}`
+          `http://localhost:8080/Alocacao_projeto/${projectId}`,{
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
         );
         if (response.status === 200) {
           const allocatedUserIds = response.data.map(
