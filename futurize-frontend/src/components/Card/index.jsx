@@ -117,12 +117,15 @@ export default function Card({ index, listIndex, data }) {
   }
 
   const handleClickOpen = () => {
-    setOpen(true);
-    openEditActivity(data);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  setOpen(true);
+  openEditActivity(data);
+  console.log('Open Edit Dialog');  // Adicione log para depuração
+};
+
+const handleClose = () => {
+  setOpen(false);
+  console.log('Close Edit Dialog');  // Adicione log para depuração
+};
 
   const openDeleteConfirmationDialog = () => {
     setDeleteConfirmationOpen(true);
@@ -193,7 +196,9 @@ export default function Card({ index, listIndex, data }) {
   });
 
   
-  const handleEditSubmit = async () => {
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();  // Previna o comportamento padrão do formulário
+    
     const {
       id,
       titulo,
@@ -207,13 +212,13 @@ export default function Card({ index, listIndex, data }) {
       projeto,
       responsavel,
     } = formAtividade;
-  
+    
     const dataEditActivity = {
       id: id,
       titulo: titulo,
       descricao: descricao,
-      inicio: dataInicial,
-      encerramento: formattedDate,
+      inicio: format(new Date(inicio), 'yyyy-MM-dd'),
+      encerramento: format(new Date(encerramento), 'yyyy-MM-dd'),
       estado: estado,
       dificuldade: dificuldade,
       prioridade: prioridade,
@@ -225,7 +230,7 @@ export default function Card({ index, listIndex, data }) {
     try {
       // Realizar a chamada de API para atualizar a atividade no backend
       const response = await axios.put(
-        `http://localhost:8080/Atividade/${data.id}`,
+        `http://localhost:8080/Atividade/${id}`,
         dataEditActivity, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -237,7 +242,7 @@ export default function Card({ index, listIndex, data }) {
       if (response.status === 200) {
         // Atualize o estado `rows` após a edição
         const updatedRows = rows.map((row) =>
-          row.id === editActivityData.id ? { ...row, ...dataEditActivity } : row
+          row.id === id ? { ...row, ...dataEditActivity } : row
         );
         setRows(updatedRows);
         // Feche o modal de edição
@@ -252,6 +257,7 @@ export default function Card({ index, listIndex, data }) {
       addError('Erro ao conectar-se ao backend: ' + error.message);
     }
   };
+  
   console.log(data.id, data);
   const openEditActivity = (activity) => {
     setFormAtividade({
@@ -271,6 +277,7 @@ export default function Card({ index, listIndex, data }) {
     setSelectedUser(activity.responsavel.id);
     setOpen(true);
   };
+
   const handleInputChange = (e, field) => {
     if (field === 'responsavel') {
       setEditedResponsavel(e.target.value);
@@ -280,6 +287,7 @@ export default function Card({ index, listIndex, data }) {
         [field]: e.target.value,
       });
     }
+    console.log('Field changed:', field, 'Value:', e.target.value);  // Adicione log para depuração
   };
 
   const fetchProjectMembers = async () => {
