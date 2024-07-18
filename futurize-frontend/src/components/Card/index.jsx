@@ -19,7 +19,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Input from '../../components/Input/input';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -195,57 +195,54 @@ const handleClose = () => {
     responsavel: { id: '' },
   });
 
-  
+  const isValid = (date) => {
+    return date instanceof Date && !isNaN(date);
+  };
+
   const handleEditSubmit = async (e) => {
-    e.preventDefault();  // Previna o comportamento padrão do formulário
-    
-    const {
+    e.preventDefault();
+
+    const { id, titulo, descricao, inicio, encerramento, estado, dificuldade, prioridade, tempo_execucao, projeto, responsavel } = formAtividade;
+
+    // Parse e validar datas
+    const parseDate = (dateString) => {
+      const parsedDate = parse(dateString, 'dd-MM-yyyy', new Date());
+      return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
+    };
+
+    const dataInicial = parseDate(inicio);
+    const dataFinal = parseDate(encerramento);
+
+    if (!dataInicial || !dataFinal) {
+      console.error('Invalid date value provided.');
+      return;
+    }
+
+    const dataEditActivity = {
       id,
       titulo,
       descricao,
-      inicio,
-      encerramento,
+      inicio: dataInicial,
+      encerramento: dataFinal,
       estado,
       dificuldade,
       prioridade,
       tempo_execucao,
       projeto,
-      responsavel,
-    } = formAtividade;
-    
-    const dataEditActivity = {
-      id: id,
-      titulo: titulo,
-      descricao: descricao,
-      inicio: format(new Date(inicio), 'yyyy-MM-dd'),
-      encerramento: format(new Date(encerramento), 'yyyy-MM-dd'),
-      estado: estado,
-      dificuldade: dificuldade,
-      prioridade: prioridade,
-      tempo_execucao: tempo_execucao,
-      projeto: projeto,
       responsavel: { id: selectedUser },
     };
-  
+
     try {
-      // Realizar a chamada de API para atualizar a atividade no backend
-      const response = await axios.put(
-        `http://localhost:8080/Atividade/${id}`,
-        dataEditActivity, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-  
+      const response = await axios.put(`http://localhost:8080/Atividade/${id}`, dataEditActivity, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
       if (response.status === 200) {
-        // Atualize o estado `rows` após a edição
-        const updatedRows = rows.map((row) =>
-          row.id === id ? { ...row, ...dataEditActivity } : row
-        );
+        const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
         setRows(updatedRows);
-        // Feche o modal de edição
         handleClose();
         addSucessoGeneral('Atividade editada com sucesso!');
       } else {
@@ -257,8 +254,7 @@ const handleClose = () => {
       addError('Erro ao conectar-se ao backend: ' + error.message);
     }
   };
-  
-  console.log(data.id, data);
+
   const openEditActivity = (activity) => {
     setFormAtividade({
       id: activity.id,
@@ -279,16 +275,21 @@ const handleClose = () => {
   };
 
   const handleInputChange = (e, field) => {
-    if (field === 'responsavel') {
-      setEditedResponsavel(e.target.value);
-    } else {
-      setFormAtividade({
-        ...formAtividade,
-        [field]: e.target.value,
-      });
-    }
-    console.log('Field changed:', field, 'Value:', e.target.value);  // Adicione log para depuração
-  };
+  if (field === 'responsavel') {
+    setSelectedUser(e.target.value);
+    setFormAtividade({
+      ...formAtividade,
+      responsavel: { id: e.target.value },
+    });
+  } else {
+    setFormAtividade({
+      ...formAtividade,
+      [field]: e.target.value,
+    });
+  }
+  console.log('Field changed:', field, 'Value:', e.target.value);  // Adicione log para depuração
+};
+
 
   const fetchProjectMembers = async () => {
     try {
