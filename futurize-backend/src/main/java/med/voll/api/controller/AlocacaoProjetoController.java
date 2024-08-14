@@ -1,12 +1,13 @@
 package med.voll.api.controller;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import med.voll.api.alocacaoProjeto.*;
-import med.voll.api.projeto.Projeto;
-import med.voll.api.projeto.ProjetoRepository;
-import med.voll.api.usuario.Usuario;
-import med.voll.api.usuario.UsuarioRepository;
+import med.voll.api.domain.alocacaoProjeto.*;
+import med.voll.api.domain.alocacaoProjeto.AlocacaoProjeto;
+import med.voll.api.domain.alocacaoProjeto.AlocacaoProjetoRepository;
+import med.voll.api.domain.projeto.Projeto;
+import med.voll.api.domain.projeto.ProjetoRepository;
+import med.voll.api.domain.usuario.Usuario;
+import med.voll.api.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,11 +75,19 @@ public class AlocacaoProjetoController {
         }
     }
 
+    @CrossOrigin("*")
+    @PutMapping
+    @Transactional
+    public ResponseEntity AtualizarAlocacaoProjeto(@RequestBody @Valid DadosAtualizarAlocacaoProjeto dadosAtualizarAlocacaoProjeto){
+        var alocacaoProjeto = repository.getReferenceById(dadosAtualizarAlocacaoProjeto.id());
+        alocacaoProjeto.AtualizarALocacaoProjeto(dadosAtualizarAlocacaoProjeto);
+        return ResponseEntity.ok(new DadosListagemAlocacaoProjeto(alocacaoProjeto));
+    }
 
     @CrossOrigin("*")
     @DeleteMapping("/{idProjeto}/{idUsuario}")
     @Transactional
-    public void ExcluirAlocacaoProjeto(@PathVariable Long idProjeto, @PathVariable Long idUsuario) {
+    public ResponseEntity ExcluirAlocacaoProjeto(@PathVariable Long idProjeto, @PathVariable Long idUsuario) {
         AlocacaoProjeto alocacaoProjeto = repository.findByIdProjetoAndIdUsuario(idProjeto, idUsuario);
         if (alocacaoProjeto != null) {
             repository.delete(alocacaoProjeto);
@@ -86,13 +95,6 @@ public class AlocacaoProjetoController {
             // Lidar com o caso em que a alocação não foi encontrada
             // Você pode lançar uma exceção, retornar um status 404, etc.
         }
-    }
-
-    @CrossOrigin("*")
-    @PutMapping
-    @Transactional
-    public void AtualizarAlocacaoProjeto(@RequestBody @Valid DadosAtualizarAlocacaoProjeto dadosAtualizarAlocacaoProjeto){
-        var alocacaoProjeto = repository.getReferenceById(dadosAtualizarAlocacaoProjeto.id());
-        alocacaoProjeto.AtualizarALocacaoProjeto(dadosAtualizarAlocacaoProjeto);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -29,6 +29,9 @@ export default function TableAlocado() {
   const navigate = useNavigate();
   const { getLoginUser } = useAuth();
   const usuarioLogado = getLoginUser();
+  const usuarioLogadoId = usuarioLogado.id;
+
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
   const openDeleteConfirmation = (id) => {
     setIdToDelete(id);
@@ -59,7 +62,12 @@ export default function TableAlocado() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `https://futurizedeploy-production.up.railway.app/Alocacao_projeto/porUser/${usuarioLogado}`
+          `http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogadoId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
         );
         if (response.status === 200) {
           const allocatedUsersData = response.data.map(
@@ -88,7 +96,7 @@ export default function TableAlocado() {
     };
 
     fetchProjectMembers();
-  }, [usuarioLogado]);
+  }, [usuarioLogadoId]);
 
   const openProjectKanban = (project) => {
     // console.log('Dados do projeto:', project);

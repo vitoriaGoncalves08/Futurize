@@ -22,26 +22,33 @@ export default function Login() {
     return emailRegex.test(email);
   };
 
-  //função para mostrar o alerta caso os campos não estejam preenchidos
-  function isErrors(error) {
+  // Função para mostrar o alerta caso os campos não estejam preenchidos
+  function isFilled(error) {
     ToastError({
       text: error,
       title: 'Erro!',
     });
   }
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email | !senha) {
-      setError('Preencha todos os campos');
+      isFilled('Preencha todos os campos!');
       return;
     }
 
     if (!isEmailValid(email)) {
-      setError('Email inválido');
+      setEmailError('Email inválido');
       return;
     }
-
-    signIn(email, senha);
+    try {
+      await signIn(email, senha);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        isFilled('Credenciais inválidas. Verifique seu e-mail e senha.');
+      } else {
+        isFilled('Erro ao realizar o login. Tente novamente mais tarde.');
+      }
+    }
   };
 
   return (
@@ -56,6 +63,8 @@ export default function Login() {
             value={email}
             label="E-mail"
             onChange={(e) => [setEmail(e.target.value), setEmailError('')]}
+            helperText={emailError}
+            error={Boolean(emailError)}
           />
           <Input
             id="senha"
@@ -63,6 +72,8 @@ export default function Login() {
             label="Senha"
             value={senha}
             onChange={(e) => [setSenha(e.target.value), setSenhaError('')]}
+            helperText={senhaError}
+            error={Boolean(senhaError)}
           />
           {error}
           <div className="conta">

@@ -1,11 +1,12 @@
 package med.voll.api.controller;
 
 import jakarta.validation.Valid;
-import med.voll.api.alocacaoAtividade.*;
-import med.voll.api.atividade.DadosAtualizarAtividade;
-import med.voll.api.atividade.DadosCadastroAtividade;
-import med.voll.api.atividade.DadosListagemAtividade;
+import med.voll.api.domain.alocacaoAtividade.*;
+import med.voll.api.domain.alocacaoAtividade.AlocacaoAtividade;
+import med.voll.api.domain.alocacaoAtividade.AlocacaoAtividadeRepository;
+import med.voll.api.domain.usuario.DadosListagemUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,21 +28,23 @@ public class AlocacaoAtividadeController {
 
     @CrossOrigin("*")
     @GetMapping
-    public List<DadosListagemAlocacaoAtividade> ListarAlocacaoAtividade(){
-        return repository.findAll().stream().map(DadosListagemAlocacaoAtividade::new).toList();
+    public ResponseEntity<List<DadosListagemAlocacaoAtividade>> ListarAlocacaoAtividade(){
+        List<DadosListagemAlocacaoAtividade> alocacaoAtividades = repository.findAll().stream().map(DadosListagemAlocacaoAtividade::new).toList();
+        return ResponseEntity.ok(alocacaoAtividades);
     }
 
     @CrossOrigin("*")
     @PutMapping
-    public void AtualizarAlocacaoAtividade(@RequestBody @Valid DadosAtualizarAlocacaoAtividade dadosAtualizarAlocacaoAtividade){
+    public ResponseEntity AtualizarAlocacaoAtividade(@RequestBody @Valid DadosAtualizarAlocacaoAtividade dadosAtualizarAlocacaoAtividade){
         var alocacaoAtividade = repository.getReferenceById(dadosAtualizarAlocacaoAtividade.id());
         alocacaoAtividade.atualizarInformacoes(dadosAtualizarAlocacaoAtividade);
+        return ResponseEntity.ok(new DadosListagemAlocacaoAtividade(alocacaoAtividade));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void ExcluirAlocacaoAtividade(@PathVariable Long id){
+    public ResponseEntity ExcluirAlocacaoAtividade(@PathVariable Long id){
         repository.deleteById(id);
-
+        return ResponseEntity.noContent().build();
     }
 }
