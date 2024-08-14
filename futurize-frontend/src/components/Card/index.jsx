@@ -48,6 +48,7 @@ export default function Card({ index, listIndex, data }) {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Estado para o tempo de execução
   const [horas, setHoras] = useState(0);
   const [minutos, setMinutos] = useState(0);
   const [segundos, setSegundos] = useState(0);
@@ -55,31 +56,84 @@ export default function Card({ index, listIndex, data }) {
 
   const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
+  // Função para carregar o tempo de execução do backend
+  const loadExecutionTime = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/Atividade/${data.id}/tempo-execucao`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        const { horas, minutos, segundos } = response.data;
+        setHoras(horas || 0);
+        setMinutos(minutos || 0);
+        setSegundos(segundos || 0);
+      } else {
+        console.error('Erro ao carregar tempo de execução do backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+
   useEffect(() => {
     let interval;
 
     if (isRunning) {
       interval = setInterval(() => {
-        if (segundos < 59) {
-          setSegundos(segundos + 1);
-        } else if (minutos < 59) {
-          setMinutos(minutos + 1);
-          setSegundos(0);
-        } else {
-          setHoras(horas + 1);
-          setMinutos(0);
-          setSegundos(0);
-        }
+        setSegundos(prevSegundos => {
+          if (prevSegundos < 59) {
+            return prevSegundos + 1;
+          } else {
+            setMinutos(prevMinutos => {
+              if (prevMinutos < 59) {
+                return prevMinutos + 1;
+              } else {
+                setHoras(prevHoras => prevHoras + 1);
+                return 0;
+              }
+            });
+            return 0;
+          }
+        });
       }, 1000);
+    } else if (!isRunning && (horas > 0 || minutos > 0 || segundos > 0)) {
+      saveExecutionTime({ horas, minutos, segundos });
     }
 
     return () => clearInterval(interval);
-  }, [segundos, minutos, horas, isRunning]);
+  }, [isRunning]);
 
   const handlePlayClick = () => {
     setIsRunning(!isRunning);
   };
 
+  const saveExecutionTime = async (executionTime) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/Atividade/${data.id}/tempo-execucao`,
+        executionTime,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        ToastSuccess({ text: 'Tempo de execução salvo com sucesso!', title: 'Sucesso!' });
+      } else {
+        ToastError({ text: 'Erro ao salvar tempo de execução no backend.', title: 'Erro!' });
+      }
+    } catch (error) {
+      ToastError({ text: `Erro ao conectar-se ao backend: ${error.message}`, title: 'Erro!' });
+    }
+  };
+  
   function formatEncerramento(encerramento) {
     const encerramentoDate = new Date(encerramento);
     const dia = encerramentoDate.getDate().toString().padStart(2, "0");
@@ -172,15 +226,6 @@ const handleClose = () => {
     }
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-    setEditingData(data);
-  };
-  const cancelEdit = () => {
-    setIsEditing(false);
-    setEditingData(null);
-    // Resetar os estados dos campos editados
-  };
   const [formAtividade, setFormAtividade] = useState({
     id: '',
     titulo: '',
@@ -315,7 +360,7 @@ const handleClose = () => {
       <Container>
         <>
           <header>
-            <Label color={getStatusTagColor(data.dificuldade)}></Label>
+            <Label style={{marginTop: 30}}color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
               <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
               <ModeEditIcon className="edit-card" onClick={handleClickOpen} />
@@ -340,12 +385,16 @@ const handleClose = () => {
 
           <div className="TempoPerfil">
             <div className="Pessoa" onClick={handlePlayClick}>
-              {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
-              <p>
-                {String(horas).padStart(2, "0")}:
-                {String(minutos).padStart(2, "0")}:
-                {String(segundos).padStart(2, "0")}
-              </p>
+              <div className="play-pause-button" onClick={handlePlayClick}>
+              {isRunning ? (
+                  <PauseIcon className="pause-icon" />
+                ) : (
+                  <PlayArrowIcon className="play-icon" />
+                )}
+              </div>
+              <div className="timer">
+                <span>{data.tempo_execucao}</span>
+              </div>
             </div>
             <div className="Perfil">
               <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>

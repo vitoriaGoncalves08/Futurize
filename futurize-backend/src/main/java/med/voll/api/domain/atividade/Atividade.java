@@ -1,10 +1,7 @@
 package med.voll.api.domain.atividade;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import med.voll.api.domain.projeto.Projeto;
 import med.voll.api.domain.usuario.Usuario;
 
@@ -14,27 +11,39 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Setter
 @Entity(name = "atividade")
 @Table(name = "atividade")
 public class Atividade {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+
     private String titulo;
+
     private String descricao;
+
     private Date inicio;
+
     private Date encerramento;
+
     @Enumerated(EnumType.STRING)
     private Estado estado;
+
     @Enumerated(EnumType.STRING)
     private Dificuldade dificuldade;
+
     private int prioridade;
+
     private String tempo_execucao;
+
     @ManyToOne
     @JoinColumn(name = "id_projeto")
     private Projeto projeto;
+
     @ManyToOne
     @JoinColumn(name = "responsavel")
     private Usuario responsavel;
+
     private Boolean ativo;
 
 
