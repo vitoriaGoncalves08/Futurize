@@ -52,7 +52,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     estado: '',
     dificuldade: '',
     prioridade: '',
-    tempo_execucao: '00-00-20',
+    tempo_execucao: '00:00:00',
     projeto: {
       id: projectId,
     },
