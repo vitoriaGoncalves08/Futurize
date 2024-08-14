@@ -93,7 +93,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
-
+  
     const {
       id,
       titulo,
@@ -107,20 +107,20 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       projeto,
       responsavel,
     } = formTask;
-
+  
     // Verifique se encerramento é uma data válida
     const encerramentoDate =
       formTask.encerramento instanceof Date
         ? formTask.encerramento
         : new Date(formTask.encerramento);
-
+  
     // Formate a data para o formato "yyyy-MM-dd"
     const formattedDate = `${encerramentoDate.getFullYear()}-${(
       encerramentoDate.getMonth() + 1
     )
       .toString()
       .padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
-
+  
     const dataInicial = inicio
       ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
       : format(new Date(), 'yyyy-MM-dd');
@@ -137,23 +137,23 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       projeto: projeto,
       responsavel: { id: selectedUser },
     };
-
+  
     try {
       console.log('atividade', activityData);
       const response = await axios.post(
         `http://localhost:8080/Atividade`,
-        activityData,{
+        activityData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         }
       );
-
+  
       if (response.status === 200) {
         addSucesso('Atividade adicionada com sucesso');
+        setTasks([...tasks, response.data]); // Atualize o estado das tarefas
         handleClose();
-        setTasks([...tasks, response.data]);
       } else {
         console.error('Erro ao adicionar a atividade');
       }
