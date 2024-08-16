@@ -3,13 +3,13 @@
   font-family: var(--font-family-sans-serif);
 }
 
-html{
+html {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-body{
+body {
   perspective: 1px;
   transform-style: preserve-3d;
   height: 100%;
@@ -26,7 +26,7 @@ body{
 }
 
 ::-webkit-scrollbar-track {
-  background: #F4F4F4;
+  background: #f4f4f4;
   position: absolute;
   top: 0;
   right: 0;
@@ -34,7 +34,7 @@ body{
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #79A2FE;
+  background: #79a2fe;
   border-radius: 10px;
 }
 
@@ -44,21 +44,16 @@ nav {
   align-items: center;
   padding: 50px;
 }
-  
-/* .LogoFuturize p {
-  color: #3E3E3E;
-  font-size: 26px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 8px;
-} */
 
 .LogoFuturize img {
   width: 10rem;
   display: flex;
 }
 
-.MenuItens, ul, li, a {
+.MenuItens,
+ul,
+li,
+a {
   display: flex;
   list-style: none;
   gap: 35px;
@@ -82,27 +77,98 @@ nav {
   font-weight: 800;
   line-height: 70px;
   text-transform: uppercase;
-  background-image: linear-gradient(to right, #407BFF, #6AC2FF);
+  background-image: linear-gradient(to right, #407bff, #6ac2ff);
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
 }
-  
+
 .Subtitulo p {
   text-align: center;
-  color: #A1A1A1;
+  color: #a1a1a1;
   font-size: 18px;
   line-height: 28px;
   margin: 1rem;
 }
 
-.MainContent{
-  z-index: 2;
+.MainContent {
   position: absolute;
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
   top: 100vh;
 }
 
-.secao{
+.status {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.t-status {
+  text-align: center;
+  width: 100%;
+  padding-top: 1rem;
+  font-weight: 900;
+  color: #407BFF;
+  font-size: 4vh;
+  background-color: transparent;
+}
+
+.carousel-container {
+  position: relative;
+  width: 90%;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.card {
+  min-width: 33.33%; /* Mostrar 3 cards por vez */
+  margin: 0 1rem;
+  background-color: #FFFFFF;
+  border-radius: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  object-fit: cover;
+}
+
+button {
+  background-color: transparent;
+}
+
+button.prev, button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button.prev {
+  left: 10px;
+}
+
+button.next {
+  right: 10px;
+}
+
+
+
+
+/* .secao {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -111,15 +177,35 @@ nav {
   height: 400px;
 }
 
-.texto{
+.texto {
   width: 50%;
 }
 
-.secao img{
+.secao img {
   height: 400px;
+} */
+
+/* span {
+  margin-bottom: 30px;
+} */
+
+.Wave {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
 
-  /* Estilos para telas de 370px */
+footer img {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Estilos para telas de 370px */
 @media (max-width: 370px) {
   .HeroContent p {
     font-size: 36px;
@@ -181,7 +267,7 @@ nav {
 
 /* Estilos para telas de 600px */
 @media (max-width: 600px) {
-  .HeroContent p{
+  .HeroContent p {
     height: 100%;
     font-size: 46px;
     line-height: 50px;
@@ -222,7 +308,7 @@ nav {
     line-height: 24px;
     margin: 1rem;
   }
-  
+
   .LogoFuturize p {
     font-size: 20px;
   }
@@ -272,7 +358,6 @@ nav {
 
 /* Estilos para telas de 1200px */
 @media (max-width: 1200px) {
-  
   .Subtitulo p {
     font-size: 20px;
     line-height: 28px;
@@ -295,241 +380,4 @@ nav {
   .SignUp {
     font-size: 20px;
   }
-}
-/* statusss */
-
-
-.status {
-  width: 100%;
-  height: 110vh;
-}
-.status .t-status {
-  color: #407BFF;
-  font-size: 4vh;
-  font-weight: 900;
-  width: 100%;
-  text-align: center;
-  background-color: transparent;
-  padding-top: 4%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-@media (max-width: 838px) {
-  .status .t-status {
-    padding-top: 2%;
-  }
-}
-.status .t-status .barra {
-  width: 60px;
-  height: 5px;
-  background-color: #3767D4;
-}
-.status .cards-status {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-wrap: wrap;
-  text-align: center;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.status .cards-status .backlog, .status .cards-status .sprint, .status .cards-status .dev, .status .cards-status .done-dev, .status .cards-status .test, .status .cards-status .done-test, .status .cards-status .done, .status .cards-status .rework {
-  margin: 2%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20%;
-  height: 40vh;
-  background-color: #ECF1F8;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.021);
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  transition: 0.4s;
-}
-.status .cards-status .backlog:hover, .status .cards-status .sprint:hover, .status .cards-status .dev:hover, .status .cards-status .done-dev:hover, .status .cards-status .test:hover, .status .cards-status .done-test:hover, .status .cards-status .done:hover, .status .cards-status .rework:hover{
-  background: linear-gradient(45deg, #9bb9fc, #DFE8FF);
-  transform: translateY(-5px) !important;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.116);
-  transition: 0.4s;
-  color: #fff;
-}
-@media (max-width: 838px) {
-  .status .cards-status .backlog, .status .cards-status .sprint, .status .cards-status .dev, .status .cards-status .done-dev, .status .cards-status .test, .status .cards-status .done-test, .status .cards-status .rework, .status .cards-status .done {
-    width: 150px;
-    height: 20vh;
-  }
-}
-.status .cards-status .backlog .img-backlog {
-  width: 90%;
-  height: 90%;
-  background-image: url("../../../public/assets/img/1.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .backlog .img-backlog {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.status .cards-status .sprint .img-sprint {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../public/assets/img/2.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .sprint .img-sprint {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.status .cards-status .dev .img-dev {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../public/assets/img/3.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .dev .img-dev {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.status .cards-status .done-dev .img-done-dev {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../public/assets/img/4.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .done-dev .img-done-dev {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.status .cards-status .test .img-test {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../public/assets/img/5.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .test .img-test {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.status .cards-status .done-test .img-done-test {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../public/assets/img/6.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .done-test .img-done-test {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.status .cards-status .rework .img-rework {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../public/assets/img/7.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .rework .img-rework {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.title-status{
-  font-size: 25px;
-  font-weight: 900;
-}
-
-.status .cards-status .done .img-done {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../public/assets/img/8.png");
-  background-repeat: no-repeat; /* Evita que a imagem se repita */
-  background-size: cover; /* Garante que a imagem cubra todo o elemento */
-  image-rendering: auto;
-  background-size: 80%;
-  margin: 0 auto;
-  background-position: center;
-}
-@media (max-width: 838px) {
-  .status .cards-status .done .img-done {
-    width: 50px;
-    height: 50px;
-    background-size: 50px;
-  }
-}
-.title-status{
-  font-size: 25px;
-  font-weight: 900;
-  margin-bottom: 10px;
-}
-span{
-  margin-bottom: 30px;
-}
-.Wave {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-}
-
-footer img {
-  position: fixed;
-  bottom: 0;
-  left: 0;  
-  max-width: 100%;
-  width: 100%;
 }
