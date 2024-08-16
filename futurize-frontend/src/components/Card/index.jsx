@@ -19,7 +19,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Input from '../../components/Input/input';
-import { format, parse } from 'date-fns';
+import { format, parse, addDays } from 'date-fns';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -134,12 +134,13 @@ export default function Card({ index, listIndex, data }) {
     }
   };
   
+
   function formatEncerramento(encerramento) {
-    const encerramentoDate = new Date(encerramento);
+    const encerramentoDate = addDays(new Date(encerramento), 1);
     const dia = encerramentoDate.getDate().toString().padStart(2, "0");
     const mes = (encerramentoDate.getMonth() + 1).toString().padStart(2, "0");
     const ano = encerramentoDate.getFullYear();
-    return `${dia}-${mes}-${ano}`;
+    return `${dia}/${mes}/${ano}`;
   }
 
   function formatMemberName(name) {
@@ -171,10 +172,10 @@ export default function Card({ index, listIndex, data }) {
   }
 
   const handleClickOpen = () => {
-  setOpen(true);
-  openEditActivity(data);
-  console.log('Open Edit Dialog');  // Adicione log para depuração
-};
+    setOpen(true);
+    openEditActivity(data);
+    console.log('Open Edit Dialog');  // Adicione log para depuração
+  };
 
 const handleClose = () => {
   setOpen(false);
@@ -249,9 +250,16 @@ const handleClose = () => {
 
     const { id, titulo, descricao, inicio, encerramento, estado, dificuldade, prioridade, tempo_execucao, projeto, responsavel } = formAtividade;
 
+    // Função para converter data de DD-MM-YYYY para YYYY-MM-DD
+    const convertDateFormat = (dateString) => {
+      const [day, month, year] = dateString.split('-');
+      return `${year}-${month}-${day}`;
+    };
+
     // Parse e validar datas
     const parseDate = (dateString) => {
-      const parsedDate = parse(dateString, 'dd-MM-yyyy', new Date());
+      const formattedDate = convertDateFormat(dateString);
+      const parsedDate = parse(formattedDate, 'yyyy-MM-dd', new Date());
       return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
     };
 
@@ -298,7 +306,7 @@ const handleClose = () => {
       console.error('Erro ao conectar-se ao backend:', error);
       addError('Erro ao conectar-se ao backend: ' + error.message);
     }
-  };
+};
 
   const openEditActivity = (activity) => {
     setFormAtividade({
@@ -363,7 +371,7 @@ const handleClose = () => {
             <Label style={{marginTop: 30}}color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
               <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
-              <ModeEditIcon className="edit-card" onClick={handleClickOpen} />
+              <ModeEditIcon className="edit-card" onClick={handleClickOpen}style={{ color: 'blue' }}/>
             </div>
           </header>
 
