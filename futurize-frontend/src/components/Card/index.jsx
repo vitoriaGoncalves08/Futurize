@@ -27,7 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
 
-export default function Card({ index, listIndex, data }) {
+export default function Card({ index, listIndex, data, setTasks }) {
   const ref = useRef();
   const { projectId } = useParams();
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -55,6 +55,7 @@ export default function Card({ index, listIndex, data }) {
   const [isRunning, setIsRunning] = useState(false);
 
   const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+  
 
   // Função para carregar o tempo de execução do backend
   const loadExecutionTime = async () => {
@@ -202,7 +203,6 @@ const handleClose = () => {
     e.preventDefault();
     closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
     addSucessoGeneral("Atividade excluída com sucesso!");
-
     try {
       // Certifique-se de ter o 'id' da atividade disponível em 'data'
       const idToDelete = data.id;
@@ -222,6 +222,8 @@ const handleClose = () => {
       });
 
       console.log("Atividade excluída com sucesso!");
+       // Atualize o estado das tarefas removendo a atividade deletada
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== idToDelete));
     } catch (error) {
       console.error("Erro ao excluir a atividade:", error);
     }
@@ -296,6 +298,9 @@ const handleClose = () => {
       if (response.status === 200) {
         const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
         setRows(updatedRows);
+        setTasks((prevTasks) => 
+          prevTasks.map((task) => task.id === id ? { ...task, ...dataEditActivity } : task)
+        );
         handleClose();
         addSucessoGeneral('Atividade editada com sucesso!');
       } else {
@@ -344,24 +349,26 @@ const handleClose = () => {
 };
 
 
-  const fetchProjectMembers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`,{
+const fetchProjectMembers = async () => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/Alocacao_projeto/${projectId}`,{
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      });
-      if (response.status === 200) {
-        const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
-        setAllocatedUser(allocatedUserIds);
-      } else if (response.status === 409) {
-        console.error('Erro ao buscar membros alocados ao projeto no backend.');
       }
-    } catch (error) {
-      console.error('Erro ao conectar-se ao backend:', error);
+    );
+    if (response.status === 200) {
+      const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
+      setAllocatedUser(allocatedUserIds);
+    } else if (response.status === 409) {
+      console.error('Erro ao buscar membros alocados ao projeto no backend.');
     }
-  };
+  } catch (error) {
+    console.error('Erro ao conectar-se ao backend:', error);
+  }
+};
 
   return (
     <>

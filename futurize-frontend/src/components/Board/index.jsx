@@ -128,7 +128,7 @@ export default function Board() {
     fetchTasks();
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchTasks]);
 
   function onDragEnd(event) {
     console.log(event);
@@ -186,6 +186,7 @@ export default function Board() {
             data={list}
             tasks={getFilteredTasks(list.code)}
             allocatedUsers={allocatedUsers}
+            setTasks={setTasks}
           />
         ))}
       </ContainerBoard>

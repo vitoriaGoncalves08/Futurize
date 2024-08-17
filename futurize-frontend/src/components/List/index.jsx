@@ -27,7 +27,7 @@ import { isValid, format, parse } from 'date-fns';
 
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-export default function List({ data, index: listIndex, tasks, allocatedUsers }) {
+export default function List({ data, index: listIndex, tasks, allocatedUsers, setTasks }) { 
   const navigate = useNavigate();
   const { projectId } = useParams();
   const location = useLocation();
@@ -152,7 +152,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
   
       if (response.status === 200) {
         addSucesso('Atividade adicionada com sucesso');
-        setTasks([...tasks, response.data]); // Atualize o estado das tarefas
+        setTasks((prevTasks) => [...prevTasks, response.data]); // Atualize o estado das tarefas
         handleClose();
       } else {
         console.error('Erro ao adicionar a atividade');
@@ -194,7 +194,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     fetchProjectMembers();
     const intervalId = setInterval(fetchProjectMembers, 60000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [tasks]);
 
   return (
     <Droppable key={data.code} droppableId={`${data.code}`}>
@@ -347,24 +347,25 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
             {...provided.droppableProps}
             style={{ height: '100%' }}
           >
-            {tasks.map((task, index) => (
-              <Draggable key={task.id} draggableId={`${task.id}`} index={index}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <Card
-                      key={task.id}
-                      listIndex={listIndex}
-                      index={task.id}
-                      data={task}
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
+         {tasks.map((task, index) => (
+          <Draggable key={task.id} draggableId={`${task.id}`} index={index}>
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                <Card
+                  key={task.id}
+                  listIndex={listIndex}
+                  index={task.id}
+                  data={task}
+                  setTasks={setTasks}
+                />
+              </div>
+            )}
+          </Draggable>
+        ))}
             {provided.placeholder}
           </div>
         </Container>
