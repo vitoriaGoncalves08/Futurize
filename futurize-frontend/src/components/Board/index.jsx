@@ -16,45 +16,45 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 function loadLists() {
   return [
     {
-      title: 'Total de Tarefas',
+      title: 'Backlog',
       creatable: true,
-      code: LIST_CODES.TOTAL_TAREFAS,
+      code: LIST_CODES.BACKLOG,
     },
     {
-      title: 'Tarefas a Fazer',
+      title: 'Sprint Backlog',
       creatable: false,
-      code: LIST_CODES.TAREFAS_A_FAZER,
+      code: LIST_CODES.SPRINT_BACKLOG,
     },
     {
-      title: 'Em Andamento',
+      title: 'Development',
       creatable: false,
-      code: LIST_CODES.EM_ANDAMENTO,
+      code: LIST_CODES.DEVELOPMENT,
     },
     {
-      title: 'Feito',
+      title: 'Done Development',
       creatable: false,
-      code: LIST_CODES.FEITO,
+      code: LIST_CODES.DONE_DEVELOPMENT,
     },
     {
-      title: 'A Revisar',
+      title: 'Test',
       creatable: false,
-      code: LIST_CODES.A_REVISAR,
+      code: LIST_CODES.TEST,
     },
     {
-      title: 'Revisado',
+      title: 'Done Test',
       creatable: false,
-      code: LIST_CODES.REVISADO,
+      code: LIST_CODES.DONE_TEST,
     },
     {
-      title: 'Refazendo',
+      title: 'Rework',
       creatable: false,
-      code: LIST_CODES.REFAZENDO,
+      code: LIST_CODES.REWORK,
     },
     {
-      title: 'Concluído',
+      title: 'DONE',
       creatable: false,
       done: true,
-      code: LIST_CODES.CONCLUIDO,
+      code: LIST_CODES.DONE,
     },
   ];
 }
