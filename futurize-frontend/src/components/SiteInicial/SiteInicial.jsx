@@ -64,42 +64,42 @@ function SiteInicial() {
           <div class="cards-status">
             <div class="backlog">
               <div class="img-backlog"></div>
-              <span class="title-status">BACKLOG</span>
+              <span class="title-status">TOTAL_TAREFAS</span>
               <span>Demanda total de atividades</span>
             </div>
             <div class="sprint">
               <div class="img-sprint"></div>
-              <span class="title-status">SPRINT BACKLOG</span>
+              <span class="title-status">SPRINT TOTAL_TAREFAS</span>
               <span>Conjunto de atividades</span>
             </div>
             <div class="dev">
               <div class="img-dev"></div>
-              <span class="title-status">DEVELOPMENT</span>
+              <span class="title-status">EM_ANDAMENTO</span>
               <span>O que está sendo feito</span>
             </div>
             <div class="done-dev">
               <div class="img-done-dev"></div>
-              <span class="title-status">DONE DEVELOPMENT</span>
+              <span class="title-status">CONCLUIDOEM_ANDAMENTO</span>
               <span>O que terminou de fazer</span>
             </div>
             <div class="test">
               <div class="img-test"></div>
-              <span class="title-status">TEST</span>
+              <span class="title-status">A_REVISAR</span>
               <span>Está sendo testado</span>
             </div>
             <div class="done-test">
               <div class="img-done-test"></div>
-              <span class="title-status">DONE TEST</span>
+              <span class="title-status">CONCLUIDOTESTANDO</span>
               <span>Terminou de ser testado</span>
             </div>
             <div class="rework">
               <div class="img-rework"></div>
-              <span class="title-status">REWORK</span>
+              <span class="title-status">REFAZENDO</span>
               <span>Finalizado, mas precisou retomar</span>
             </div>
             <div class="done">
               <div class="img-done"></div>
-              <span class="title-status">DONE</span>
+              <span class="title-status">CONCLUIDO</span>
               <span>Finalizado</span>
             </div>
           </div>

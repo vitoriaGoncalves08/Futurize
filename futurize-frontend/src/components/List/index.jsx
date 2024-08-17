@@ -310,16 +310,14 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                       value={formTask.estado}
                       onChange={(e) => handleInputChange(e, 'estado')}
                     >
-                      <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
-                      <MenuItem value={'SPRINT_BACKLOG'}>Sprint Backlog</MenuItem>
-                      <MenuItem value={'DEVELOPMENT'}>Development</MenuItem>
-                      <MenuItem value={'DONE_DEVELOPMENT'}>
-                        Done Development
-                      </MenuItem>
-                      <MenuItem value={'TEST'}>Test</MenuItem>
-                      <MenuItem value={'DONE_TEST'}>Done Test</MenuItem>
-                      <MenuItem value={'REWORK'}>Rework</MenuItem>
-                      <MenuItem value={'DONE'}>Done</MenuItem>
+                      <MenuItem value={'TOTAL_TAREFAS'}>Total de Tarefas</MenuItem>
+                      <MenuItem value={'TAREFAS_A_FAZER'}>Tarefas a Fazer</MenuItem>
+                      <MenuItem value={'EM_ANDAMENTO'}>Em Andamento</MenuItem>
+                      <MenuItem value={'FEITO'}>Feito</MenuItem>
+                      <MenuItem value={'A_REVISAR'}>A Revisar</MenuItem>
+                      <MenuItem value={'REVISADO'}>Revisado</MenuItem>
+                      <MenuItem value={'REFAZENDO'}>Refazendo</MenuItem>
+                      <MenuItem value={'CONCLUIDO'}>Concluído</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
