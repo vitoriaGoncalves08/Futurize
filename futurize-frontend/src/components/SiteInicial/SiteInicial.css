@@ -100,7 +100,8 @@ a {
 }
 
 .status {
-  width: 100%;
+  width: 100vw;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -108,13 +109,12 @@ a {
 }
 
 .t-status {
+  width: 90%;
   text-align: center;
-  width: 100%;
-  padding-top: 1rem;
-  font-weight: 900;
-  color: #407BFF;
   font-size: 4vh;
-  background-color: transparent;
+  margin-bottom: 1.5rem;
+  font-weight: 900;
+  color: #407bff;
 }
 
 .carousel-container {
@@ -131,7 +131,7 @@ a {
 .card {
   min-width: 33.33%; /* Mostrar 3 cards por vez */
   margin: 0 1rem;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -147,7 +147,8 @@ button {
   background-color: transparent;
 }
 
-button.prev, button.next {
+button.prev,
+button.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -165,16 +166,13 @@ button.next {
   right: 10px;
 }
 
-
-
-
-/* .secao {
+.secao {
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: 100%;
-  height: 400px;
+  /* height: 400px; */
 }
 
 .texto {
@@ -183,11 +181,7 @@ button.next {
 
 .secao img {
   height: 400px;
-} */
-
-/* span {
-  margin-bottom: 30px;
-} */
+}
 
 .Wave {
   position: fixed;

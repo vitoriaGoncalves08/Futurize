@@ -95,7 +95,7 @@ function SiteInicial() {
         <div className="MenuItens">
           <ul>
             <li>
-              <a href="#" onClick={() => scrollToSection("funciona")}>
+              <a href="#" onClick={() => scrollToSection("funcionamento")}>
                 Funcionamento
               </a>
             </li>
@@ -169,9 +169,9 @@ function SiteInicial() {
           </div>
         </section>
 
-        {/* <section className="secao"></section>
+        <section className="secao"></section>
 
-        <div id="funciona" className="secao">
+        <div id="funcionamento" className="secao">
           <div className="texto">
             <h1> Desperte o potencial máximo dos seus projetos</h1>
             <p>
@@ -245,15 +245,21 @@ function SiteInicial() {
           <img src={secao4} alt="" />
         </div>
 
-        <section className="secao"></section> */}
+        <section className="secao"></section>
 
-        {/* <div id='sobre' className='secao'>
-        <div className="texto">
-          <h1>Sobre nós</h1>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis animi non quis nihil suscipit pariatur, vero veniam ab tempora nobis blanditiis illum autem laborum quod exercitationem debitis laudantium. Distinctio, omnis?</p>
-        </div>
-      </div> */}
+        {/* <div id="sobre" className="secao">
+          <div className="texto">
+            <h1>Sobre nós</h1>
+            <p>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis
+              animi non quis nihil suscipit pariatur, vero veniam ab tempora
+              nobis blanditiis illum autem laborum quod exercitationem debitis
+              laudantium. Distinctio, omnis?
+            </p>
+          </div>
+        </div> */}
       </div>
+
       <footer className="Wave">
         <img src={wave} alt="Onda azul" />
       </footer>
