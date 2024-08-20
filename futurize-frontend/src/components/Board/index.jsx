@@ -124,11 +124,9 @@ export default function Board() {
   );
 
   useEffect(() => {
-    const intervalId = setInterval(fetchProjectMembers, 60000);
+    fetchProjectMembers();
     fetchTasks();
-
-    return () => clearInterval(intervalId);
-  }, [fetchTasks]);
+  }, []); // Apenas uma vez ao montar o componente
 
   function onDragEnd(event) {
     console.log(event);
