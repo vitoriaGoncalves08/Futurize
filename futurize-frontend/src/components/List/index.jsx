@@ -28,6 +28,8 @@ import { isValid, format, parse } from 'date-fns';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 export default function List({ data, index: listIndex, tasks, allocatedUsers, setTasks }) { 
+  console.log('List tasks:', tasks);
+
   const navigate = useNavigate();
   const { projectId } = useParams();
   const location = useLocation();
@@ -91,6 +93,36 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
     });
   };
 
+  const [forceRender, setForceRender] = useState(false);
+  useEffect(() => {
+    console.log('Tasks in List updated:', tasks);
+  }, [tasks, forceRender]);
+  
+  useEffect(() => {
+    setForceRender(prev => !prev);  // Forçar uma nova renderização
+  }, [tasks]);
+
+
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/Atividade/${projectId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      ); // Substitua pela sua URL de API
+      if (response.status === 200) {
+        setTasks(response.data);
+      } else {
+        console.error('Erro ao buscar listas');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+  
   const handleCreateTask = async (e) => {
     e.preventDefault();
   
@@ -108,22 +140,10 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
       responsavel,
     } = formTask;
   
-    // Verifique se encerramento é uma data válida
-    const encerramentoDate =
-      formTask.encerramento instanceof Date
-        ? formTask.encerramento
-        : new Date(formTask.encerramento);
+    const encerramentoDate = new Date(formTask.encerramento);
+    const formattedDate = `${encerramentoDate.getFullYear()}-${(encerramentoDate.getMonth() + 1).toString().padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
   
-    // Formate a data para o formato "yyyy-MM-dd"
-    const formattedDate = `${encerramentoDate.getFullYear()}-${(
-      encerramentoDate.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
-  
-    const dataInicial = inicio
-      ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
-      : format(new Date(), 'yyyy-MM-dd');
+    const dataInicial = inicio ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
     const activityData = {
       id: id,
       titulo: titulo,
@@ -151,16 +171,23 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
       );
   
       if (response.status === 200) {
-        addSucesso('Atividade adicionada com sucesso');
-        setTasks((prevTasks) => [...prevTasks, response.data]); // Atualize o estado das tarefas
+        // Depois de criar a tarefa, faça a requisição para buscar as tarefas atualizadas
+        await fetchTasks();
         handleClose();
+        addSucesso('Atividade adicionada com sucesso');
       } else {
         console.error('Erro ao adicionar a atividade');
+        addError('Erro ao adicionar a atividade');
       }
     } catch (error) {
       console.error('Erro ao conectar-se ao backend:', error);
+      addError('Erro ao conectar-se ao backend');
     }
   };
+
+  useEffect(() => {
+    console.log('Tasks in List updated:', tasks);
+  }, [tasks]);
 
   useEffect(() => {
     const fetchProjectMembers = async () => {
@@ -238,7 +265,27 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
                   name="titulo"
                   value={formTask.titulo}
                   onChange={(e) => handleInputChange(e, 'titulo')}
-                  label="Digite seu titulo"
+                  label="Digite seu título"
+                  required
+                />
+                <Input
+                  id="descricao-kanban"
+                  type="text"
+                  name="descricao"
+                  value={formTask.descricao}
+                  onChange={(e) => handleInputChange(e, 'descricao')}
+                  label="Digite a descrição"
+                  multiline
+                  required
+                />
+                <Input
+                  id="inicio-kanban"
+                  type="date"
+                  name="inicio"
+                  value={formTask.inicio}
+                  onChange={(e) => handleInputChange(e, 'inicio')}
+                  label="Data de início"
+                  required
                 />
                 <Input
                   id="encerramento-kanban"
@@ -246,12 +293,11 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
                   name="encerramento"
                   value={formTask.encerramento}
                   onChange={(e) => handleInputChange(e, 'encerramento')}
-                  label="Digite a data de encerramento"
+                  label="Data de encerramento"
+                  required
                 />
-                <FormControl fullWidth>
-                  <InputLabel id="dificuldade-label">
-                    Selecione a dificuldade
-                  </InputLabel>
+                <FormControl fullWidth required>
+                  <InputLabel id="dificuldade-label">Selecione a dificuldade</InputLabel>
                   <Select
                     labelId="dificuldade-label"
                     id="dificuldade"
@@ -271,18 +317,10 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
                   value={formTask.prioridade}
                   onChange={(e) => handleInputChange(e, 'prioridade')}
                   label="Digite a prioridade"
-                />
-                <Input
-                  id="descricao-kanban"
-                  type="text"
-                  name="descricao"
-                  value={formTask.descricao}
-                  onChange={(e) => handleInputChange(e, 'descricao')}
-                  label="Digite o descricao"
-                  multiline={true}
+                  required
                 />
                 <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
+                  <FormControl fullWidth required>
                     <InputLabel id="responsavel-label">Responsável</InputLabel>
                     <Select
                       labelId="responsavel-label"
@@ -301,8 +339,8 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
                   </FormControl>
                 </Box>
                 <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="estado-label">Selecione a estado</InputLabel>
+                  <FormControl fullWidth required>
+                    <InputLabel id="estado-label">Selecione o estado</InputLabel>
                     <Select
                       labelId="estado-label"
                       id="estado"
@@ -313,9 +351,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
                       <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
                       <MenuItem value={'SPRINT_BACKLOG'}>Sprint Backlog</MenuItem>
                       <MenuItem value={'DEVELOPMENT'}>Development</MenuItem>
-                      <MenuItem value={'DONE_DEVELOPMENT'}>
-                        Done Development
-                      </MenuItem>
+                      <MenuItem value={'DONE_DEVELOPMENT'}>Done Development</MenuItem>
                       <MenuItem value={'TEST'}>Test</MenuItem>
                       <MenuItem value={'DONE_TEST'}>Done Test</MenuItem>
                       <MenuItem value={'REWORK'}>Rework</MenuItem>
@@ -347,25 +383,25 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
             {...provided.droppableProps}
             style={{ height: '100%' }}
           >
-         {tasks.map((task, index) => (
-          <Draggable key={task.id} draggableId={`${task.id}`} index={index}>
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-              >
-                <Card
-                  key={task.id}
-                  listIndex={listIndex}
-                  index={task.id}
-                  data={task}
-                  setTasks={setTasks}
-                />
-              </div>
-            )}
-          </Draggable>
-        ))}
+            {tasks.map((task, index) => (
+              <Draggable key={task.id} draggableId={`${task.id}`} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                  >
+                    <Card
+                      key={task.id}
+                      listIndex={listIndex}
+                      index={task.id}
+                      data={task}
+                      setTasks={setTasks}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
           </div>
         </Container>

@@ -122,11 +122,15 @@ export default function Board() {
     (code) => tasks?.filter((task) => task.estado === code),
     [tasks]
   );
-
+  const [forceRender, setForceRender] = useState(false);
   useEffect(() => {
     fetchProjectMembers();
     fetchTasks();
-  }, []); // Apenas uma vez ao montar o componente
+  }, []);
+  
+  useEffect(() => {
+    console.log('Tasks updated in Board:', tasks);
+  }, [tasks, forceRender]);
 
   function onDragEnd(event) {
     console.log(event);
@@ -175,19 +179,19 @@ export default function Board() {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd} key={tasks}>
-      <ContainerBoard key={tasks}>
-        {lists.map((list, index) => (
-          <List
-            key={list.title}
-            index={index}
-            data={list}
-            tasks={getFilteredTasks(list.code)}
-            allocatedUsers={allocatedUsers}
-            setTasks={setTasks}
-          />
-        ))}
-      </ContainerBoard>
-    </DragDropContext>
+  <DragDropContext onDragEnd={onDragEnd} key={tasks}>
+    <ContainerBoard>
+      {lists.map((list, index) => (
+        <List
+          key={list.code}  // Usar o código da lista como chave
+          index={index}
+          data={list}
+          tasks={getFilteredTasks(list.code)}
+          allocatedUsers={allocatedUsers}
+          setTasks={setTasks}
+        />
+      ))}
+    </ContainerBoard>
+  </DragDropContext>
   );
 }
