@@ -1,6 +1,12 @@
+@import "/public/assets/css/colors.css";
+@import "/public/assets/css/variaveis.css";
+
 :root {
-  background-color: var(--found-light-blue);
+  background-color: var(--found-light-blue, --secondary);
+  background: var(--neutrals-white, --secondary-menu);
   font-family: var(--font-family-sans-serif);
+  border: var(--dark);
+  color: var(--neutrals-dark, --neutrals-gray, --dark-font, --white);
 }
 
 html {
@@ -26,7 +32,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4f4f4;
+  background: var(--neutrals-white);
   position: absolute;
   top: 0;
   right: 0;
@@ -34,7 +40,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #79a2fe;
+  background: var(--secondary-menu);
   border-radius: 10px;
 }
 
@@ -58,7 +64,7 @@ a {
   list-style: none;
   gap: 35px;
   font-size: 20px;
-  color: #3e3e3e;
+  color: var(--neutrals-dark);
   text-decoration: none;
 }
 
@@ -85,10 +91,26 @@ a {
 
 .Subtitulo p {
   text-align: center;
-  color: #a1a1a1;
+  color: var(--neutrals-gray);
   font-size: 18px;
   line-height: 28px;
   margin: 1rem;
+}
+
+.Wave {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+section > img {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 .MainContent {
@@ -114,7 +136,7 @@ a {
   font-size: 4vh;
   margin-bottom: 1.5rem;
   font-weight: 900;
-  color: #407bff;
+  color: var(--dark-font);
 }
 
 .carousel-container {
@@ -131,7 +153,7 @@ a {
 .card {
   min-width: 33.33%; /* Mostrar 3 cards por vez */
   margin: 0 1rem;
-  background-color: #ffffff;
+  background-color: var(--white);
   border-radius: 15px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -152,7 +174,7 @@ button.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  color: rgb(0, 0, 0);
+  color: var(--neutrals-dark);
   border: none;
   padding: 10px;
   cursor: pointer;
@@ -196,20 +218,36 @@ h2 {
   object-fit: cover;
 }
 
-.Wave {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 17rem;
+  padding: 5rem;
+  border-top: 2px solid var(--dark);
+  background-color: var(--secondary);
 }
 
-section > img {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  max-width: 100%;
-  width: 100%;
+.logo-direitos{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.imageLogo img{
+  width: 50%;
+}
+
+.direitosReservados p {
+  font-size: 2rem;
+}
+
+.textos {
+  text-transform: capitalize;
+  font-size: 2rem;
 }
 
 /* Estilos para telas de 370px */

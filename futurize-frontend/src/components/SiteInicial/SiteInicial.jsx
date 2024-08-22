@@ -87,7 +87,7 @@ function SiteInicial() {
 
   return (
     <div className="SiteInicial">
-      <nav>
+      <nav id="inicio">
         <div className="LogoFuturize">
           <img src={logo} alt="" />
         </div>
@@ -127,7 +127,7 @@ function SiteInicial() {
 
       <div className="HeroContent">
         <div className="Titulo">
-          <p>Gerencie seus projetos acadêmicos</p>
+          <p>Gerencie suas atividades acadêmicas</p>
         </div>
 
         <div className="Subtitulo">
@@ -254,7 +254,21 @@ function SiteInicial() {
         </div> */}
 
         <footer>
-          
+          <div className="logo-direitos">
+            <div className="imageLogo">
+              <a href="" onClick={() => scrollToSection("inicio")}>
+                <img src={logo} alt="" />
+              </a>
+            </div>
+            <div className="direitosReservados">
+              <p>Copyright © 2024 Futurize</p>
+            </div>
+          </div>
+
+          <div className="textos">
+            <p>Futurize - Gerenciador de atividades acadêmicas</p>
+            {/* <p>Todos os direitos reservados</p> */}
+          </div>
         </footer>
       </div>
     </div>
