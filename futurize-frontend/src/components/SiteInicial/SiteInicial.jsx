@@ -1,6 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import "./SiteInicial.css";
 import Buttons from "../Buttons/Buttons";
+
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import XIcon from '@mui/icons-material/X';
+
 import backlog from "/assets/img/card-backlog.png";
 import sprintBacklog from "/assets/img/card-sprint-backlog.png";
 import development from "/assets/img/card-development.png";
@@ -265,9 +271,29 @@ function SiteInicial() {
             </div>
           </div>
 
-          <div className="textos">
-            <p>Futurize - Gerenciador de atividades acadêmicas</p>
-            {/* <p>Todos os direitos reservados</p> */}
+          <div className="redesSociais">
+            <ul>
+              <li>
+                <a href="#">
+                  <FacebookIcon sx={{ fontSize: 50 }} />
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <InstagramIcon sx={{ fontSize: 50 }} />
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <LinkedInIcon sx={{ fontSize: 50 }} />
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <XIcon sx={{ fontSize: 50 }} />
+                </a>
+              </li>
+            </ul>
           </div>
         </footer>
       </div>

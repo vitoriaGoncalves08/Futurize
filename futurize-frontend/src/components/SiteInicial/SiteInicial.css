@@ -56,10 +56,7 @@ nav {
   display: flex;
 }
 
-.MenuItens,
-ul,
-li,
-a {
+.MenuItens ul, li, a {
   display: flex;
   list-style: none;
   gap: 35px;
@@ -198,8 +195,12 @@ button.next {
 }
 
 .texto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 50%;
   height: 100%;
+  padding: 1rem;
 }
 
 h2 {
@@ -229,9 +230,6 @@ footer {
 }
 
 .logo-direitos{
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   display: flex;
   flex-direction: column;
 
@@ -245,9 +243,10 @@ footer {
   font-size: 2rem;
 }
 
-.textos {
-  text-transform: capitalize;
-  font-size: 2rem;
+.redesSociais, ul, li, a {
+  font-size: 25rem;
+  list-style: none;
+  text-decoration: none;
 }
 
 /* Estilos para telas de 370px */
