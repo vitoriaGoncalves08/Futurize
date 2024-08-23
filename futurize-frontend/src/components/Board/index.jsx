@@ -132,19 +132,78 @@ export default function Board() {
     console.log('Tasks updated in Board:', tasks);
   }, [tasks, forceRender]);
 
-  function onDragEnd(event) {
-    console.log(event);
+  async function updateTask(taskId, newState) {
+    try {
+        const response = await axios.put(
+            `http://localhost:8080/Atividade/${taskId}`,
+            {
+                estado: newState, // Envia apenas o estado atualizado
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+        );
 
-    const draggedTaskIdx = tasks.findIndex((task) => task.id == event.draggableId);
+        if (response.status === 200) {
+            console.log('Tarefa atualizada com sucesso no servidor.');
+        } else {
+            console.error('Erro ao atualizar a tarefa no servidor.');
+        }
+    } catch (error) {
+        console.error('Erro ao conectar-se ao backend:', error);
+    }
+}
 
-    if (draggedTaskIdx === -1) return;
+function onDragEnd(event) {
+  console.log(event);
 
-    const newTasks = [...tasks];
+  // Obtém o índice da tarefa arrastada
+  const draggedTaskIdx = tasks.findIndex((task) => task.id == event.draggableId);
 
-    newTasks[draggedTaskIdx].estado = event.destination.droppableId;
+  if (draggedTaskIdx === -1) return;
 
-    setTasks(newTasks);
-    updateTask(newTasks[draggedTaskIdx].id, event.destination.droppableId);
+  const newTasks = [...tasks];
+
+  // Obtém o novo estado da tarefa a partir do droppableId
+  const newStatus = event.destination.droppableId;
+
+  // Atualiza o estado da tarefa no frontend
+  newTasks[draggedTaskIdx].estado = newStatus;
+
+  // Atualiza o estado das tarefas no frontend
+  setTasks(newTasks);
+
+  // Atualiza a tarefa no backend
+  updateTask(newTasks[draggedTaskIdx].id, newStatus);
+}
+
+async function updateTask(taskId, newState) {
+  try {
+      const response = await axios.put(
+          `http://localhost:8080/Atividade/${taskId}`,
+          {
+              estado: newState, // Envia apenas o estado atualizado
+          },
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+              },
+          }
+      );
+
+      if (response.status === 200) {
+          console.log('Tarefa atualizada com sucesso no servidor.');
+      } else {
+          console.error('Erro ao atualizar a tarefa no servidor.');
+      }
+  } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+  }
+}
 
     /*
     só tá mudando no client-side, precisa agora salvar a alteração no banco, pra isso tu pode
@@ -152,7 +211,7 @@ export default function Board() {
     atualizada (newTasks[draggedTaskIdx].id) e o novo estado dela (event.destination.droppableId).
     Esse endpoint pode ser um PATCH ou PUT.
     */
-  }
+
 
   async function updateTask(taskId, newState) {
     try {
