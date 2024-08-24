@@ -42,13 +42,13 @@
     --github: #333;
 
     /* Neutrals */
-    --neutrals-white: #fdfdfd;
-    --neutrals-light: #f8f9fa;
-    --neutrals-black: #151515;
-    --neutrals-gray: #6c757d;
-    --neutrals-gray-light: #d1d1d1;
-    --neutrals-gray-dark: #343a40;
-    --neutrals-dark: #212529;
+    --white: #fdfdfd;
+    --light: #f8f9fa;
+    --black: #151515;
+    --gray: #6c757d;
+    --gray-light: #d1d1d1;
+    --gray-dark: #343a40;
+    --dark: #212529;
 
     /* FORMS */
     --found-light-blue: #DFE8FF;

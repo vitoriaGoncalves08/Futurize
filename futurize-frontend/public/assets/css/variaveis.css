@@ -11,12 +11,12 @@
 --t-elastic: cubic-bezier(0.2, 0.8, 0.4, 1.3);
 
 /* FONT */
---global-font-size-sm: 4rem;
---global-font-size: 16rem;
---global-font-size-lg: 18rem;
---global-font-size-xlg: 24rem;
---global-font-letter-spacing: 0.5rem;
---global-line-height: 1.5rem;
+--global-font-size-sm: rem(14);
+--global-font-size: rem(16);
+--global-font-size-lg: rem(18);
+--global-font-size-xlg: rem(24);
+--global-font-letter-spacing: rem(0.5);
+--global-line-height: 1.5;
 
 --font-family-sans-serif: "Poppins","Roboto", "Open Sans","Segoe UI";
 

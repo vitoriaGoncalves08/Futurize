@@ -3,10 +3,10 @@
 
 :root {
   background-color: var(--found-light-blue, --secondary);
-  background: var(--neutrals-white, --secondary-menu);
+  background: var(--white, --secondary-menu);
   font-family: var(--font-family-sans-serif);
   border: var(--dark);
-  color: var(--neutrals-dark, --neutrals-gray, --dark-font, --white);
+  color: var(--dark, --gray, --dark-font, --white);
 }
 
 html {
@@ -26,13 +26,13 @@ body {
 
 /* Estilos da barra de rolagem */
 ::-webkit-scrollbar {
-  width: 10px;
+  /* width: 15px; */
   height: 10px;
   padding: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--neutrals-white);
+  background: var(--white);
   position: absolute;
   top: 0;
   right: 0;
@@ -56,13 +56,21 @@ nav {
   display: flex;
 }
 
-.MenuItens ul, li, a {
+.MenuItens ul {
   display: flex;
   list-style: none;
   gap: 35px;
   font-size: 20px;
-  color: var(--neutrals-dark);
+}
+
+.MenuItens ul li a {
+  color: var(--dark);
   text-decoration: none;
+  transition: .3s;
+}
+
+.MenuItens ul li a:hover {
+  color: var(--primary);
 }
 
 .HeroContent {
@@ -88,7 +96,7 @@ nav {
 
 .Subtitulo p {
   text-align: center;
-  color: var(--neutrals-gray);
+  color: var(--gray);
   font-size: 18px;
   line-height: 28px;
   margin: 1rem;
@@ -171,7 +179,7 @@ button.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--neutrals-dark);
+  color: var(--dark);
   border: none;
   padding: 10px;
   cursor: pointer;
@@ -236,6 +244,7 @@ footer {
 }
 
 .imageLogo img{
+  cursor: pointer;
   width: 50%;
 }
 
@@ -243,10 +252,23 @@ footer {
   font-size: 2rem;
 }
 
-.redesSociais, ul, li, a {
-  font-size: 25rem;
-  list-style: none;
-  text-decoration: none;
+.redesSociais {
+  display: flex;
+  gap: 1rem;
+  padding: 0 1.5rem;
+}
+
+.redesSociais a{
+  display: flex;
+  padding: 1rem;
+  transition: .5s;
+  color: var(--dark);
+}
+
+.redesSociais a:hover{
+  -webkit-transform: translate3d(0, 2px, 0);
+  transform: translate3d(0, 2px, 0);
+  color: var(--primary);
 }
 
 /* Estilos para telas de 370px */

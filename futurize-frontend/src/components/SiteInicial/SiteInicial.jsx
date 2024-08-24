@@ -2,10 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "./SiteInicial.css";
 import Buttons from "../Buttons/Buttons";
 
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import XIcon from '@mui/icons-material/X';
+import InstagramIcon from "@mui/icons-material/Instagram";
+import XIcon from "@mui/icons-material/X";
 
 import backlog from "/assets/img/card-backlog.png";
 import sprintBacklog from "/assets/img/card-sprint-backlog.png";
@@ -262,9 +260,11 @@ function SiteInicial() {
         <footer>
           <div className="logo-direitos">
             <div className="imageLogo">
-              <a href="" onClick={() => scrollToSection("inicio")}>
-                <img src={logo} alt="" />
-              </a>
+              <img
+                src={logo}
+                alt=""
+                onClick={() => scrollToSection("inicio")}
+              />
             </div>
             <div className="direitosReservados">
               <p>Copyright © 2024 Futurize</p>
@@ -272,28 +272,12 @@ function SiteInicial() {
           </div>
 
           <div className="redesSociais">
-            <ul>
-              <li>
-                <a href="#">
-                  <FacebookIcon sx={{ fontSize: 50 }} />
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <InstagramIcon sx={{ fontSize: 50 }} />
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <LinkedInIcon sx={{ fontSize: 50 }} />
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <XIcon sx={{ fontSize: 50 }} />
-                </a>
-              </li>
-            </ul>
+            <a href="https://www.instagram.com/nome do usuário/" target="_blank">
+              <InstagramIcon sx={{ fontSize: 50 }} />
+            </a>
+            <a href="https://x.com/nome do usuário" target="_blank">
+              <XIcon sx={{ fontSize: 50 }} />
+            </a>
           </div>
         </footer>
       </div>
