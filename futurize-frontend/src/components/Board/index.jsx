@@ -157,36 +157,11 @@ export default function Board() {
     }
 }
 
-function onDragEnd(event) {
-  console.log(event);
-
-  // Obtém o índice da tarefa arrastada
-  const draggedTaskIdx = tasks.findIndex((task) => task.id == event.draggableId);
-
-  if (draggedTaskIdx === -1) return;
-
-  const newTasks = [...tasks];
-
-  // Obtém o novo estado da tarefa a partir do droppableId
-  const newStatus = event.destination.droppableId;
-
-  // Atualiza o estado da tarefa no frontend
-  newTasks[draggedTaskIdx].estado = newStatus;
-
-  // Atualiza o estado das tarefas no frontend
-  setTasks(newTasks);
-
-  // Atualiza a tarefa no backend
-  updateTask(newTasks[draggedTaskIdx].id, newStatus);
-}
-
-async function updateTask(taskId, newState) {
+const updateTaskState = async (taskId, newState) => {
   try {
       const response = await axios.put(
-          `http://localhost:8080/Atividade/${taskId}`,
-          {
-              estado: newState, // Envia apenas o estado atualizado
-          },
+          `http://localhost:8080/Atividade/${taskId}/estado`,
+          { estado: newState },
           {
               headers: {
                   Authorization: `Bearer ${token}`,
@@ -196,14 +171,39 @@ async function updateTask(taskId, newState) {
       );
 
       if (response.status === 200) {
-          console.log('Tarefa atualizada com sucesso no servidor.');
+          console.log('Estado da tarefa atualizado com sucesso.');
       } else {
-          console.error('Erro ao atualizar a tarefa no servidor.');
+          console.error('Erro ao atualizar o estado da tarefa.');
       }
   } catch (error) {
       console.error('Erro ao conectar-se ao backend:', error);
   }
-}
+};
+
+const onDragEnd = (result) => {
+  const { destination, source, draggableId } = result;
+
+  if (!destination) {
+      return;
+  }
+
+  if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return;
+  }
+
+  const draggedTaskIdx = tasks.findIndex((task) => task.id == draggableId);
+
+  if (draggedTaskIdx === -1) return;
+
+  const newTasks = [...tasks];
+  const newState = destination.droppableId;
+
+  newTasks[draggedTaskIdx].estado = newState;
+  setTasks(newTasks);
+
+  updateTaskState(newTasks[draggedTaskIdx].id, newState);
+};
+
 
     /*
     só tá mudando no client-side, precisa agora salvar a alteração no banco, pra isso tu pode
