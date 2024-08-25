@@ -1,14 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import React from 'react';
-import SiteInicial from '../pages/site-inicial';
-import Login from '../pages/login';
-import Cadastro from '../pages/cadastro';
-import Projeto from '../pages/projeto';
-import Kanban from '../pages/kanban';
-import Dashboard from '../pages/dashboard';
-import useAuth from '../hooks/useAuth';
-import App from '../Teste';
-import { AuthProvider } from '../context/auth';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
+import SiteInicial from "../pages/site-inicial";
+import Login from "../pages/login";
+import Cadastro from "../pages/cadastro";
+import Projeto from "../pages/projeto";
+import Kanban from "../pages/kanban";
+import Dashboard from "../pages/dashboard";
+import useAuth from "../hooks/useAuth";
+import App from "../Teste";
+import { AuthProvider } from "../context/auth";
 
 const PrivateRoute = ({ children }) => {
   const { signed } = useAuth();
@@ -34,18 +34,28 @@ export default function AppRoutes() {
             }
           />
           <Route
-          path="/kanban/:projectId" 
-          element={
-            <PrivateRoute>
-              <Kanban />
-            </PrivateRoute>}
+            path="/kanban/:projectId"
+            element={
+              <PrivateRoute>
+                <Kanban />
+              </PrivateRoute>
+            }
           />
-        <Route
-          path="/dashboard" 
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute>
+                <Settings />
+              </PrivateRoute>
+            }
           />
         </Routes>
       </AuthProvider>
