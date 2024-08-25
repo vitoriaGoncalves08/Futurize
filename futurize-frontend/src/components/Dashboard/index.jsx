@@ -71,15 +71,15 @@ const Dashboard = () => {
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
     const data = [
-        { id: 0, value: 10, label: 'series A' },
-        { id: 1, value: 15, label: 'series B' },
-        { id: 2, value: 20, label: 'series C' },
-        { id: 0, value: 10, label: 'series A' },
-        { id: 1, value: 15, label: 'series B' },
-        { id: 2, value: 20, label: 'series C' },
-        { id: 0, value: 10, label: 'series A' },
-        { id: 1, value: 15, label: 'series B' },
-        { id: 2, value: 20, label: 'series C' },
+        { id: 0, value: 0, label: 'BACKLOG' },
+        { id: 1, value: 5, label: 'SPRINT_BACKLOG' },
+        { id: 2, value: 6, label: 'DEVELOPMENT' },
+        { id: 3, value: 9, label: 'DONE_DEVELOPMENT' },
+        { id: 4, value: 3, label: 'TEST' },
+        { id: 5, value: 2, label: 'DONE_TEST' },
+        { id: 6, value: 1, label: 'REWORK' },
+        { id: 7, value: 3, label: 'DONE' },
+       
       ];
       
     return (
@@ -89,10 +89,10 @@ const Dashboard = () => {
             <div className="main-chart">
                 <h2>Atividades Concluídas pro Projeto</h2>
                 <BarChart
-                xAxis={[{ scaleType: 'band', data: ['Projetinho', 'group B', 'group C'] }]}
+                xAxis={[{ scaleType: 'band', data: ['Projetinho', 'TCC', 'Trabalho 2'] }]}
                 series={[{ data: [3, 4, 1] }]}
                 width={500}
-                height={300}
+                height={350}
                 barLabel="value"
                 />
             </div>
@@ -106,7 +106,7 @@ const Dashboard = () => {
                     faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                     },
                 ]}
-                height={200}
+                height={300}
                 />
                 </div>
             <div className="chart-container">
@@ -123,7 +123,7 @@ const Dashboard = () => {
             </div>
             <div className="chart-container">
                 <h2>Atividades Concluídas</h2>
-                <p>{atividadesAndamento}</p>
+                <p>3</p>
             </div>
         </div>
         </>
