@@ -71,14 +71,14 @@ const Dashboard = () => {
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
     const data = [
-        { id: 0, value: 0, label: 'TOTAL_TAREFAS' },
-        { id: 1, value: 5, label: 'TAREFAS_A_FAZER' },
-        { id: 2, value: 6, label: 'EM_ANDAMENTO' },
-        { id: 3, value: 9, label: 'FEITO' },
-        { id: 4, value: 3, label: 'A_REVISAR' },
-        { id: 5, value: 2, label: 'REVISADO' },
-        { id: 6, value: 1, label: 'REFAZENDO' },
-        { id: 7, value: 3, label: 'CONCLUIDO' },
+        { id: 0, value: 0, label: 'Total de Tarefas' },
+        { id: 1, value: 5, label: 'Tarefas a Fazer' },
+        { id: 2, value: 6, label: 'Em Andamento' },
+        { id: 3, value: 9, label: 'Feito' },
+        { id: 4, value: 3, label: 'A Revisar' },
+        { id: 5, value: 2, label: 'Revisado' },
+        { id: 6, value: 1, label: 'Refazendo' },
+        { id: 7, value: 3, label: 'Concluído' },
        
       ];
       
