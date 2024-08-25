@@ -18,9 +18,6 @@ public interface AlocacaoProjetoRepository extends JpaRepository<AlocacaoProjeto
     AlocacaoProjeto findByIdProjetoAndIdUsuario(@Param("idProjeto") Long idProjeto, @Param("idUsuario") Long idUsuario);
 
 
-//    @Query("SELECT * FROM alocacao_projeto a WHERE a.projeto = :projeto AND a.usuario = :usuario")
-//    AlocacaoProjeto findByProjetoAndUsuario(
-//            @Param("projeto") Projeto projeto,
-//            @Param("usuario") Usuario usuario
-//    );
+    @Query("SELECT COUNT(p) FROM Projeto p JOIN alocacao_projeto ap ON p.id = ap.projeto.id WHERE ap.usuario.id = :userId")
+    Long countProjetosAlocados(Long userId);
 }
