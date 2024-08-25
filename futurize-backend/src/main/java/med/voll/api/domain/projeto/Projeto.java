@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import med.voll.api.domain.enums.Estado;
+
 import java.util.Date;
 @EqualsAndHashCode
 @NoArgsConstructor

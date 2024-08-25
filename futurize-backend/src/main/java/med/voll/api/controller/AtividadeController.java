@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -97,6 +98,28 @@ public class AtividadeController {
             System.err.println("Erro desconhecido ao processar a requisição: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro desconhecido ao processar a requisição: " + e.getMessage());
+        }
+    }
+
+    @Transactional
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<?> atualizarEstadoAtividade(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        try {
+            String novoEstado = requestBody.get("estado");
+            Optional<Atividade> atividadeOptional = repository.findById(id);
+
+            if (atividadeOptional.isPresent()) {
+                Atividade atividade = atividadeOptional.get();
+                atividade.setEstado(Estado.valueOf(novoEstado));
+                repository.save(atividade);
+                return ResponseEntity.ok("Estado da tarefa atualizado com sucesso.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Atividade não encontrada.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Estado inválido fornecido.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar o estado da atividade.");
         }
     }
 

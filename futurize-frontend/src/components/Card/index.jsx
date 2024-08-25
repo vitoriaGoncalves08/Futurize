@@ -19,7 +19,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Input from '../../components/Input/input';
-import { format, parse } from 'date-fns';
+import { format, parse, addDays } from 'date-fns';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -27,7 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
 
-export default function Card({ index, listIndex, data }) {
+export default function Card({ index, listIndex, data, setTasks }) {
   const ref = useRef();
   const { projectId } = useParams();
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -55,6 +55,7 @@ export default function Card({ index, listIndex, data }) {
   const [isRunning, setIsRunning] = useState(false);
 
   const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+  
 
   // Função para carregar o tempo de execução do backend
   const loadExecutionTime = async () => {
@@ -134,12 +135,13 @@ export default function Card({ index, listIndex, data }) {
     }
   };
   
+
   function formatEncerramento(encerramento) {
-    const encerramentoDate = new Date(encerramento);
+    const encerramentoDate = addDays(new Date(encerramento), 1);
     const dia = encerramentoDate.getDate().toString().padStart(2, "0");
     const mes = (encerramentoDate.getMonth() + 1).toString().padStart(2, "0");
     const ano = encerramentoDate.getFullYear();
-    return `${dia}-${mes}-${ano}`;
+    return `${dia}/${mes}/${ano}`;
   }
 
   function formatMemberName(name) {
@@ -171,10 +173,10 @@ export default function Card({ index, listIndex, data }) {
   }
 
   const handleClickOpen = () => {
-  setOpen(true);
-  openEditActivity(data);
-  console.log('Open Edit Dialog');  // Adicione log para depuração
-};
+    setOpen(true);
+    openEditActivity(data);
+    console.log('Open Edit Dialog');  // Adicione log para depuração
+  };
 
 const handleClose = () => {
   setOpen(false);
@@ -201,7 +203,6 @@ const handleClose = () => {
     e.preventDefault();
     closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
     addSucessoGeneral("Atividade excluída com sucesso!");
-
     try {
       // Certifique-se de ter o 'id' da atividade disponível em 'data'
       const idToDelete = data.id;
@@ -221,6 +222,8 @@ const handleClose = () => {
       });
 
       console.log("Atividade excluída com sucesso!");
+       // Atualize o estado das tarefas removendo a atividade deletada
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== idToDelete));
     } catch (error) {
       console.error("Erro ao excluir a atividade:", error);
     }
@@ -249,9 +252,16 @@ const handleClose = () => {
 
     const { id, titulo, descricao, inicio, encerramento, estado, dificuldade, prioridade, tempo_execucao, projeto, responsavel } = formAtividade;
 
+    // Função para converter data de DD-MM-YYYY para YYYY-MM-DD
+    const convertDateFormat = (dateString) => {
+      const [day, month, year] = dateString.split('-');
+      return `${year}-${month}-${day}`;
+    };
+
     // Parse e validar datas
     const parseDate = (dateString) => {
-      const parsedDate = parse(dateString, 'dd-MM-yyyy', new Date());
+      const formattedDate = convertDateFormat(dateString);
+      const parsedDate = parse(formattedDate, 'yyyy-MM-dd', new Date());
       return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
     };
 
@@ -288,6 +298,9 @@ const handleClose = () => {
       if (response.status === 200) {
         const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
         setRows(updatedRows);
+        setTasks((prevTasks) => 
+          prevTasks.map((task) => task.id === id ? { ...task, ...dataEditActivity } : task)
+        );
         handleClose();
         addSucessoGeneral('Atividade editada com sucesso!');
       } else {
@@ -298,7 +311,7 @@ const handleClose = () => {
       console.error('Erro ao conectar-se ao backend:', error);
       addError('Erro ao conectar-se ao backend: ' + error.message);
     }
-  };
+};
 
   const openEditActivity = (activity) => {
     setFormAtividade({
@@ -336,24 +349,26 @@ const handleClose = () => {
 };
 
 
-  const fetchProjectMembers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`,{
+const fetchProjectMembers = async () => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/Alocacao_projeto/${projectId}`,{
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      });
-      if (response.status === 200) {
-        const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
-        setAllocatedUser(allocatedUserIds);
-      } else if (response.status === 409) {
-        console.error('Erro ao buscar membros alocados ao projeto no backend.');
       }
-    } catch (error) {
-      console.error('Erro ao conectar-se ao backend:', error);
+    );
+    if (response.status === 200) {
+      const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
+      setAllocatedUser(allocatedUserIds);
+    } else if (response.status === 409) {
+      console.error('Erro ao buscar membros alocados ao projeto no backend.');
     }
-  };
+  } catch (error) {
+    console.error('Erro ao conectar-se ao backend:', error);
+  }
+};
 
   return (
     <>
@@ -363,7 +378,7 @@ const handleClose = () => {
             <Label style={{marginTop: 30}}color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
               <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
-              <ModeEditIcon className="edit-card" onClick={handleClickOpen} />
+              <ModeEditIcon className="edit-card" onClick={handleClickOpen}style={{ color: 'blue' }}/>
             </div>
           </header>
 
@@ -500,16 +515,16 @@ const handleClose = () => {
                   value={formAtividade.estado}
                   onChange={(e) => handleInputChange(e, "estado")}
                 >
-                  <MenuItem value={"BACKLOG"}>Backlog</MenuItem>
-                  <MenuItem value={"SPRINT_BACKLOG"}>Sprint Backlog</MenuItem>
-                  <MenuItem value={"DEVELOPMENT"}>Development</MenuItem>
-                  <MenuItem value={"DONE_DEVELOPMENT"}>
+                  <MenuItem value={"TOTAL_TAREFAS"}>Backlog</MenuItem>
+                  <MenuItem value={"TAREFAS_A_FAZER"}>Sprint Backlog</MenuItem>
+                  <MenuItem value={"EM_ANDAMENTO"}>Development</MenuItem>
+                  <MenuItem value={"FEITO"}>
                     Done Development
                   </MenuItem>
-                  <MenuItem value={"TEST"}>Test</MenuItem>
-                  <MenuItem value={"DONE_TEST"}>Done Test</MenuItem>
-                  <MenuItem value={"REWORK"}>Rework</MenuItem>
-                  <MenuItem value={"DONE"}>Done</MenuItem>
+                  <MenuItem value={"A_REVISAR"}>Test</MenuItem>
+                  <MenuItem value={"REVISADO"}>Done Test</MenuItem>
+                  <MenuItem value={"REFAZENDO"}>Rework</MenuItem>
+                  <MenuItem value={"CONCLUIDO"}>Done</MenuItem>
                 </Select>
               </FormControl>
             </Box>
