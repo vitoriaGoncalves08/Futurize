@@ -515,16 +515,16 @@ const fetchProjectMembers = async () => {
                   value={formAtividade.estado}
                   onChange={(e) => handleInputChange(e, "estado")}
                 >
-                  <MenuItem value={"BACKLOG"}>Backlog</MenuItem>
-                  <MenuItem value={"SPRINT_BACKLOG"}>Sprint Backlog</MenuItem>
-                  <MenuItem value={"DEVELOPMENT"}>Development</MenuItem>
-                  <MenuItem value={"DONE_DEVELOPMENT"}>
+                  <MenuItem value={"TOTAL_TAREFAS"}>Backlog</MenuItem>
+                  <MenuItem value={"TAREFAS_A_FAZER"}>Sprint Backlog</MenuItem>
+                  <MenuItem value={"EM_ANDAMENTO"}>Development</MenuItem>
+                  <MenuItem value={"FEITO"}>
                     Done Development
                   </MenuItem>
-                  <MenuItem value={"TEST"}>Test</MenuItem>
-                  <MenuItem value={"DONE_TEST"}>Done Test</MenuItem>
-                  <MenuItem value={"REWORK"}>Rework</MenuItem>
-                  <MenuItem value={"DONE"}>Done</MenuItem>
+                  <MenuItem value={"A_REVISAR"}>Test</MenuItem>
+                  <MenuItem value={"REVISADO"}>Done Test</MenuItem>
+                  <MenuItem value={"REFAZENDO"}>Rework</MenuItem>
+                  <MenuItem value={"CONCLUIDO"}>Done</MenuItem>
                 </Select>
               </FormControl>
             </Box>

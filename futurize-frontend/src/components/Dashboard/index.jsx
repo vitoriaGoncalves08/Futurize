@@ -71,14 +71,14 @@ const Dashboard = () => {
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
     const data = [
-        { id: 0, value: 0, label: 'BACKLOG' },
-        { id: 1, value: 5, label: 'SPRINT_BACKLOG' },
-        { id: 2, value: 6, label: 'DEVELOPMENT' },
-        { id: 3, value: 9, label: 'DONE_DEVELOPMENT' },
-        { id: 4, value: 3, label: 'TEST' },
-        { id: 5, value: 2, label: 'DONE_TEST' },
-        { id: 6, value: 1, label: 'REWORK' },
-        { id: 7, value: 3, label: 'DONE' },
+        { id: 0, value: 0, label: 'TOTAL_TAREFAS' },
+        { id: 1, value: 5, label: 'TAREFAS_A_FAZER' },
+        { id: 2, value: 6, label: 'EM_ANDAMENTO' },
+        { id: 3, value: 9, label: 'FEITO' },
+        { id: 4, value: 3, label: 'A_REVISAR' },
+        { id: 5, value: 2, label: 'REVISADO' },
+        { id: 6, value: 1, label: 'REFAZENDO' },
+        { id: 7, value: 3, label: 'CONCLUIDO' },
        
       ];
       

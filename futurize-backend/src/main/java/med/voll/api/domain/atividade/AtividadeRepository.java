@@ -12,9 +12,9 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     @Query("SELECT COUNT(a) FROM atividade a JOIN alocacao_atividade aa ON a.Id = aa.id WHERE aa.usuario.id = :userId")
     Long countAtividadesByUserId(Long userId);
 
-    @Query("SELECT COUNT(a) FROM atividade a LEFT JOIN alocacao_atividade aa WHERE aa.usuario.id = :userId AND a.estado = 'DEVELOPMENT'")
+    @Query("SELECT COUNT(a) FROM atividade a LEFT JOIN alocacao_atividade aa WHERE aa.usuario.id = :userId AND a.estado = 'EM_ANDAMENTO'")
     Long countAtividadesAndamentoByUserId(Long userId);
 
-    @Query("SELECT COUNT(a) FROM atividade a WHERE a.projeto.id = :projetoId AND a.estado = 'DONE'")
+    @Query("SELECT COUNT(a) FROM atividade a WHERE a.projeto.id = :projetoId AND a.estado = 'CONCLUIDO'")
     Long countAtividadesConcluidasByProjetoId(Long projetoId);
 }
