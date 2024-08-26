@@ -210,45 +210,55 @@ export default function TableC() {
   };
 
   const openEditProject = (project) => {
+    const formattedInicio = project.inicio ? format(new Date(project.inicio), 'dd-MM-yyyy') : '';
+    const formattedEncerramento = project.encerramento ? format(new Date(project.encerramento), 'dd-MM-yyyy') : '';
+  
     setFormProjeto({
       id: project.id,
       titulo: project.titulo,
-      inicio: format(new Date(project.inicio), 'yyyy-MM-dd'),
-      encerramento: format(new Date(project.encerramento), 'yyyy-MM-dd'),
+      inicio: formattedInicio,
+      encerramento: formattedEncerramento,
       estado: project.estado,
       gestor: project.gestor,
     });
-
+  
     setEditProjectData(project); // Armazena os dados do projeto selecionado
     setEditOpen(true);
   };
-
+  
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-
+  
     const { id, titulo, inicio, encerramento, estado, gestor } = formProjeto;
-
+  
+    let dataInicial = inicio ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd') : '';
+    let dataFinal = encerramento ? format(parse(encerramento, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd') : '';
+  
+    // Debugging logs to check values before formatting
+    console.log('Data Inicial:', inicio, 'Data Final:', encerramento);
+  
     const updatedProjectData = {
       id: id,
       titulo: titulo,
-      inicio: inicio,
-      encerramento: encerramento,
+      inicio: dataInicial,
+      encerramento: dataFinal,
       estado: estado,
       gestor: gestor,
     };
-
+  
     try {
-        if (!token) {
-            console.error('Token JWT não encontrado no localStorage.');
-            return;
-        }
-        const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
+      if (!token) {
+        console.error('Token JWT não encontrado no localStorage.');
+        return;
+      }
+  
+      const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
       if (response.status === 200) {
         const updatedRows = rows.map((row) => (row.id === id ? { ...row, ...updatedProjectData } : row));
         setRows(updatedRows);
@@ -260,6 +270,7 @@ export default function TableC() {
       console.error('Erro ao conectar-se ao backend:', error);
     }
   };
+  
 
   const openProjectKanban = (project) => {
     if (project && project.id) {
@@ -330,8 +341,8 @@ export default function TableC() {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>{row.titulo}</TableCell>
-                <TableCell>{format(new Date(row.inicio), 'dd/MM/yyyy')}</TableCell>
-                <TableCell>{format(new Date(row.encerramento), 'dd/MM/yyyy')}</TableCell>
+                <TableCell>{format(new Date(row.inicio), 'dd-MM-yyyy')}</TableCell>
+                <TableCell>{format(new Date(row.encerramento), 'dd-MM-yyyy')}</TableCell>
                 <TableCell>
                   <span className={`tag-status ${getStatusTagClass(row.estado)}`}>
                     {row.estado}
@@ -410,58 +421,52 @@ export default function TableC() {
       </Dialog>
 
       <Dialog open={editOpen} onClose={handleEditClose}>
-        <DialogTitle>Editar Projeto</DialogTitle>
-        <DialogContent>
-          <Input
-            autoFocus
-            margin="dense"
-            id="titulo"
-            label="Título"
-            type="text"
-            fullWidth
-            value={formProjeto.titulo}
-            onChange={(e) => handleInputChange(e, 'titulo')}
-          />
-          <Input
-            margin="dense"
-            id="inicio"
-            label="Data de Início"
-            type="date"
-            fullWidth
-            value={formProjeto.inicio}
-            onChange={(e) => handleInputChange(e, 'inicio')}
-          />
-          <Input
-            margin="dense"
-            id="encerramento"
-            label="Data de Encerramento"
-            type="date"
-            fullWidth
-            value={formProjeto.encerramento}
-            onChange={(e) => handleInputChange(e, 'encerramento')}
-          />
-          <FormControl fullWidth>
-            <Select
-              labelId="estado-label"
-              id="estado"
-              value={formProjeto.estado}
-              onChange={(e) => handleInputChange(e, 'estado')}
-            >
-              <MenuItem value="ANDAMENTO">Andamento</MenuItem>
-              <MenuItem value="CONCLUIDO">Concluído</MenuItem>
-              <MenuItem value="PAUSADO">Pausado</MenuItem>
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Buttons onClick={handleEditClose} color="primary">
-            Cancelar
-          </Buttons>
-          <Buttons onClick={handleEditSubmit} color="primary">
-            Atualizar
-          </Buttons>
-        </DialogActions>
-      </Dialog>
+    <DialogTitle>Editar Projeto</DialogTitle>
+    <DialogContent>
+      <Input
+        autoFocus
+        margin="dense"
+        id="titulo"
+        label="Título"
+        type="text"
+        fullWidth
+        value={formProjeto.titulo}
+        onChange={(e) => handleInputChange(e, 'titulo')}
+      />
+      <Input
+        margin="dense"
+        id="encerramento"
+        label="Data de Encerramento"
+        type="date"
+        fullWidth
+        value={formProjeto.encerramento}
+        onChange={(e) => handleInputChange(e, 'encerramento')}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+      <FormControl fullWidth>
+        <Select
+          labelId="estado-label"
+          id="estado"
+          value={formProjeto.estado}
+          onChange={(e) => handleInputChange(e, 'estado')}
+        >
+          <MenuItem value="ANDAMENTO">Andamento</MenuItem>
+          <MenuItem value="CONCLUIDO">Concluído</MenuItem>
+          <MenuItem value="PAUSADO">Pausado</MenuItem>
+        </Select>
+      </FormControl>
+    </DialogContent>
+  <DialogActions>
+    <Buttons onClick={handleEditClose} color="primary">
+      Cancelar
+    </Buttons>
+    <Buttons onClick={handleEditSubmit} color="primary">
+      Atualizar
+    </Buttons>
+  </DialogActions>
+</Dialog>
 
       
       <Dialog open={deleteConfirmationOpen} onClose={cancelDelete}>

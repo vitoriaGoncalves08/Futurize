@@ -179,7 +179,7 @@ function SiteInicial() {
 
         <div id="funcionamento" className="secao">
           <div className="texto">
-            <h2> Desperte o potencial máximo dos seus projetos</h2>
+            <h2 className="h2-text"> Desperte o potencial máximo dos seus projetos</h2>
             <p>
               Transforme o jeito de gerenciar projetos! Visualize e organize
               tarefas de forma intuitiva, com atualizações em tempo real e
@@ -193,7 +193,7 @@ function SiteInicial() {
 
         <div id="modelos" className="secao">
           <div className="texto">
-            <h2>
+            <h2 className="h2-text">
               Personalize o seu fluxo de trabalho e ajuste conforme a
               necessidade do seu projeto!
             </h2>
@@ -210,7 +210,7 @@ function SiteInicial() {
 
         <div id="projetos" className="secao">
           <div className="texto">
-            <h2>
+            <h2 className="h2-text">
               Organize-se e alcance o sucesso de forma rápida e divertida.{" "}
             </h2>
             <p>
@@ -231,7 +231,7 @@ function SiteInicial() {
 
         <div id="tarefas" className="secao">
           <div className="texto">
-            <h2>A simplicidade do arrastar e soltar </h2>
+            <h2 className="h2-text">A simplicidade do arrastar e soltar </h2>
             <p>
               Já imaginou ter total controle sobre o que precisa ser feito? Por
               quem e até quando?

@@ -5,6 +5,7 @@ import Login from '../pages/login';
 import Cadastro from '../pages/cadastro';
 import Projeto from '../pages/projeto';
 import Kanban from '../pages/kanban';
+import Dashboard from '../pages/dashboard';
 import useAuth from '../hooks/useAuth';
 import App from '../Teste';
 import { AuthProvider } from '../context/auth';
@@ -37,6 +38,13 @@ export default function AppRoutes() {
           element={
             <PrivateRoute>
               <Kanban />
+            </PrivateRoute>}
+          />
+        <Route
+          path="/dashboard" 
+          element={
+            <PrivateRoute>
+              <Dashboard />
             </PrivateRoute>}
           />
         </Routes>

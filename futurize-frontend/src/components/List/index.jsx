@@ -27,7 +27,9 @@ import { isValid, format, parse } from 'date-fns';
 
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-export default function List({ data, index: listIndex, tasks, allocatedUsers }) {
+export default function List({ data, index: listIndex, tasks, allocatedUsers, setTasks }) { 
+  console.log('List tasks:', tasks);
+
   const navigate = useNavigate();
   const { projectId } = useParams();
   const location = useLocation();
@@ -52,7 +54,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     estado: '',
     dificuldade: '',
     prioridade: '',
-    tempo_execucao: '00-00-20',
+    tempo_execucao: '00:00:00',
     projeto: {
       id: projectId,
     },
@@ -91,9 +93,39 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     });
   };
 
+  const [forceRender, setForceRender] = useState(false);
+  useEffect(() => {
+    console.log('Tasks in List updated:', tasks);
+  }, [tasks, forceRender]);
+  
+  useEffect(() => {
+    setForceRender(prev => !prev);  // Forçar uma nova renderização
+  }, [tasks]);
+
+
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/Atividade/${projectId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      ); // Substitua pela sua URL de API
+      if (response.status === 200) {
+        setTasks(response.data);
+      } else {
+        console.error('Erro ao buscar listas');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+  
   const handleCreateTask = async (e) => {
     e.preventDefault();
-
+  
     const {
       id,
       titulo,
@@ -107,23 +139,11 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       projeto,
       responsavel,
     } = formTask;
-
-    // Verifique se encerramento é uma data válida
-    const encerramentoDate =
-      formTask.encerramento instanceof Date
-        ? formTask.encerramento
-        : new Date(formTask.encerramento);
-
-    // Formate a data para o formato "yyyy-MM-dd"
-    const formattedDate = `${encerramentoDate.getFullYear()}-${(
-      encerramentoDate.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
-
-    const dataInicial = inicio
-      ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
-      : format(new Date(), 'yyyy-MM-dd');
+  
+    const encerramentoDate = new Date(formTask.encerramento);
+    const formattedDate = `${encerramentoDate.getFullYear()}-${(encerramentoDate.getMonth() + 1).toString().padStart(2, '0')}-${encerramentoDate.getDate().toString().padStart(2, '0')}`;
+  
+    const dataInicial = inicio ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
     const activityData = {
       id: id,
       titulo: titulo,
@@ -137,30 +157,37 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
       projeto: projeto,
       responsavel: { id: selectedUser },
     };
-
+  
     try {
       console.log('atividade', activityData);
       const response = await axios.post(
         `http://localhost:8080/Atividade`,
-        activityData,{
+        activityData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         }
       );
-
+  
       if (response.status === 200) {
-        addSucesso('Atividade adicionada com sucesso');
+        // Depois de criar a tarefa, faça a requisição para buscar as tarefas atualizadas
+        await fetchTasks();
         handleClose();
-        setTasks([...tasks, response.data]);
+        addSucesso('Atividade adicionada com sucesso');
       } else {
         console.error('Erro ao adicionar a atividade');
+        addError('Erro ao adicionar a atividade');
       }
     } catch (error) {
       console.error('Erro ao conectar-se ao backend:', error);
+      addError('Erro ao conectar-se ao backend');
     }
   };
+
+  useEffect(() => {
+    console.log('Tasks in List updated:', tasks);
+  }, [tasks]);
 
   useEffect(() => {
     const fetchProjectMembers = async () => {
@@ -194,7 +221,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
     fetchProjectMembers();
     const intervalId = setInterval(fetchProjectMembers, 60000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [tasks]);
 
   return (
     <Droppable key={data.code} droppableId={`${data.code}`}>
@@ -238,7 +265,27 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                   name="titulo"
                   value={formTask.titulo}
                   onChange={(e) => handleInputChange(e, 'titulo')}
-                  label="Digite seu titulo"
+                  label="Digite seu título"
+                  required
+                />
+                <Input
+                  id="descricao-kanban"
+                  type="text"
+                  name="descricao"
+                  value={formTask.descricao}
+                  onChange={(e) => handleInputChange(e, 'descricao')}
+                  label="Digite a descrição"
+                  multiline
+                  required
+                />
+                <Input
+                  id="inicio-kanban"
+                  type="date"
+                  name="inicio"
+                  value={formTask.inicio}
+                  onChange={(e) => handleInputChange(e, 'inicio')}
+                  label="Data de início"
+                  required
                 />
                 <Input
                   id="encerramento-kanban"
@@ -246,12 +293,11 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                   name="encerramento"
                   value={formTask.encerramento}
                   onChange={(e) => handleInputChange(e, 'encerramento')}
-                  label="Digite a data de encerramento"
+                  label="Data de encerramento"
+                  required
                 />
-                <FormControl fullWidth>
-                  <InputLabel id="dificuldade-label">
-                    Selecione a dificuldade
-                  </InputLabel>
+                <FormControl fullWidth required>
+                  <InputLabel id="dificuldade-label">Selecione a dificuldade</InputLabel>
                   <Select
                     labelId="dificuldade-label"
                     id="dificuldade"
@@ -271,18 +317,10 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                   value={formTask.prioridade}
                   onChange={(e) => handleInputChange(e, 'prioridade')}
                   label="Digite a prioridade"
-                />
-                <Input
-                  id="descricao-kanban"
-                  type="text"
-                  name="descricao"
-                  value={formTask.descricao}
-                  onChange={(e) => handleInputChange(e, 'descricao')}
-                  label="Digite o descricao"
-                  multiline={true}
+                  required
                 />
                 <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
+                  <FormControl fullWidth required>
                     <InputLabel id="responsavel-label">Responsável</InputLabel>
                     <Select
                       labelId="responsavel-label"
@@ -301,8 +339,8 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                   </FormControl>
                 </Box>
                 <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="estado-label">Selecione a estado</InputLabel>
+                  <FormControl fullWidth required>
+                    <InputLabel id="estado-label">Selecione o estado</InputLabel>
                     <Select
                       labelId="estado-label"
                       id="estado"
@@ -310,16 +348,14 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                       value={formTask.estado}
                       onChange={(e) => handleInputChange(e, 'estado')}
                     >
-                      <MenuItem value={'BACKLOG'}>Backlog</MenuItem>
-                      <MenuItem value={'SPRINT_BACKLOG'}>Sprint Backlog</MenuItem>
-                      <MenuItem value={'DEVELOPMENT'}>Development</MenuItem>
-                      <MenuItem value={'DONE_DEVELOPMENT'}>
-                        Done Development
-                      </MenuItem>
-                      <MenuItem value={'TEST'}>Test</MenuItem>
-                      <MenuItem value={'DONE_TEST'}>Done Test</MenuItem>
-                      <MenuItem value={'REWORK'}>Rework</MenuItem>
-                      <MenuItem value={'DONE'}>Done</MenuItem>
+                      <MenuItem value={'TOTAL_TAREFAS'}>Total de Tarefas</MenuItem>
+                      <MenuItem value={'TAREFAS_A_FAZER'}>Tarefas a Fazer</MenuItem>
+                      <MenuItem value={'EM_ANDAMENTO'}>Em Andamento</MenuItem>
+                      <MenuItem value={'FEITO'}>Feito</MenuItem>
+                      <MenuItem value={'A_REVISAR'}>A Revisar</MenuItem>
+                      <MenuItem value={'REVISADO'}>Revisado</MenuItem>
+                      <MenuItem value={'REFAZENDO'}>Refazendo</MenuItem>
+                      <MenuItem value={'CONCLUIDO'}>Concluído</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -360,6 +396,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers }) 
                       listIndex={listIndex}
                       index={task.id}
                       data={task}
+                      setTasks={setTasks}
                     />
                   </div>
                 )}

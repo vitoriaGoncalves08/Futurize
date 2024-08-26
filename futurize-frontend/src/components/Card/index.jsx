@@ -19,7 +19,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Input from '../../components/Input/input';
-import { format } from 'date-fns';
+import { format, parse, addDays } from 'date-fns';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -27,7 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
 
-export default function Card({ index, listIndex, data }) {
+export default function Card({ index, listIndex, data, setTasks }) {
   const ref = useRef();
   const { projectId } = useParams();
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -48,44 +48,100 @@ export default function Card({ index, listIndex, data }) {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Estado para o tempo de execução
   const [horas, setHoras] = useState(0);
   const [minutos, setMinutos] = useState(0);
   const [segundos, setSegundos] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
   const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+  
+
+  // Função para carregar o tempo de execução do backend
+  const loadExecutionTime = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/Atividade/${data.id}/tempo-execucao`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        const { horas, minutos, segundos } = response.data;
+        setHoras(horas || 0);
+        setMinutos(minutos || 0);
+        setSegundos(segundos || 0);
+      } else {
+        console.error('Erro ao carregar tempo de execução do backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
 
   useEffect(() => {
     let interval;
 
     if (isRunning) {
       interval = setInterval(() => {
-        if (segundos < 59) {
-          setSegundos(segundos + 1);
-        } else if (minutos < 59) {
-          setMinutos(minutos + 1);
-          setSegundos(0);
-        } else {
-          setHoras(horas + 1);
-          setMinutos(0);
-          setSegundos(0);
-        }
+        setSegundos(prevSegundos => {
+          if (prevSegundos < 59) {
+            return prevSegundos + 1;
+          } else {
+            setMinutos(prevMinutos => {
+              if (prevMinutos < 59) {
+                return prevMinutos + 1;
+              } else {
+                setHoras(prevHoras => prevHoras + 1);
+                return 0;
+              }
+            });
+            return 0;
+          }
+        });
       }, 1000);
+    } else if (!isRunning && (horas > 0 || minutos > 0 || segundos > 0)) {
+      saveExecutionTime({ horas, minutos, segundos });
     }
 
     return () => clearInterval(interval);
-  }, [segundos, minutos, horas, isRunning]);
+  }, [isRunning]);
 
   const handlePlayClick = () => {
     setIsRunning(!isRunning);
   };
 
+  const saveExecutionTime = async (executionTime) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/Atividade/${data.id}/tempo-execucao`,
+        executionTime,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        ToastSuccess({ text: 'Tempo de execução salvo com sucesso!', title: 'Sucesso!' });
+      } else {
+        ToastError({ text: 'Erro ao salvar tempo de execução no backend.', title: 'Erro!' });
+      }
+    } catch (error) {
+      ToastError({ text: `Erro ao conectar-se ao backend: ${error.message}`, title: 'Erro!' });
+    }
+  };
+  
+
   function formatEncerramento(encerramento) {
-    const encerramentoDate = new Date(encerramento);
+    const encerramentoDate = addDays(new Date(encerramento), 1);
     const dia = encerramentoDate.getDate().toString().padStart(2, "0");
     const mes = (encerramentoDate.getMonth() + 1).toString().padStart(2, "0");
     const ano = encerramentoDate.getFullYear();
-    return `${dia}-${mes}-${ano}`;
+    return `${dia}/${mes}/${ano}`;
   }
 
   function formatMemberName(name) {
@@ -119,10 +175,13 @@ export default function Card({ index, listIndex, data }) {
   const handleClickOpen = () => {
     setOpen(true);
     openEditActivity(data);
+    console.log('Open Edit Dialog');  // Adicione log para depuração
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
+const handleClose = () => {
+  setOpen(false);
+  console.log('Close Edit Dialog');  // Adicione log para depuração
+};
 
   const openDeleteConfirmationDialog = () => {
     setDeleteConfirmationOpen(true);
@@ -144,7 +203,6 @@ export default function Card({ index, listIndex, data }) {
     e.preventDefault();
     closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
     addSucessoGeneral("Atividade excluída com sucesso!");
-
     try {
       // Certifique-se de ter o 'id' da atividade disponível em 'data'
       const idToDelete = data.id;
@@ -164,20 +222,13 @@ export default function Card({ index, listIndex, data }) {
       });
 
       console.log("Atividade excluída com sucesso!");
+       // Atualize o estado das tarefas removendo a atividade deletada
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== idToDelete));
     } catch (error) {
       console.error("Erro ao excluir a atividade:", error);
     }
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-    setEditingData(data);
-  };
-  const cancelEdit = () => {
-    setIsEditing(false);
-    setEditingData(null);
-    // Resetar os estados dos campos editados
-  };
   const [formAtividade, setFormAtividade] = useState({
     id: '',
     titulo: '',
@@ -192,55 +243,64 @@ export default function Card({ index, listIndex, data }) {
     responsavel: { id: '' },
   });
 
-  
-  const handleEditSubmit = async () => {
-    const {
+  const isValid = (date) => {
+    return date instanceof Date && !isNaN(date);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    const { id, titulo, descricao, inicio, encerramento, estado, dificuldade, prioridade, tempo_execucao, projeto, responsavel } = formAtividade;
+
+    // Função para converter data de DD-MM-YYYY para YYYY-MM-DD
+    const convertDateFormat = (dateString) => {
+      const [day, month, year] = dateString.split('-');
+      return `${year}-${month}-${day}`;
+    };
+
+    // Parse e validar datas
+    const parseDate = (dateString) => {
+      const formattedDate = convertDateFormat(dateString);
+      const parsedDate = parse(formattedDate, 'yyyy-MM-dd', new Date());
+      return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
+    };
+
+    const dataInicial = parseDate(inicio);
+    const dataFinal = parseDate(encerramento);
+
+    if (!dataInicial || !dataFinal) {
+      console.error('Invalid date value provided.');
+      return;
+    }
+
+    const dataEditActivity = {
       id,
       titulo,
       descricao,
-      inicio,
-      encerramento,
+      inicio: dataInicial,
+      encerramento: dataFinal,
       estado,
       dificuldade,
       prioridade,
       tempo_execucao,
       projeto,
-      responsavel,
-    } = formAtividade;
-  
-    const dataEditActivity = {
-      id: id,
-      titulo: titulo,
-      descricao: descricao,
-      inicio: dataInicial,
-      encerramento: formattedDate,
-      estado: estado,
-      dificuldade: dificuldade,
-      prioridade: prioridade,
-      tempo_execucao: tempo_execucao,
-      projeto: projeto,
       responsavel: { id: selectedUser },
     };
-  
+
     try {
-      // Realizar a chamada de API para atualizar a atividade no backend
-      const response = await axios.put(
-        `http://localhost:8080/Atividade/${data.id}`,
-        dataEditActivity, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-  
+      const response = await axios.put(`http://localhost:8080/Atividade/${id}`, dataEditActivity, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
       if (response.status === 200) {
-        // Atualize o estado `rows` após a edição
-        const updatedRows = rows.map((row) =>
-          row.id === editActivityData.id ? { ...row, ...dataEditActivity } : row
-        );
+        const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
         setRows(updatedRows);
-        // Feche o modal de edição
+        setTasks((prevTasks) => 
+          prevTasks.map((task) => task.id === id ? { ...task, ...dataEditActivity } : task)
+        );
         handleClose();
         addSucessoGeneral('Atividade editada com sucesso!');
       } else {
@@ -251,8 +311,8 @@ export default function Card({ index, listIndex, data }) {
       console.error('Erro ao conectar-se ao backend:', error);
       addError('Erro ao conectar-se ao backend: ' + error.message);
     }
-  };
-  console.log(data.id, data);
+};
+
   const openEditActivity = (activity) => {
     setFormAtividade({
       id: activity.id,
@@ -271,45 +331,54 @@ export default function Card({ index, listIndex, data }) {
     setSelectedUser(activity.responsavel.id);
     setOpen(true);
   };
-  const handleInputChange = (e, field) => {
-    if (field === 'responsavel') {
-      setEditedResponsavel(e.target.value);
-    } else {
-      setFormAtividade({
-        ...formAtividade,
-        [field]: e.target.value,
-      });
-    }
-  };
 
-  const fetchProjectMembers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/Alocacao_projeto/${projectId}`,{
+  const handleInputChange = (e, field) => {
+  if (field === 'responsavel') {
+    setSelectedUser(e.target.value);
+    setFormAtividade({
+      ...formAtividade,
+      responsavel: { id: e.target.value },
+    });
+  } else {
+    setFormAtividade({
+      ...formAtividade,
+      [field]: e.target.value,
+    });
+  }
+  console.log('Field changed:', field, 'Value:', e.target.value);  // Adicione log para depuração
+};
+
+
+const fetchProjectMembers = async () => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/Alocacao_projeto/${projectId}`,{
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-      });
-      if (response.status === 200) {
-        const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
-        setAllocatedUser(allocatedUserIds);
-      } else if (response.status === 409) {
-        console.error('Erro ao buscar membros alocados ao projeto no backend.');
       }
-    } catch (error) {
-      console.error('Erro ao conectar-se ao backend:', error);
+    );
+    if (response.status === 200) {
+      const allocatedUserIds = response.data.map((allocation) => allocation.usuario);
+      setAllocatedUser(allocatedUserIds);
+    } else if (response.status === 409) {
+      console.error('Erro ao buscar membros alocados ao projeto no backend.');
     }
-  };
+  } catch (error) {
+    console.error('Erro ao conectar-se ao backend:', error);
+  }
+};
 
   return (
     <>
       <Container>
         <>
           <header>
-            <Label color={getStatusTagColor(data.dificuldade)}></Label>
+            <Label style={{marginTop: 30}}color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
               <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
-              <ModeEditIcon className="edit-card" onClick={handleClickOpen} />
+              <ModeEditIcon className="edit-card" onClick={handleClickOpen}style={{ color: 'blue' }}/>
             </div>
           </header>
 
@@ -331,12 +400,16 @@ export default function Card({ index, listIndex, data }) {
 
           <div className="TempoPerfil">
             <div className="Pessoa" onClick={handlePlayClick}>
-              {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
-              <p>
-                {String(horas).padStart(2, "0")}:
-                {String(minutos).padStart(2, "0")}:
-                {String(segundos).padStart(2, "0")}
-              </p>
+              <div className="play-pause-button" onClick={handlePlayClick}>
+              {isRunning ? (
+                  <PauseIcon className="pause-icon" />
+                ) : (
+                  <PlayArrowIcon className="play-icon" />
+                )}
+              </div>
+              <div className="timer">
+                <span>{data.tempo_execucao}</span>
+              </div>
             </div>
             <div className="Perfil">
               <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
@@ -442,16 +515,16 @@ export default function Card({ index, listIndex, data }) {
                   value={formAtividade.estado}
                   onChange={(e) => handleInputChange(e, "estado")}
                 >
-                  <MenuItem value={"BACKLOG"}>Backlog</MenuItem>
-                  <MenuItem value={"SPRINT_BACKLOG"}>Sprint Backlog</MenuItem>
-                  <MenuItem value={"DEVELOPMENT"}>Development</MenuItem>
-                  <MenuItem value={"DONE_DEVELOPMENT"}>
+                  <MenuItem value={"TOTAL_TAREFAS"}>Backlog</MenuItem>
+                  <MenuItem value={"TAREFAS_A_FAZER"}>Sprint Backlog</MenuItem>
+                  <MenuItem value={"EM_ANDAMENTO"}>Development</MenuItem>
+                  <MenuItem value={"FEITO"}>
                     Done Development
                   </MenuItem>
-                  <MenuItem value={"TEST"}>Test</MenuItem>
-                  <MenuItem value={"DONE_TEST"}>Done Test</MenuItem>
-                  <MenuItem value={"REWORK"}>Rework</MenuItem>
-                  <MenuItem value={"DONE"}>Done</MenuItem>
+                  <MenuItem value={"A_REVISAR"}>Test</MenuItem>
+                  <MenuItem value={"REVISADO"}>Done Test</MenuItem>
+                  <MenuItem value={"REFAZENDO"}>Rework</MenuItem>
+                  <MenuItem value={"CONCLUIDO"}>Done</MenuItem>
                 </Select>
               </FormControl>
             </Box>

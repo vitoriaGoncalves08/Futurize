@@ -48,6 +48,10 @@ export const Container = styled.div`
     display: flex;
   }
 
+  .play-pause-total{
+    color: 'red';
+  }
+
   Perfil,
   img {
     width: 30px;
@@ -57,10 +61,10 @@ export const Container = styled.div`
     margin-top: 7px;
   }
   
-  .acoes-card {
+  acoes-card {
     align-items: center;
   }
-  .edit-card{
+  edit-card{
     color: #407BFF;
     cursor: pointer;
   }
@@ -91,8 +95,8 @@ export const Container = styled.div`
 `;
 
 export const Label = styled.span`
-  width: 10px;
-  height: 10px;
+  width: 13px;
+  height: 13px;
   border-radius: 100%;
   display: inline-block;
   background: ${(props) => props.color};
