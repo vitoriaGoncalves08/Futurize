@@ -6,6 +6,7 @@ import Cadastro from "../pages/cadastro";
 import Projeto from "../pages/projeto";
 import Kanban from "../pages/kanban";
 import Dashboard from "../pages/dashboard";
+import Settings from "../pages/settings";
 import useAuth from "../hooks/useAuth";
 import App from "../Teste";
 import { AuthProvider } from "../context/auth";
