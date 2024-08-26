@@ -78,8 +78,7 @@ const Dashboard = () => {
         { id: 4, value: 3, label: 'A Revisar' },
         { id: 5, value: 2, label: 'Revisado' },
         { id: 6, value: 1, label: 'Refazendo' },
-        { id: 7, value: 3, label: 'Concluído' },
-       
+        { id: 7, value: 3, label: 'Concluído' },       
       ];
       
     return (
@@ -122,7 +121,7 @@ const Dashboard = () => {
                 <p>{dataProjetosConcluidos}</p>
             </div>
             <div className="chart-container">
-                <h2>Atividades Concluídas</h2>
+                <h2>Atividades Em Andamento</h2>
                 <p>3</p>
             </div>
         </div>
