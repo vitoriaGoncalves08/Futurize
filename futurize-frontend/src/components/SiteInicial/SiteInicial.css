@@ -44,7 +44,7 @@ body {
   border-radius: 10px;
 }
 
-nav {
+#inicio {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -54,6 +54,7 @@ nav {
 .LogoFuturize img {
   width: 10rem;
   display: flex;
+  object-fit: cover;
 }
 
 .MenuItens ul {
@@ -83,7 +84,7 @@ nav {
   transform-style: inherit;
 }
 
-.Titulo p {
+.Titulo .p-titulo {
   font-size: 70px;
   font-weight: 800;
   line-height: 70px;
@@ -94,7 +95,7 @@ nav {
   -webkit-background-clip: text;
 }
 
-.Subtitulo p {
+.Subtitulo .p-subtitulo {
   text-align: center;
   color: var(--gray);
   font-size: 18px;
@@ -110,7 +111,7 @@ nav {
   text-align: center;
 }
 
-section > img {
+.Wave .img-Wave {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -165,17 +166,14 @@ section > img {
   text-align: center;
 }
 
-.card img {
+.card .img-carousel {
   width: 100%;
   object-fit: cover;
 }
 
-button {
-  background-color: transparent;
-}
-
 button.prev,
 button.next {
+  background-color: transparent;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -217,17 +215,17 @@ button.next {
   margin-bottom: 1.5rem;
 }
 
-.texto p {
+.texto .p-texto {
   font-size: 1.7rem;
 }
 
-.secao img {
+.secao .img-sesao {
   width: auto;
   height: 100%;
   object-fit: cover;
 }
 
-footer {
+.footer-inicial {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -243,12 +241,12 @@ footer {
 
 }
 
-.imageLogo img{
+.logo .img-logo {
   cursor: pointer;
   width: 50%;
 }
 
-.direitosReservados p {
+.direitosReservados .p-direitos {
   font-size: 2rem;
 }
 
@@ -258,14 +256,14 @@ footer {
   padding: 0 1.5rem;
 }
 
-.redesSociais a{
+.redesSociais .link-redes{
   display: flex;
   padding: 1rem;
   transition: .5s;
   color: var(--dark);
 }
 
-.redesSociais a:hover{
+.redesSociais .link-redes:hover{
   -webkit-transform: translate3d(0, 2px, 0);
   transform: translate3d(0, 2px, 0);
   color: var(--primary);

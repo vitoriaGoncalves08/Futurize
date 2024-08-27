@@ -131,11 +131,11 @@ function SiteInicial() {
 
       <div className="HeroContent">
         <div className="Titulo">
-          <p>Gerencie suas atividades acadêmicas</p>
+          <p className="p-titulo">Gerencie suas atividades acadêmicas</p>
         </div>
 
         <div className="Subtitulo">
-          <p>
+          <p className="p-subtitulo">
             Desbloqueie uma eficiência sem precedentes e organize-se em projetos
             de grande escala!
           </p>
@@ -147,7 +147,7 @@ function SiteInicial() {
       </div>
 
       <section className="Wave">
-        <img src={wave} alt="Onda azul" />
+        <img className="img-Wave" src={wave} alt="Onda azul" />
       </section>
 
       <div id="kanban" className="MainContent">
@@ -163,7 +163,7 @@ function SiteInicial() {
               {cards.map((card, index) => (
                 <div className="card" key={index}>
                   <h3>{card.title}</h3>
-                  <img src={card.imgSrc} alt={card.title} />
+                  <img className="img-carousel" src={card.imgSrc} alt={card.title} />
                   <p>{card.description}</p>
                 </div>
               ))}
@@ -188,7 +188,7 @@ function SiteInicial() {
               hoje!
             </p>
           </div>
-          <img src={secao1} alt="" />
+          <img className="img-sesao" src={secao1} alt="" />
         </div>
 
         <div id="modelos" className="secao">
@@ -197,7 +197,7 @@ function SiteInicial() {
               Personalize o seu fluxo de trabalho e ajuste conforme a
               necessidade do seu projeto!
             </h2>
-            <p>
+            <p className="p-texto">
               O Kanban é como um quadro de tarefas virtual, onde você visualiza
               e move suas atividades de uma etapa para outra. Imagine post-its
               digitais que representam suas tarefas. Arraste e solte para mudar
@@ -205,7 +205,7 @@ function SiteInicial() {
               "Concluído". Simples assim!
             </p>
           </div>
-          <img src={secao2} alt="" />
+          <img className="img-sesao" src={secao2} alt="" />
         </div>
 
         <div id="projetos" className="secao">
@@ -226,7 +226,7 @@ function SiteInicial() {
               notificações instantâneas.
             </p>
           </div>
-          <img src={secao3} alt="" />
+          <img className="img-sesao" src={secao3} alt="" />
         </div>
 
         <div id="tarefas" className="secao">
@@ -242,7 +242,7 @@ function SiteInicial() {
               atribuídas a membros da equipe e definidas com prazos claros.
             </p>
           </div>
-          <img src={secao4} alt="" />
+          <img className="img-sesao" src={secao4} alt="" />
         </div>
 
         {/* <div id="sobre" className="secao">
@@ -257,25 +257,26 @@ function SiteInicial() {
           </div>
         </div> */}
 
-        <footer>
+        <footer className="footer-inicial">
           <div className="logo-direitos">
-            <div className="imageLogo">
+            <div className="logo">
               <img
+                className="img-logo"
                 src={logo}
                 alt=""
                 onClick={() => scrollToSection("inicio")}
               />
             </div>
             <div className="direitosReservados">
-              <p>Copyright © 2024 Futurize</p>
+              <p className="p-direitos">Copyright © 2024 Futurize</p>
             </div>
           </div>
 
           <div className="redesSociais">
-            <a href="https://www.instagram.com/nome do usuário/" target="_blank">
+            <a className="link-redes" href="https://www.instagram.com/futurizesoftware/" target="_blank">
               <InstagramIcon sx={{ fontSize: 50 }} />
             </a>
-            <a href="https://x.com/nome do usuário" target="_blank">
+            <a className="link-redes" href="https://x.com/FuturizeSoft" target="_blank">
               <XIcon sx={{ fontSize: 50 }} />
             </a>
           </div>
