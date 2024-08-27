@@ -1,5 +1,12 @@
-body {
+/* body {
   overflow: hidden;
+} */
+
+:root {
+  --stroke-color: #fff;
+  --surface-color: #8796A5;
+  --highlight-color: #c5c4c4;
+  --switch-bg-url: url(../../../public/assets/img/moon-stars.svg)
 }
 
 .container {
@@ -39,14 +46,54 @@ body {
   padding-left: 20px;
 }
 
-.user-info h2 {
+.user-info .h2-user-info {
   font-size: 1.5rem;
   color: #000000;
   margin-bottom: 5px;
   text-transform: uppercase;
 }
 
-.user-info p {
+.user-info .p-user-info {
   color: grey;
   font-size: 0.9rem;
+}
+
+#switch{
+  position: relative;
+  width: 64px;
+  margin: 4px auto;
+
+}
+
+#switch .switch-button{
+width: 32px;
+height: 32px;
+background: #003892 var(--switch-bg-url) no-repeat center;
+border: 0;
+border-radius: 50%;
+position: absolute;
+top: 50%;
+left: 0;
+z-index: 1;
+transform: translateY(-50%);
+animation: slide-back 0.2s;
+} 
+
+/* .light #switch .switch-button{
+  animation: slide-in 0.4s forwards;
+} */
+
+#switch .switch-button:hover{
+  outline: 8px solid var(--highlight-color);
+}
+
+#switch .switch-span{
+  display: block;
+  width: 64px;
+  height: 24px;
+  background: var(--surface-color);
+  color: var(--stroke-color);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 9999px;
 }
