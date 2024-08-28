@@ -83,10 +83,10 @@ const Dashboard = () => {
       
     return (
         <>
-        <h1 className='title'>Dashboard</h1>
+        <h1 className='title'>Minha Dashboard</h1>
         <div className="dashboard-container">
             <div className="main-chart">
-                <h2>Atividades Concluídas pro Projeto</h2>
+                <h2>Atividades Concluídas por Projeto</h2>
                 <BarChart
                 xAxis={[{ scaleType: 'band', data: ['Projetinho', 'TCC', 'Trabalho 2'] }]}
                 series={[{ data: [3, 4, 1] }]}

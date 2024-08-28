@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/dashboard")
 public class DashboardController {
@@ -24,6 +26,18 @@ public class DashboardController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @GetMapping("/atividades-concluidas-por-projeto/{projetoId}")
+    public ResponseEntity<List<Object[]>> getTotalAtividadesConcluidasPorProjeto(@PathVariable Long projetoId) {
+        List<Object[]> total = projetoRepository.countConcludedActivitiesByProject(projetoId);
+        return ResponseEntity.ok(total);
+    }
+
+    @GetMapping("/atividades/{userId}")
+    public ResponseEntity<Long> getTotalAtividades(@PathVariable Long userId) {
+        Long total = atividadeRepository.countAtividadesByUserId(userId);
+        return ResponseEntity.ok(total);
+    }
+
     @GetMapping("/projetos-alocados/{userId}")
     public ResponseEntity<Long> getTotalProjetosAlocados(@PathVariable Long userId) {
         Long total = aloProjetoRepository.countProjetosAlocados(userId);
@@ -36,21 +50,9 @@ public class DashboardController {
         return ResponseEntity.ok(total);
     }
 
-    @GetMapping("/atividades/{userId}")
-    public ResponseEntity<Long> getTotalAtividades(@PathVariable Long userId) {
-        Long total = atividadeRepository.countAtividadesByUserId(userId);
-        return ResponseEntity.ok(total);
-    }
-
     @GetMapping("/atividades-andamento/{userId}")
     public ResponseEntity<Long> getTotalAtividadesAndamento(@PathVariable Long userId) {
         Long total = atividadeRepository.countAtividadesAndamentoByUserId(userId);
-        return ResponseEntity.ok(total);
-    }
-
-    @GetMapping("/atividades-concluidas-por-projeto/{projetoId}")
-    public ResponseEntity<Long> getTotalAtividadesConcluidasPorProjeto(@PathVariable Long projetoId) {
-        Long total = atividadeRepository.countAtividadesConcluidasByProjetoId(projetoId);
         return ResponseEntity.ok(total);
     }
 }
