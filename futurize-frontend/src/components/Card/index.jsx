@@ -4,6 +4,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { CSS } from "@dnd-kit/utilities";
 import PauseIcon from "@mui/icons-material/Pause";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CommentIcon from '@mui/icons-material/Comment';
 import { Container, Label } from "./styles";
 import Avatar from "@mui/material/Avatar";
 import Buttons from "../Buttons/Buttons";
@@ -26,6 +27,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
+import { fontSize } from "@mui/system";
 
 export default function Card({ index, listIndex, data, setTasks }) {
   const ref = useRef();
@@ -375,9 +377,10 @@ const fetchProjectMembers = async () => {
       <Container>
         <>
           <header>
-            <Label style={{marginTop: 30}}color={getStatusTagColor(data.dificuldade)}></Label>
+            <Label style={{marginTop: 30, marginRight: 150}}color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
-              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
+              <CommentIcon className="commment-card" style={{ color: 'blue', fontSize: 22 }} />
+              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog}  />
               <ModeEditIcon className="edit-card" onClick={handleClickOpen}style={{ color: 'blue' }}/>
             </div>
           </header>

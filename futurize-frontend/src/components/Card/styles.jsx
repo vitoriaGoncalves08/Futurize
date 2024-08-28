@@ -13,7 +13,8 @@ export const Container = styled.div`
   header {
     position: absolute;
     top: -22px;
-    left: 15px;
+    display: flex;
+    justify-content: space-between;
   }
 
   p {
@@ -71,7 +72,14 @@ export const Container = styled.div`
   .delete-card{
     color: #407BFF;
     margin-right: 1rem;
-    margin-left: 12rem;
+    margin-left: 1rem;
+    margin-top: 0.7rem;
+    cursor: pointer;
+  }
+  .comment-card{
+    color: #407BFF;
+    margin-right: 1rem;
+    margin-left: 1rem;
     margin-top: 0.7rem;
     cursor: pointer;
   }
