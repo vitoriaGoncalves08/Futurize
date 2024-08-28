@@ -18,8 +18,6 @@
 }
 
 .config-profile {
-  display: flex;
-  justify-content: center;
   width: 50%;
   height: 70%;
   background-color: #f9f9f9;
@@ -29,6 +27,8 @@
 }
 
 .headerProfile {
+  display: flex;
+  justify-content: center;
   width: 90%;
   height: 20%;
   display: flex;
@@ -58,7 +58,7 @@
   font-size: 0.9rem;
 }
 
-#switch{
+/* #switch{
   position: relative;
   width: 64px;
   margin: 4px auto;
@@ -79,9 +79,9 @@ transform: translateY(-50%);
 animation: slide-back 0.2s;
 } 
 
-/* .light #switch .switch-button{
+.light #switch .switch-button{
   animation: slide-in 0.4s forwards;
-} */
+}
 
 #switch .switch-button:hover{
   outline: 8px solid var(--highlight-color);
@@ -96,4 +96,4 @@ animation: slide-back 0.2s;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 9999px;
-}
+} */
