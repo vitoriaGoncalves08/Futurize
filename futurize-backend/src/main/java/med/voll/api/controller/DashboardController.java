@@ -26,33 +26,46 @@ public class DashboardController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    //Atividades Concluídas por Projeto v
     @GetMapping("/atividades-concluidas-por-projeto/{projetoId}")
     public ResponseEntity<List<Object[]>> getTotalAtividadesConcluidasPorProjeto(@PathVariable Long projetoId) {
         List<Object[]> total = projetoRepository.countConcludedActivitiesByProject(projetoId);
         return ResponseEntity.ok(total);
     }
 
+    //Minhas atividades v
     @GetMapping("/atividades/{userId}")
-    public ResponseEntity<Long> getTotalAtividades(@PathVariable Long userId) {
-        Long total = atividadeRepository.countAtividadesByUserId(userId);
+    public ResponseEntity<List<Object[]>> getTotalAtividades(@PathVariable Long userId) {
+        List<Object[]> total = atividadeRepository.countAtividadesByUserId(userId);
         return ResponseEntity.ok(total);
     }
 
+    //Projetos Criados v
+    @GetMapping("/projetos-criados/{userId}")
+    public ResponseEntity<Long> getTotalProjetosCriados(@PathVariable Long userId) {
+        Long total = aloProjetoRepository.countProjetosCriados(userId);
+        return ResponseEntity.ok(total);
+    }
+
+    //Projetos Alocados v
     @GetMapping("/projetos-alocados/{userId}")
     public ResponseEntity<Long> getTotalProjetosAlocados(@PathVariable Long userId) {
         Long total = aloProjetoRepository.countProjetosAlocados(userId);
         return ResponseEntity.ok(total);
     }
 
+    //Projetos Concluídos v
     @GetMapping("/projetos-concluidos/{userId}")
     public ResponseEntity<Long> getTotalProjetosConcluidos(@PathVariable Long userId) {
         Long total = projetoRepository.countProjetosConcluidos(userId);
         return ResponseEntity.ok(total);
     }
 
+    //Atividades Em Andamento
     @GetMapping("/atividades-andamento/{userId}")
     public ResponseEntity<Long> getTotalAtividadesAndamento(@PathVariable Long userId) {
         Long total = atividadeRepository.countAtividadesAndamentoByUserId(userId);
         return ResponseEntity.ok(total);
     }
+
 }

@@ -8,7 +8,9 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart as MuiPieChart } from '@mui/x-charts/PieChart';
 
 const Dashboard = () => {
-    const [atividadesConcluidas, setAtividadesConcluidas] = useState(0);
+    const [atividadesConcluidasPProjeto, setAtividadesConcluidasPProjeto] = useState(0);
+    const [minhasAtividades, setMinhasAtividades] = useState(0);
+    const [projetosCriados, setProjetosCriados] = useState(0);
     const [projetosAlocados, setProjetosAlocados] = useState(0);
     const [projetosConcluidos, setProjetosConcluidos] = useState(0);
     const [atividadesAndamento, setAtividadesAndamento] = useState(0);
@@ -22,36 +24,53 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const responseAtividades = await axios.get(`http://localhost:8080/dashboard/atividades/${userId}`, {
+                // Atividades Concluídas por Projeto
+                const responseAtividadesConcluidasPProjeto = await axios.get(`http://localhost:8080/dashboard/atividades-concluidas-por-projeto/${userId}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Inclua o token correto aqui
+                        Authorization: `Bearer ${token}`,
                     },
                 });
-                setAtividadesConcluidas(responseAtividades.data);
+                setAtividadesConcluidasPProjeto(responseAtividadesConcluidasPProjeto.data);
+                
+                // Minhas atividades
+                const responseMinhasAtividades = await axios.get(`http://localhost:8080/dashboard/atividades/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setMinhasAtividades(responseMinhasAtividades.data);
 
+                // Projetos Criados
+                const responseProjetosCriados = await axios.get(`http://localhost:8080/dashboard/projetos-criados/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setProjetosCriados(responseProjetosCriados.data);
+
+                // Projetos Alocados
                 const responseProjetosAlocados = await axios.get(`http://localhost:8080/dashboard/projetos-alocados/${userId}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Inclua o token correto aqui
+                        Authorization: `Bearer ${token}`,
                     },
                 });
                 setProjetosAlocados(responseProjetosAlocados.data);
 
+                // Projetos Concluídos
                 const responseProjetosConcluidos = await axios.get(`http://localhost:8080/dashboard/projetos-concluidos/${userId}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Inclua o token correto aqui
+                        Authorization: `Bearer ${token}`,
                     },
                 });
                 setProjetosConcluidos(responseProjetosConcluidos.data);
 
-                const responseAtividadesAndamento = await axios.get(`http://localhost:8080/dashboard/atividades-andamento/${userId}`, {
+                 // Atividades Em Andamento
+                 const responseAtividadesAndamento = await axios.get(`http://localhost:8080/dashboard/atividades-andamento/${userId}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Inclua o token correto aqui
+                        Authorization: `Bearer ${token}`,
                     },
                 });
                 setAtividadesAndamento(responseAtividadesAndamento.data);
-
-                // Adicione outras chamadas de API conforme necessário
-
             } catch (error) {
                 console.error('Erro ao buscar dados da dashboard', error);
             }
@@ -60,16 +79,6 @@ const Dashboard = () => {
         fetchData();
     }, [userId]);
 
-    const dataAtividades = [
-        { name: 'Atividades Concluídas', value: atividadesConcluidas },
-        { name: 'Atividades em Andamento', value: atividadesAndamento },
-    ];
-
-    const dataProjetosAlocados = projetosAlocados;
-
-    const dataProjetosConcluidos = projetosConcluidos;
-
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
     const data = [
         { id: 0, value: 0, label: 'Total de Tarefas' },
         { id: 1, value: 5, label: 'Tarefas a Fazer' },
@@ -110,19 +119,19 @@ const Dashboard = () => {
                 </div>
             <div className="chart-container">
                 <h2>Projetos Criados</h2>
-                <p>{dataProjetosAlocados}</p>
+                <p>{projetosCriados}</p>
             </div>
             <div className="chart-container">
                 <h2>Projetos Alocados</h2>
-                <p>{dataProjetosAlocados}</p>
+                <p>{projetosAlocados}</p>
             </div>
             <div className="chart-container">
                 <h2>Projetos Concluídos</h2>
-                <p>{dataProjetosConcluidos}</p>
+                <p>{projetosConcluidos}</p>
             </div>
             <div className="chart-container">
                 <h2>Atividades Em Andamento</h2>
-                <p>3</p>
+                <p>{atividadesAndamento}</p>
             </div>
         </div>
         </>
