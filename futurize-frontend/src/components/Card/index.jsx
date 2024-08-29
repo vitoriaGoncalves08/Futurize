@@ -36,6 +36,7 @@ export default function Card({ index, listIndex, data, setTasks }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editingData, setEditingData] = useState(null);
   const [open, setOpen] = useState(false);
+  const [commentWindow, setCommentWindow] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
   const [allocatedUser, setAllocatedUser] = useState([]);
   const [rows, setRows] = useState([]);
@@ -191,6 +192,14 @@ const handleClose = () => {
 
   const closeDeleteConfirmationDialog = () => {
     setDeleteConfirmationOpen(false);
+  };
+
+  const commentWindowOpen = () => {
+    setCommentWindow(true);
+  };
+
+  const commentWindowClose = () => {
+    setCommentWindow(false);
   };
 
   function addSucessoGeneral(suc) {
@@ -379,7 +388,7 @@ const fetchProjectMembers = async () => {
           <header>
             <Label style={{marginTop: 30, marginRight: 150}}color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
-              <CommentIcon className="commment-card" style={{ color: 'blue', fontSize: 22 }} />
+              <CommentIcon className="commment-card" onClick={commentWindowOpen} style={{ color: 'blue', fontSize: 22 }} />
               <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog}  />
               <ModeEditIcon className="edit-card" onClick={handleClickOpen}style={{ color: 'blue' }}/>
             </div>
@@ -421,7 +430,7 @@ const fetchProjectMembers = async () => {
         </>
       </Container>
       {/* Diálogo de confirmação para edição */}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog classes={{ paper: 'comment-dialog' }} open={open} onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Editar Atividade</h1>
         </DialogTitle>
@@ -552,6 +561,123 @@ const fetchProjectMembers = async () => {
           <Buttons onClick={closeDeleteConfirmationDialog}>Cancelar</Buttons>
           <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
         </DialogActions>
+      </Dialog>
+      {/* Diálogo de adição e leitura de comentário */}
+      <Dialog  open={commentWindow} onClose={commentWindowClose}>
+        <DialogTitle>
+          <h1 className="titulo">Comentar atividade</h1>
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={commentWindowClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        {/* Diálog de edição da atividade */}
+        <DialogContent>
+          <form onSubmit={handleEditSubmit}>
+            <Input
+              id="titulo-kanban"
+              type="text"
+              name="titulo"
+              value={formAtividade.titulo}
+              onChange={(e) => handleInputChange(e, "titulo")}
+              label="Digite seu titulo"
+            />
+            <Input
+              id="encerramento-kanban"
+              type="date"
+              name="encerramento"
+              value={formAtividade.encerramento}
+              onChange={(e) => handleInputChange(e, "encerramento")}
+              label="Digite a data de encerramento"
+            />
+            <FormControl fullWidth>
+              <InputLabel id="dificuldade-label">
+                Selecione a dificuldade
+              </InputLabel>
+              <Select
+                labelId="dificuldade-label"
+                id="dificuldade"
+                name="dificuldade"
+                value={formAtividade.dificuldade}
+                onChange={(e) => handleInputChange(e, "dificuldade")}
+              >
+                <MenuItem value={"SIMPLES"}>Simples</MenuItem>
+                <MenuItem value={"MODERADA"}>Moderada</MenuItem>
+                <MenuItem value={"COMPLEXA"}>Complexa</MenuItem>
+              </Select>
+            </FormControl>
+            <Input
+              id="prioridade-kanban"
+              type="text"
+              name="prioridade"
+              value={formAtividade.prioridade}
+              onChange={(e) => handleInputChange(e, "prioridade")}
+              label="Digite a prioridade"
+            />
+            <Input
+              id="descricao-kanban"
+              type="text"
+              name="descricao"
+              value={formAtividade.descricao}
+              onChange={(e) => handleInputChange(e, "descricao")}
+              label="Digite o descricao"
+              multiline={true}
+            />
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="responsavel-label">Responsável</InputLabel>
+                <Select
+                  labelId="responsavel-label"
+                  id="responsavel"
+                  name="responsavel"
+                  value={editedResponsavel}
+                  onChange={(e) => handleInputChange(e, "responsavel")}
+                  label="Responsável"
+                >
+                  {allocatedUser.map((user) => (
+                    <MenuItem key={user.id} value={user.id}>
+                      {user.nome}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="estado-label">Selecione a estado</InputLabel>
+                <Select
+                  labelId="estado-label"
+                  id="estado"
+                  name="estado"
+                  value={formAtividade.estado}
+                  onChange={(e) => handleInputChange(e, "estado")}
+                >
+                  <MenuItem value={"TOTAL_TAREFAS"}>Backlog</MenuItem>
+                  <MenuItem value={"TAREFAS_A_FAZER"}>Sprint Backlog</MenuItem>
+                  <MenuItem value={"EM_ANDAMENTO"}>Development</MenuItem>
+                  <MenuItem value={"FEITO"}>
+                    Done Development
+                  </MenuItem>
+                  <MenuItem value={"A_REVISAR"}>Test</MenuItem>
+                  <MenuItem value={"REVISADO"}>Done Test</MenuItem>
+                  <MenuItem value={"REFAZENDO"}>Rework</MenuItem>
+                  <MenuItem value={"CONCLUIDO"}>Done</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <DialogActions>
+              <Buttons type="submit">Editar</Buttons>
+            </DialogActions>
+          </form>
+        </DialogContent>
       </Dialog>
     </>
   );

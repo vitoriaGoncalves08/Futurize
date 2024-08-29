@@ -84,6 +84,8 @@ export const Container = styled.div`
     cursor: pointer;
   }
 
+  .comment-dialog: 
+
   ${(props) =>
     props.isDragging &&
     css`
