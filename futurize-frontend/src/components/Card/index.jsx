@@ -28,6 +28,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
 import { fontSize } from "@mui/system";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "styled-components";
 
 export default function Card({ index, listIndex, data, setTasks }) {
   const ref = useRef();
@@ -381,6 +383,40 @@ const fetchProjectMembers = async () => {
   }
 };
 
+const ComentarioTheme = createTheme({
+    pallete:{
+      primary:{
+        main: 'black',
+      },
+      background: {
+        default: 'green',
+      }
+    },
+
+    typography: {
+        fontSize: 16,
+    },
+    shape:{
+      borderRadius: 20,
+    },
+    Overrides: {
+        MuiButton: {
+          root: {
+            textTransform: 'none',
+          },
+        },
+        MuiTextField: {
+          root: {
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 8,
+              borderColor: '#ccc'
+            }
+          }
+        }
+    }
+})
+
+
   return (
     <>
       <Container>
@@ -563,24 +599,25 @@ const fetchProjectMembers = async () => {
         </DialogActions>
       </Dialog>
       {/* Diálogo de adição e leitura de comentário */}
-      <Dialog  open={commentWindow} onClose={commentWindowClose}>
-        <DialogTitle>
-          <h1 className="titulo">Comentar atividade</h1>
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={commentWindowClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        {/* Diálog de edição da atividade */}
-        <DialogContent>
+      <Dialog
+      open={commentWindow}
+      onClose={commentWindowClose} 
+      sx={{ width: 500, height: 1000}}
+      >
+        <ThemeProvider theme={ComentarioTheme}>
+          <DialogTitle sx={{
+          display: 'flex',
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          textAlign: 'center',
+          marginLeft: '95px',
+           }}> 
+            <h1 className="titulo" sx={{}}>Comentários</h1>
+            <Box sx={{ width: 30, height: 30, background: '#79a2fe', margin: '5px 0', marginBottom: '5px', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <CloseIcon style={{color: 'white', fontSize: 15}} />
+            </Box>
+          </DialogTitle>
+          <DialogContent sx={{ backgroundColor: '' }}>
           <form onSubmit={handleEditSubmit}>
             <Input
               id="titulo-kanban"
@@ -588,96 +625,28 @@ const fetchProjectMembers = async () => {
               name="titulo"
               value={formAtividade.titulo}
               onChange={(e) => handleInputChange(e, "titulo")}
-              label="Digite seu titulo"
+              label="Digite o título do comentário"
             />
             <Input
-              id="encerramento-kanban"
-              type="date"
-              name="encerramento"
-              value={formAtividade.encerramento}
-              onChange={(e) => handleInputChange(e, "encerramento")}
-              label="Digite a data de encerramento"
-            />
-            <FormControl fullWidth>
-              <InputLabel id="dificuldade-label">
-                Selecione a dificuldade
-              </InputLabel>
-              <Select
-                labelId="dificuldade-label"
-                id="dificuldade"
-                name="dificuldade"
-                value={formAtividade.dificuldade}
-                onChange={(e) => handleInputChange(e, "dificuldade")}
-              >
-                <MenuItem value={"SIMPLES"}>Simples</MenuItem>
-                <MenuItem value={"MODERADA"}>Moderada</MenuItem>
-                <MenuItem value={"COMPLEXA"}>Complexa</MenuItem>
-              </Select>
-            </FormControl>
-            <Input
-              id="prioridade-kanban"
+              id="titulo-kanban"
               type="text"
-              name="prioridade"
-              value={formAtividade.prioridade}
-              onChange={(e) => handleInputChange(e, "prioridade")}
-              label="Digite a prioridade"
+              name="titulo"
+              value={formAtividade.titulo}
+              onChange={(e) => handleInputChange(e, "titulo")}
+              label="Insira o comentário"
+              style={{height: 100}}
             />
-            <Input
-              id="descricao-kanban"
-              type="text"
-              name="descricao"
-              value={formAtividade.descricao}
-              onChange={(e) => handleInputChange(e, "descricao")}
-              label="Digite o descricao"
-              multiline={true}
-            />
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="responsavel-label">Responsável</InputLabel>
-                <Select
-                  labelId="responsavel-label"
-                  id="responsavel"
-                  name="responsavel"
-                  value={editedResponsavel}
-                  onChange={(e) => handleInputChange(e, "responsavel")}
-                  label="Responsável"
-                >
-                  {allocatedUser.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.nome}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="estado-label">Selecione a estado</InputLabel>
-                <Select
-                  labelId="estado-label"
-                  id="estado"
-                  name="estado"
-                  value={formAtividade.estado}
-                  onChange={(e) => handleInputChange(e, "estado")}
-                >
-                  <MenuItem value={"TOTAL_TAREFAS"}>Backlog</MenuItem>
-                  <MenuItem value={"TAREFAS_A_FAZER"}>Sprint Backlog</MenuItem>
-                  <MenuItem value={"EM_ANDAMENTO"}>Development</MenuItem>
-                  <MenuItem value={"FEITO"}>
-                    Done Development
-                  </MenuItem>
-                  <MenuItem value={"A_REVISAR"}>Test</MenuItem>
-                  <MenuItem value={"REVISADO"}>Done Test</MenuItem>
-                  <MenuItem value={"REFAZENDO"}>Rework</MenuItem>
-                  <MenuItem value={"CONCLUIDO"}>Done</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-            <DialogActions>
-              <Buttons type="submit">Editar</Buttons>
-            </DialogActions>
           </form>
-        </DialogContent>
+          </DialogContent>
+          <DialogActions sx={{          
+          display: 'flex',
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          textAlign: 'center',
+          }}>
+            <Buttons sx={{borderRadius: 2, fontSize: 12, backgroundColor: '#407bff'}} type="submit">Comentar</Buttons>
+          </DialogActions>
+        </ThemeProvider>
       </Dialog>
     </>
   );
