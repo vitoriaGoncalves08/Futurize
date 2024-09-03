@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Dashboard.css';
-import { useNavigate } from 'react-router-dom';
 import useAuth from "../../hooks/useAuth";
-import { BarChart as RechartsBarChart, Bar, CartesianGrid, Tooltip, Legend, PieChart as RechartsPieChart, Pie, Cell, LineChart, Line, ResponsiveContainer } from 'recharts';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart as MuiPieChart } from '@mui/x-charts/PieChart';
 
 const Dashboard = () => {
     const [atividadesConcluidasPProjeto, setAtividadesConcluidasPProjeto] = useState(0);
-    const [minhasAtividades, setMinhasAtividades] = useState(0);
+    const [minhasAtividades, setMinhasAtividades] = useState([]);
     const [projetosCriados, setProjetosCriados] = useState(0);
     const [projetosAlocados, setProjetosAlocados] = useState(0);
     const [projetosConcluidos, setProjetosConcluidos] = useState(0);
@@ -38,7 +36,15 @@ const Dashboard = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                setMinhasAtividades(responseMinhasAtividades.data);
+
+                // Transformando os dados para o formato do MuiPieChart
+                const transformedData = responseMinhasAtividades.data.map((item, index) => ({
+                    id: index,
+                    label: item[0], // "CONCLUIDO" ou "EM_ANDAMENTO"
+                    value: item[1], // 2 ou 1
+                }));
+                
+                setMinhasAtividades(transformedData);
 
                 // Projetos Criados
                 const responseProjetosCriados = await axios.get(`http://localhost:8080/dashboard/projetos-criados/${userId}`, {
@@ -64,8 +70,8 @@ const Dashboard = () => {
                 });
                 setProjetosConcluidos(responseProjetosConcluidos.data);
 
-                 // Atividades Em Andamento
-                 const responseAtividadesAndamento = await axios.get(`http://localhost:8080/dashboard/atividades-andamento/${userId}`, {
+                // Atividades Em Andamento
+                const responseAtividadesAndamento = await axios.get(`http://localhost:8080/dashboard/atividades-andamento/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -79,17 +85,6 @@ const Dashboard = () => {
         fetchData();
     }, [userId]);
 
-    const data = [
-        { id: 0, value: 0, label: 'Total de Tarefas' },
-        { id: 1, value: 5, label: 'Tarefas a Fazer' },
-        { id: 2, value: 6, label: 'Em Andamento' },
-        { id: 3, value: 9, label: 'Feito' },
-        { id: 4, value: 3, label: 'A Revisar' },
-        { id: 5, value: 2, label: 'Revisado' },
-        { id: 6, value: 1, label: 'Refazendo' },
-        { id: 7, value: 3, label: 'Concluído' },       
-      ];
-      
     return (
         <>
         <h1 className='title'>Minha Dashboard</h1>
@@ -109,14 +104,14 @@ const Dashboard = () => {
             <MuiPieChart
                 series={[
                     {
-                    data,
+                    data: minhasAtividades,
                     highlightScope: { faded: 'global', highlighted: 'item' },
                     faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                     },
                 ]}
                 height={300}
                 />
-                </div>
+            </div>
             <div className="chart-container">
                 <h2>Projetos Criados</h2>
                 <p>{projetosCriados}</p>
@@ -136,7 +131,6 @@ const Dashboard = () => {
         </div>
         </>
     );
-    
 };
 
 export default Dashboard;
