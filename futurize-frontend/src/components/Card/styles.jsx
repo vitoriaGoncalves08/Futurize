@@ -83,6 +83,9 @@ export const Container = styled.div`
     margin-top: 0.7rem;
     cursor: pointer;
   }
+  .c-input{
+    border-radius: 20px;
+  }
 
   .comment-dialog: 
 

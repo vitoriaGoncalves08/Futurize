@@ -416,6 +416,18 @@ const ComentarioTheme = createTheme({
     }
 })
 
+const theme = createTheme({
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: '10px',
+        },
+      },
+    },
+  },
+});
+
 
   return (
     <>
@@ -586,6 +598,7 @@ const ComentarioTheme = createTheme({
       <Dialog
         open={deleteConfirmationOpen}
         onClose={closeDeleteConfirmationDialog}
+        
       >
         <DialogTitle>Confirmação de Exclusão</DialogTitle>
 
@@ -604,7 +617,6 @@ const ComentarioTheme = createTheme({
       onClose={commentWindowClose} 
       sx={{ width: 500, height: 1000}}
       >
-        <ThemeProvider theme={ComentarioTheme}>
           <DialogTitle sx={{
           display: 'flex',
           justifyContent: 'space-between', 
@@ -617,27 +629,35 @@ const ComentarioTheme = createTheme({
               <CloseIcon style={{color: 'white', fontSize: 15}} />
             </Box>
           </DialogTitle>
-          <DialogContent sx={{ backgroundColor: '' }}>
-          <form onSubmit={handleEditSubmit}>
-            <Input
-              id="titulo-kanban"
-              type="text"
-              name="titulo"
-              value={formAtividade.titulo}
-              onChange={(e) => handleInputChange(e, "titulo")}
-              label="Digite o título do comentário"
-            />
-            <Input
-              id="titulo-kanban"
-              type="text"
-              name="titulo"
-              value={formAtividade.titulo}
-              onChange={(e) => handleInputChange(e, "titulo")}
-              label="Insira o comentário"
-              style={{height: 100}}
-            />
-          </form>
+          <DialogContent sx={{ backgroundColor: '', width: '100%', padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+            <Box sx={{ width: '90%', backgroundColor: '', boxSizing: 'border-box' }}>
+              <form onSubmit={handleEditSubmit}>
+                <Input
+                  id="titulo-kanban"
+                  type="text"
+                  name="titulo"
+                  value={formAtividade.titulo}
+                  onChange={(e) => handleInputChange(e, "titulo")}
+                  label="Digite o título do comentário"
+                  size = 'small'
+                />
+                <Input
+                  id="titulo-kanban"
+                  type="text"
+                  name="titulo"
+                  value={formAtividade.titulo}
+                  onChange={(e) => handleInputChange(e, "titulo")}
+                  label="Insira o comentário"
+                  style={{ borderRadius: '10px', width: '300px'}}
+                  size = 'small'
+                />
+              </form>
+            </Box>
+            <Box sx={{ width: '100%', height: '20%', backgroundColor: '#fbfbfb', margintop: 50, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <h1>teste</h1>
+            </Box>
           </DialogContent>
+
           <DialogActions sx={{          
           display: 'flex',
           justifyContent: 'center', 
@@ -646,7 +666,6 @@ const ComentarioTheme = createTheme({
           }}>
             <Buttons sx={{borderRadius: 2, fontSize: 12, backgroundColor: '#407bff'}} type="submit">Comentar</Buttons>
           </DialogActions>
-        </ThemeProvider>
       </Dialog>
     </>
   );
