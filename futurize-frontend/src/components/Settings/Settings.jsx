@@ -27,23 +27,12 @@ function Settings() {
         <div className="edit-profile">
           <h3>Editar Dados</h3>
           <div className="inputs-edit-profile">
-            <input type="text" placeholder="nome" />
-            <input type="text" placeholder="sobrenome" />
-            <input type="email" placeholder="email" />
-            <input type="password" placeholder="senha" />
+            <input className="style-inputs" type="text" placeholder="nome" />
+            <input className="style-inputs" type="text" placeholder="sobrenome" />
+            <input className="style-inputs" type="email" placeholder="email" />
+            <input className="style-inputs" type="password" placeholder="senha" />
             <Buttons>Alterar Senha</Buttons>
           </div>
-        </div>
-
-        <hr />
-
-        <div className="edit-font">
-          <h3>Configurações</h3>
-          <p>Tamanho da fonte</p>
-          <div className="slider"></div>
-          <p>Pequena</p>
-          <p>Média</p>
-          <p>Grande</p>
         </div>
       </div>
     </div>

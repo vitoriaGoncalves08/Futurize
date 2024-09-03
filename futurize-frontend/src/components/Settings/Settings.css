@@ -59,6 +59,7 @@
 }
 
 /* #switch{
+
   position: relative;
   width: 64px;
   margin: 4px auto;
@@ -97,3 +98,25 @@ animation: slide-back 0.2s;
   -webkit-backdrop-filter: blur(4px);
   border-radius: 9999px;
 } */
+
+.edit-profile {
+  margin-top: 2rem;
+}
+
+.inputs-edit-profile {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+.style-inputs {
+  width: 50%;
+  height: 2rem;
+  padding: .5rem;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  background: transparent;
+  color: #000000;
+  
+}
