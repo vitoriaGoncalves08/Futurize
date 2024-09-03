@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Dashboard.css';
+import './minhaDashboard.css';
 import useAuth from "../../hooks/useAuth";
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart as MuiPieChart } from '@mui/x-charts/PieChart';
 
 const Dashboard = () => {
-    const [atividadesConcluidasPProjeto, setAtividadesConcluidasPProjeto] = useState(0);
+    const [atividadesConcluidasPProjeto, setAtividadesConcluidasPProjeto] = useState([]);
     const [minhasAtividades, setMinhasAtividades] = useState([]);
     const [projetosCriados, setProjetosCriados] = useState(0);
     const [projetosAlocados, setProjetosAlocados] = useState(0);
     const [projetosConcluidos, setProjetosConcluidos] = useState(0);
     const [atividadesAndamento, setAtividadesAndamento] = useState(0);
+    const colors = ['#407BFF', '#79A2FE', '#48beff', '#9FBDFF', '#73d2de', '#a1cdf4', '#60b2e5', '#457eac'];
 
     const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
     
@@ -28,7 +29,14 @@ const Dashboard = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                setAtividadesConcluidasPProjeto(responseAtividadesConcluidasPProjeto.data);
+
+                const transformedAtividadesConcluidas = responseAtividadesConcluidasPProjeto.data.map((item, index) => ({
+                    id: index,
+                    label: item[0], 
+                    value: item[1], 
+                }));
+
+                setAtividadesConcluidasPProjeto(transformedAtividadesConcluidas);
                 
                 // Minhas atividades
                 const responseMinhasAtividades = await axios.get(`http://localhost:8080/dashboard/atividades/${userId}`, {
@@ -37,14 +45,13 @@ const Dashboard = () => {
                     },
                 });
 
-                // Transformando os dados para o formato do MuiPieChart
-                const transformedData = responseMinhasAtividades.data.map((item, index) => ({
+                const transformedMinhasAtividades = responseMinhasAtividades.data.map((item, index) => ({
                     id: index,
-                    label: item[0], // "CONCLUIDO" ou "EM_ANDAMENTO"
-                    value: item[1], // 2 ou 1
+                    label: item[0], 
+                    value: item[1], 
                 }));
                 
-                setMinhasAtividades(transformedData);
+                setMinhasAtividades(transformedMinhasAtividades);
 
                 // Projetos Criados
                 const responseProjetosCriados = await axios.get(`http://localhost:8080/dashboard/projetos-criados/${userId}`, {
@@ -92,8 +99,8 @@ const Dashboard = () => {
             <div className="main-chart">
                 <h2>Atividades Concluídas por Projeto</h2>
                 <BarChart
-                xAxis={[{ scaleType: 'band', data: ['Projetinho', 'TCC', 'Trabalho 2'] }]}
-                series={[{ data: [3, 4, 1] }]}
+                xAxis={[{ scaleType: 'band', data: atividadesConcluidasPProjeto.map(item => item.label) }]}
+                series={[{ data: atividadesConcluidasPProjeto.map(item => item.value), color: colors[1] }]}
                 width={500}
                 height={350}
                 barLabel="value"
@@ -104,11 +111,14 @@ const Dashboard = () => {
             <MuiPieChart
                 series={[
                     {
-                    data: minhasAtividades,
-                    highlightScope: { faded: 'global', highlighted: 'item' },
-                    faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+                      data: minhasAtividades.map((item, index) => ({
+                        ...item,
+                        color: colors[index % colors.length], // Ciclando pelas cores da paleta
+                      })),
+                      highlightScope: { faded: 'global', highlighted: 'item' },
+                      faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                     },
-                ]}
+                  ]}
                 height={300}
                 />
             </div>
