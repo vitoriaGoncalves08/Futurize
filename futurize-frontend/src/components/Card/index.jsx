@@ -4,6 +4,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { CSS } from "@dnd-kit/utilities";
 import PauseIcon from "@mui/icons-material/Pause";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CommentIcon from '@mui/icons-material/Comment';
 import { Container, Label } from "./styles";
 import Avatar from "@mui/material/Avatar";
 import Buttons from "../Buttons/Buttons";
@@ -26,6 +27,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
+import { fontSize } from "@mui/system";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "styled-components";
 
 export default function Card({ index, listIndex, data, setTasks }) {
   const ref = useRef();
@@ -34,6 +38,7 @@ export default function Card({ index, listIndex, data, setTasks }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editingData, setEditingData] = useState(null);
   const [open, setOpen] = useState(false);
+  const [commentWindow, setCommentWindow] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
   const [allocatedUser, setAllocatedUser] = useState([]);
   const [rows, setRows] = useState([]);
@@ -189,6 +194,14 @@ const handleClose = () => {
 
   const closeDeleteConfirmationDialog = () => {
     setDeleteConfirmationOpen(false);
+  };
+
+  const commentWindowOpen = () => {
+    setCommentWindow(true);
+  };
+
+  const commentWindowClose = () => {
+    setCommentWindow(false);
   };
 
   function addSucessoGeneral(suc) {
@@ -370,14 +383,61 @@ const fetchProjectMembers = async () => {
   }
 };
 
+const ComentarioTheme = createTheme({
+    pallete:{
+      primary:{
+        main: 'black',
+      },
+      background: {
+        default: 'green',
+      }
+    },
+
+    typography: {
+        fontSize: 16,
+    },
+    shape:{
+      borderRadius: 20,
+    },
+    Overrides: {
+        MuiButton: {
+          root: {
+            textTransform: 'none',
+          },
+        },
+        MuiTextField: {
+          root: {
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 8,
+              borderColor: '#ccc'
+            }
+          }
+        }
+    }
+})
+
+const theme = createTheme({
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: '10px',
+        },
+      },
+    },
+  },
+});
+
+
   return (
     <>
       <Container>
         <>
           <header>
-            <Label style={{marginTop: 30}}color={getStatusTagColor(data.dificuldade)}></Label>
+            <Label style={{marginTop: 30, marginRight: 150}}color={getStatusTagColor(data.dificuldade)}></Label>
             <div className='acoes-card'>
-              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog} />
+              <CommentIcon className="commment-card" onClick={commentWindowOpen} style={{ color: 'blue', fontSize: 22 }} />
+              <DeleteIcon className="delete-card" onClick={openDeleteConfirmationDialog}  />
               <ModeEditIcon className="edit-card" onClick={handleClickOpen}style={{ color: 'blue' }}/>
             </div>
           </header>
@@ -418,7 +478,7 @@ const fetchProjectMembers = async () => {
         </>
       </Container>
       {/* Diálogo de confirmação para edição */}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog classes={{ paper: 'comment-dialog' }} open={open} onClose={handleClose}>
         <DialogTitle>
           <h1 className="titulo">Editar Atividade</h1>
         </DialogTitle>
@@ -538,6 +598,7 @@ const fetchProjectMembers = async () => {
       <Dialog
         open={deleteConfirmationOpen}
         onClose={closeDeleteConfirmationDialog}
+        
       >
         <DialogTitle>Confirmação de Exclusão</DialogTitle>
 
@@ -549,6 +610,62 @@ const fetchProjectMembers = async () => {
           <Buttons onClick={closeDeleteConfirmationDialog}>Cancelar</Buttons>
           <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
         </DialogActions>
+      </Dialog>
+      {/* Diálogo de adição e leitura de comentário */}
+      <Dialog
+      open={commentWindow}
+      onClose={commentWindowClose} 
+      sx={{ width: 500, height: 1000}}
+      >
+          <DialogTitle sx={{
+          display: 'flex',
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          textAlign: 'center',
+          marginLeft: '95px',
+           }}> 
+            <h1 className="titulo" sx={{}}>Comentários</h1>
+            <Box sx={{ width: 30, height: 30, background: '#79a2fe', margin: '5px 0', marginBottom: '5px', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <CloseIcon style={{color: 'white', fontSize: 15}} />
+            </Box>
+          </DialogTitle>
+          <DialogContent sx={{ backgroundColor: '', width: '100%', padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+            <Box sx={{ width: '90%', backgroundColor: '', boxSizing: 'border-box' }}>
+              <form onSubmit={handleEditSubmit}>
+                <Input
+                  id="titulo-kanban"
+                  type="text"
+                  name="titulo"
+                  value={formAtividade.titulo}
+                  onChange={(e) => handleInputChange(e, "titulo")}
+                  label="Digite o título do comentário"
+                  size = 'small'
+                />
+                <Input
+                  id="titulo-kanban"
+                  type="text"
+                  name="titulo"
+                  value={formAtividade.titulo}
+                  onChange={(e) => handleInputChange(e, "titulo")}
+                  label="Insira o comentário"
+                  style={{ borderRadius: '10px', width: '300px'}}
+                  size = 'small'
+                />
+              </form>
+            </Box>
+            <Box sx={{ width: '100%', height: '20%', backgroundColor: '#fbfbfb', margintop: 50, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <h1>teste</h1>
+            </Box>
+          </DialogContent>
+
+          <DialogActions sx={{          
+          display: 'flex',
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          textAlign: 'center',
+          }}>
+            <Buttons sx={{borderRadius: 2, fontSize: 12, backgroundColor: '#407bff'}} type="submit">Comentar</Buttons>
+          </DialogActions>
       </Dialog>
     </>
   );
