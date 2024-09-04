@@ -1,5 +1,7 @@
 package med.voll.api.domain.projeto;
 
+import med.voll.api.domain.enums.Estado;
+
 import java.util.Date;
 
 public record DadosListagemProjeto(Long id, String titulo, Date inicio, Date encerramento, Estado estado, Long gestor) {

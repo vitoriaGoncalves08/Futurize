@@ -1,4 +1,4 @@
-package med.voll.api.domain.projeto;
+package med.voll.api.domain.enums;
 
 public enum Estado {
     CONCLUIDO,
