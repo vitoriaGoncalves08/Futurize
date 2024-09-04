@@ -31,7 +31,7 @@ function Settings() {
             <input className="style-inputs" type="text" placeholder="sobrenome" />
             <input className="style-inputs" type="email" placeholder="email" />
             <input className="style-inputs" type="password" placeholder="senha" />
-            <Buttons>Alterar Senha</Buttons>
+            <Buttons className="alterar-senha">Alterar Senha</Buttons>
           </div>
         </div>
       </div>
