@@ -40,8 +40,13 @@ const Sidebar = ({ children }) => {
         //     icon: <CalendarMonthIcon />
         // },
         {
-            path: "/Dashboard",
-            name: "Dashboard",
+            path: "/MinhaDashboard",
+            name: "Minha Dashboard",
+            icon: <DashboardIcon />
+        },
+        {
+            path: "/DashboardProjeto",
+            name: "Dashboard Projeto",
             icon: <DashboardIcon />
         },
         {

@@ -6,6 +6,7 @@ import Cadastro from '../pages/cadastro';
 import Projeto from '../pages/projeto';
 import Kanban from '../pages/kanban';
 import MinhaDashboard from '../pages/minhadashboard';
+import DashboardProjeto from '../pages/dashboardprojeto';
 import useAuth from '../hooks/useAuth';
 import App from '../Teste';
 import { AuthProvider } from '../context/auth';
@@ -41,10 +42,17 @@ export default function AppRoutes() {
             </PrivateRoute>}
           />
         <Route
-          path="/dashboard" 
+          path="/minhadashboard" 
           element={
             <PrivateRoute>
               <MinhaDashboard />
+            </PrivateRoute>}
+          />
+        <Route
+          path="/dashboardprojeto" 
+          element={
+            <PrivateRoute>
+              <DashboardProjeto />
             </PrivateRoute>}
           />
         </Routes>
