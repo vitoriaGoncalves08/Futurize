@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "farmaco",
+    "slug": "snack-63df61af-c3e1-41da-b1f6-6a8bdd2874dd",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/img/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/img/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#118E96"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/img/adaptive-icon.png",
+        "backgroundColor": "#118E96"
+      },
+      "package": "com.anonymous.snack63df61afc3e141dab1f66a8bdd2874dd"
+    },
+    "web": {
+      "favicon": "./assets/img/favicon.png"
+    }
+  }
+}
