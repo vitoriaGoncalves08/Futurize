@@ -12,10 +12,11 @@ public record DadosAtualizarComentario(
 
     @NotNull
     Long id,
-    String descricaoComentario,
-    Date dataComentario,
-    Usuario usuarioComentario,
-    Atividade atividadeComentada
+    String titulo_comentario,
+    String descricao_comentario,
+    Date data_comentario,
+    Usuario usuario_comentario,
+    Atividade atividade_comentada
 
 ) {
 }

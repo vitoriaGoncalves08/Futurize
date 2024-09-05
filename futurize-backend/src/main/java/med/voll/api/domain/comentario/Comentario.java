@@ -19,37 +19,43 @@ public class Comentario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String descricaoComentario;
+    private String titulo_comentario;
 
-    private Date dataComentario;
+    private String descricao_comentario;
+
+    private Date data_comentario;
 
     @ManyToOne
     @JoinColumn(name = "usuario_caaaomentario")
-    private Usuario usuarioComentario ;
+    private Usuario usuario_comentario ;
 
     @ManyToOne
     @JoinColumn(name = "atividade_comentada")
-    private Atividade atividadeComentada;
+    private Atividade atividade_comentada;
 
     public Comentario(DadosCadastroComentario dadosCadastroComentario){
-        this.descricaoComentario = dadosCadastroComentario.descricaoComentario();
-        this.dataComentario = dadosCadastroComentario.dataComentario();
-        this.usuarioComentario = dadosCadastroComentario.usuarioComentario();
-        this.atividadeComentada = dadosCadastroComentario.atividadeComentada();
+        this.titulo_comentario = dadosCadastroComentario.titulo_comentario();
+        this.descricao_comentario = dadosCadastroComentario.descricao_comentario();
+        this.data_comentario = dadosCadastroComentario.data_comentario();
+        this.usuario_comentario = dadosCadastroComentario.usuario_comentario();
+        this.atividade_comentada = dadosCadastroComentario.atividade_comentada();
     }
 
     public void atualizarComentario(DadosAtualizarComentario dadosAtualizarComentario){
-        if(dadosAtualizarComentario.descricaoComentario() != null){
-            this.descricaoComentario = dadosAtualizarComentario.descricaoComentario();
+        if(dadosAtualizarComentario.titulo_comentario() != null){
+            this.titulo_comentario = dadosAtualizarComentario.titulo_comentario();
         }
-        if(dadosAtualizarComentario.dataComentario() != null){
-            this.dataComentario = dadosAtualizarComentario.dataComentario();
+        if(dadosAtualizarComentario.descricao_comentario() != null){
+            this.descricao_comentario = dadosAtualizarComentario.descricao_comentario();
         }
-        if(dadosAtualizarComentario.usuarioComentario() != null){
-            this.usuarioComentario = dadosAtualizarComentario.usuarioComentario();
+        if(dadosAtualizarComentario.data_comentario() != null){
+            this.data_comentario = dadosAtualizarComentario.data_comentario();
         }
-        if(dadosAtualizarComentario.atividadeComentada() != null){
-            this.atividadeComentada = dadosAtualizarComentario.atividadeComentada();
+        if(dadosAtualizarComentario.usuario_comentario() != null){
+            this.usuario_comentario = dadosAtualizarComentario.usuario_comentario();
+        }
+        if(dadosAtualizarComentario.atividade_comentada() != null){
+            this.atividade_comentada = dadosAtualizarComentario.atividade_comentada();
         }
     }
 }
