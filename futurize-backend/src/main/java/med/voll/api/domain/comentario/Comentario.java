@@ -31,14 +31,14 @@ public class Comentario {
 
     @ManyToOne
     @JoinColumn(name = "atividade_comentada")
-    private Atividade atividade_comentada;
+    private Atividade atividadeComentada;
 
     public Comentario(DadosCadastroComentario dadosCadastroComentario){
         this.titulo_comentario = dadosCadastroComentario.titulo_comentario();
         this.descricao_comentario = dadosCadastroComentario.descricao_comentario();
         this.data_comentario = dadosCadastroComentario.data_comentario();
         this.usuario_comentario = dadosCadastroComentario.usuario_comentario();
-        this.atividade_comentada = dadosCadastroComentario.atividade_comentada();
+        this.atividadeComentada = dadosCadastroComentario.atividadeComentada();
     }
 
     public void atualizarComentario(DadosAtualizarComentario dadosAtualizarComentario){
@@ -54,8 +54,8 @@ public class Comentario {
         if(dadosAtualizarComentario.usuario_comentario() != null){
             this.usuario_comentario = dadosAtualizarComentario.usuario_comentario();
         }
-        if(dadosAtualizarComentario.atividade_comentada() != null){
-            this.atividade_comentada = dadosAtualizarComentario.atividade_comentada();
+        if(dadosAtualizarComentario.atividadeComentada() != null){
+            this.atividadeComentada = dadosAtualizarComentario.atividadeComentada();
         }
     }
 }

@@ -12,18 +12,18 @@ import java.util.Date;
 public record DadosCadastroComentario(
 
         @NotNull
-        String descricao_comentario,
+        String titulo_comentario,
 
         @NotNull
-        String titulo_comentario,
+        String descricao_comentario,
 
         @NotNull
         Date data_comentario,
 
         @NotNull
-       Usuario usuario_comentario,
+        Usuario usuario_comentario,
 
         @NotNull
-        Atividade atividade_comentada
+        Atividade atividadeComentada
 ) {
 }

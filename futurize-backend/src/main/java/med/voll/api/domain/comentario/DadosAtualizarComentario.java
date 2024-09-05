@@ -16,7 +16,7 @@ public record DadosAtualizarComentario(
     String descricao_comentario,
     Date data_comentario,
     Usuario usuario_comentario,
-    Atividade atividade_comentada
+    Atividade atividadeComentada
 
 ) {
 }
