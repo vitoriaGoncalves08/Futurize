@@ -28,7 +28,7 @@ public class AlocacaoAtividade {
     @JoinColumn(name ="id_usuario")
     private Usuario usuario;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "id_atividade")
     private Atividade atividade;
 

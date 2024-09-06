@@ -26,10 +26,10 @@ public class Comentario {
     private Date data_comentario;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_caaaomentario")
+    @JoinColumn(name = "usuario_comentario")
     private Usuario usuario_comentario ;
 
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "atividade_comentada")
     private Atividade atividadeComentada;
 
