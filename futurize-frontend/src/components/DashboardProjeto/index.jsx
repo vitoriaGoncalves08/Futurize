@@ -97,7 +97,7 @@ const DashboardProjeto = () => {
         <>
         <h1 className='title'>Dashboard Projeto</h1>
         <div className="dashboard-container">
-        <div className="main-chart" style={{ width: '600px', height: '600px' }}>
+        <div className="main-chart" style={{ width: '450px', height: '450px' }}>
     <h2>Atividades Concluídas por Projeto</h2>
     <Gauge
         value={75}
@@ -105,7 +105,7 @@ const DashboardProjeto = () => {
         endAngle={110}
         sx={{
             [`& .${gaugeClasses.valueText}`]: {
-                fontSize: 40,
+                fontSize: 30,
             },
         }}
         text={({ value, valueMax }) => `${value} / ${valueMax}`}
