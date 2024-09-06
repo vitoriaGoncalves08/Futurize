@@ -18,20 +18,7 @@ const Dashboard_User = () => {
       due: 'Hoje, 6:20pm',
       completed: false,
     },
-  ]);
-
-  /*const handleTaskCompletion = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
-    setTasks(updatedTasks);
-  };*/
-
- /*const handleTaskCompletion = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
-    setTasks(updatedTasks);
-  };*/
-
+  ])
 const handleGoHome = () => {
     navigation.navigate('Home'); // Navega para a tela "Home"
   };
@@ -45,21 +32,24 @@ const handleGoHome = () => {
         <Text style={styles.title}>Meu Dashboard</Text>
       </View>
       <View style={styles.summaryContainer}>
-        <Text style={styles.summaryText}>Abaixo está um resumo do seu dia.</Text>
         <View style={styles.summaryItemContainer}>
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryItemNumber}>16</Text>
-            <Text style={styles.summaryItemLabel}>Para Fazer</Text>
+            <Text style={styles.summaryItemNumber}>0</Text>
+            <Text style={styles.summaryItemLabel}>Tarefas a Fazer</Text>
           </View>
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryItemNumber}>16</Text>
-            <Text style={styles.summaryItemLabel}>Em trabalho</Text>
+            <Text style={styles.summaryItemNumber}>0</Text>
+            <Text style={styles.summaryItemLabel}>Em andamento</Text>
           </View>
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryItemNumber}>16</Text>
-            <Text style={styles.summaryItemLabel}>Concluídas</Text>
+            <Text style={styles.summaryItemNumber}>0</Text>
+            <Text style={styles.summaryItemLabel}>Feito</Text>
           </View>
+         
+         
         </View>
+
+       
 
       </View>
       <View style={styles.progressContainer}>
@@ -75,26 +65,49 @@ const handleGoHome = () => {
 
 
    <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Atividade Recente</Text>
+        <Text style={styles.sectionTitle}>Minhas Atividades</Text>
         <View style={styles.activityChart}>
           {/* Adicione um gráfico de linha ou gráfico de barras aqui
             usando uma biblioteca de gráficos como 'react-native-chart-kit' */}
         </View>
-        <View style={styles.activityLegend}>
-          <View style={styles.legendItem}>
-            <View style={styles.legendCircle} />
-            <Text style={styles.legendText}>Tarefas</Text>
-          </View>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendCircle, { backgroundColor: '#00C851' }]} />
-            <Text style={styles.legendText}>Concluído</Text>
-          </View>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
-            <Text style={styles.legendText}>Trabalhando</Text>
-          </View>
-        </View>
- </View>
+        <ScrollView horizontal={true} style={styles.activityLegendContainer}>
+    <View style={styles.activityLegend}>
+      <View style={styles.legendItem}>
+        <View style={styles.legendCircle} />
+        <Text style={styles.legendText}>Total de Tarefas</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendCircle, { backgroundColor: '#00C851' }]} />
+        <Text style={styles.legendText}>Feito</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
+        <Text style={styles.legendText}>Em andamento</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
+        <Text style={styles.legendText}>Tarefas a Fazer</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
+        <Text style={styles.legendText}>A Revisar</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
+        <Text style={styles.legendText}>Revisado</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
+        <Text style={styles.legendText}>Refazendo</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
+        <Text style={styles.legendText}>Concluído</Text>
+      </View>
+    </View>
+  </ScrollView>
+</View>
+
 
     </ScrollView>
   );

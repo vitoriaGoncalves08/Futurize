@@ -1,16 +1,11 @@
 {
   "expo": {
-    "name": "farmaco",
+    "name": "futurize-mobile",
     "slug": "snack-63df61af-c3e1-41da-b1f6-6a8bdd2874dd",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/img/icon.png",
+    "icon": "./assets/img/logoProjeto.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/img/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#118E96"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -19,13 +14,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/adaptive-icon.png",
-        "backgroundColor": "#118E96"
-      },
-      "package": "com.anonymous.snack63df61afc3e141dab1f66a8bdd2874dd"
+        "foregroundImage": "./assets/img/logoProjeto.png"
+      }
     },
     "web": {
-      "favicon": "./assets/img/favicon.png"
+      "favicon": "./assets/img/logoProjeto.png"
     }
+ 
+ 
+ 
   }
 }

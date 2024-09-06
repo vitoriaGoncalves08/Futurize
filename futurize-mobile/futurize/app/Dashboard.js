@@ -42,7 +42,7 @@ const handleGoHome = () => {
         <TouchableOpacity onPress={() => navigation.navigate('Home')}> 
           <MaterialCommunityIcons name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>Dashboard</Text>
+        <Text style={styles.title}>Nome do Projeto</Text>
       </View>
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryText}>Abaixo está um resumo do seu dia.</Text>
