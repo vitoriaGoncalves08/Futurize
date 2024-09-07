@@ -7,14 +7,14 @@ import GlobalStyle from '../../public/assets/css/kanban';
 import Header from '../components/Header/Header';
 import Board from '../components/Board';
 import SideBar from '../components/SideBar/SideBar';
-import Dashboard from '../components/Dashboard';
+import MinhaDashboard from '../components/MinhaDashboard';
 
 export default function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Header />
       <SideBar>
-       <Dashboard />
+       <MinhaDashboard />
       </SideBar>
     </DndProvider>
   );
