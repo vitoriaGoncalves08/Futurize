@@ -44,7 +44,7 @@ public class Comentario {
     public void atualizarComentario(DadosAtualizarComentario dadosAtualizarComentario){
         if(dadosAtualizarComentario.titulo_comentario() != null){
             this.titulo_comentario = dadosAtualizarComentario.titulo_comentario();
-        }
+        }   
         if(dadosAtualizarComentario.descricao_comentario() != null){
             this.descricao_comentario = dadosAtualizarComentario.descricao_comentario();
         }
