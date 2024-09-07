@@ -5,33 +5,28 @@ import Buttons from '../Buttons/Buttons';
 
 
 function Settings() {
-  // Estado para armazenar os dados do usuário
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  // Estados para armazenar as informações dos usuários
+  const [userFirstName, setUserFirstName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
 
-  // Função que simula a obtenção dos dados do usuário (substitua com os dados reais)
+  // Recupera os dados do localStorage quando a tela é carregada
   useEffect(() => {
-    // Simulando os dados carregados de uma API ou do localStorage
-    const user = {
-      firstName: "Natália",
-      lastName: "Silva",
-      email: "nataliasilva009@gmail.com",
-      password: "********", // Não é recomendado exibir senhas reais
-    };
-    setUserData(user);
+    const savedUserFirstName = localStorage.getItem('userFirstName');
+    const savedUserEmail = localStorage.getItem('userEmail');
+    const savedUserPassword = localStorage.getItem('userPassword');
+
+    if (savedUserFirstName) setUserFirstName(savedUserFirstName);
+    if (savedUserEmail) setUserEmail(savedUserEmail);
+    if (savedUserPassword) setUserPassword(savedUserPassword);
   }, []);
 
-  // Função para lidar com a mudança nos inputs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  // Função para salvar as informações no localStorage
+  const handleSave = () => {
+    localStorage.setItem('userFirstName', userFirstName);
+    localStorage.setItem('userEmail', userEmail);
+    localStorage.setItem('userPassword', userPassword);
+    alert('Informações salvas com sucesso!');
   };
 
   return (
@@ -46,11 +41,11 @@ function Settings() {
           <div className="user-info">
             <h2 className="h2-user-info">
               {/* Natália Silva */}
-              {userData.firstName} {userData.lastName}
+              {userFirstName}
             </h2>
             <p className="p-user-info">
               {/* nataliasilva009@gmail.com */}
-              {userData.email}
+              {userEmail}
             </p>
           </div>
           <div id="switch">
@@ -70,35 +65,35 @@ function Settings() {
               className="style-inputs"
               type="text"
               name="firstName"
-              placeholder="nome"
-              value={userData.firstName}
-              onChange={handleChange}
+              id="firstName"
+              value={userFirstName}
+              onChange={(e) => setUserFirstName(e.target.value)}
             />
             <input
               className="style-inputs"
               type="text"
               name="lastName"
               placeholder="sobrenome"
-              value={userData.lastName}
-              onChange={handleChange}
+              // value={userData.lastName}
+              // onChange={handleChange}
             />
             <input
               className="style-inputs"
               type="email"
               name="email"
-              placeholder="email"
-              value={userData.email}
-              onChange={handleChange}
+              id="email"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
             <input
               className="style-inputs"
               type="password"
               name="password"
-              placeholder="senha"
-              value={userData.password}
-              onChange={handleChange}
+              id="password"
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
             />
-            <Buttons>Alterar Senha</Buttons>
+            <Buttons onClick={handleSave}>Alterar Senha</Buttons>
           </div>
         </div>
       </div>
