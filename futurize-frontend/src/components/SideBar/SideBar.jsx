@@ -6,6 +6,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
@@ -48,6 +49,11 @@ const Sidebar = ({ children }) => {
             path: "/DashboardProjeto",
             name: "Dashboard Projeto",
             icon: <DashboardIcon />
+        },
+        {
+            path: "/QrcodeLogin",
+            name: "QrcodeLogin",
+            icon: <AppShortcutIcon />
         },
         {
             path: "/Configuracoes",

@@ -7,6 +7,7 @@ import Projeto from '../pages/projeto';
 import Kanban from '../pages/kanban';
 import MinhaDashboard from '../pages/minhadashboard';
 import DashboardProjeto from '../pages/dashboardprojeto';
+import QrcodeLogin from '../pages/qrcode-login';
 import useAuth from '../hooks/useAuth';
 import App from '../Teste';
 import { AuthProvider } from '../context/auth';
@@ -55,6 +56,13 @@ export default function AppRoutes() {
               <DashboardProjeto />
             </PrivateRoute>}
           />
+           <Route
+            path="/qrcodelogin" 
+            element={
+              <PrivateRoute>
+                <QrcodeLogin />
+              </PrivateRoute>}
+            />
         </Routes>
       </AuthProvider>
     </Router>
