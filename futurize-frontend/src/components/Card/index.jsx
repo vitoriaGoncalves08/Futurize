@@ -680,20 +680,18 @@ const theme = createTheme({
                 variant="outlined" 
                 value={formAtividade.titulo}
                 onChange={(e) => handleInputChange(e, "titulo")}
-                sx={{ 
-                  backgroundColor: "#f5f8ff", 
+                sx={{  
                   width: '100%',
-                  marginBottom: 1.5,
+                  marginBottom: 0.5,
                 }} 
               />
-              <TextField 
-                id="outlined-basic" 
-                label="Data"
-                name="titulo"
-                variant="outlined" 
-                value={formAtividade.titulo}
-                onChange={(e) => handleInputChange(e, "titulo")}
-                sx={{ width: '100%', marginBottom: 1.5, backgroundColor: "#f5f8ff",  }} // Adiciona a margem inferior
+              <Input
+                id="data_comentario"
+                type="date"
+                name="data_comentario"
+                value={formAtividade.data_comentario}
+                onChange={(e) => handleInputChange(e, "data_comentario")}
+                label="Digite a data do comentário"
               />
               <TextField
                 id="outlined-multiline-static"
@@ -704,7 +702,7 @@ const theme = createTheme({
                 multiline
                 rows={4}
                 defaultValue=""
-                sx={{ width: '100%', backgroundColor: "#f5f8ff", }}
+                sx={{ width: '100%', marginTop: 0.5, }}
               />
               </form>
             </Box>
