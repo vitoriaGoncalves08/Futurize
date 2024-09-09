@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from "react"; // Import useContext
 
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import TextField from '@mui/material/TextField';
 import { CSS } from "@dnd-kit/utilities";
 import PauseIcon from "@mui/icons-material/Pause";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -10,6 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Buttons from "../Buttons/Buttons";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
+
 import * as Sortable from "@dnd-kit/sortable";
 import { ToastSuccess, ToastError } from "../Alert/Toast";
 import Dialog from "@mui/material/Dialog";
@@ -53,13 +55,77 @@ export default function Card({ index, listIndex, data, setTasks }) {
     return () => clearInterval(intervalId);
   }, []);
 
+
+  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+
+  // Estados para o comentário
+  const [atividade_comentada, setAtividade_comentada] = useState(null); // Use null para objetos
+  const [id_comentario, setIdComentario] = useState(0); // ID como número
+  const [titulo_comentario, setTitulo_comentario] = useState(''); // Título como string
+  const [descricao_comentario, setDescricao_comentario] = useState(''); // Descrição como string
+  const [data_comentario, setData_comentario] = useState(''); // Data como string
+  const [usuario_comentario, setUsuario_comentario] = useState(null); // Usuário como objeto
+
+  // Função para carregar o comentário do backend
+  const comentario = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/Comentario/${data.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        // Imprimindo a resposta do backend no console
+        console.log('Resposta do backend:', response.data);
+
+        // Desestruturando os dados da resposta conforme a estrutura do backend
+        const {
+          id,
+          titulo_comentario,
+          descricao_comentario,
+          data_comentario,
+          usuario_comentario,
+          atividadeComentada
+        } = response.data;
+
+        // Atualizando o estado corretamente
+        setIdComentario(id); // Atualiza o ID do comentário
+        setTitulo_comentario(titulo_comentario); // Atualiza o título do comentário
+        setDescricao_comentario(descricao_comentario); // Atualiza a descrição do comentário
+        setData_comentario(data_comentario); // Atualiza a data do comentário
+        setUsuario_comentario(usuario_comentario); // Atualiza os dados do usuário que comentou
+        setAtividade_comentada(atividadeComentada); // Atualiza a atividade comentada
+
+        // Imprimindo os valores atualizados no console
+        console.log('ID do comentário:', id);
+        console.log('Título do comentário:', titulo_comentario);
+        console.log('Descrição do comentário:', descricao_comentario);
+        console.log('Data do comentário:', data_comentario);
+        console.log('Usuário que comentou:', usuario_comentario);
+        console.log('Atividade comentada:', atividadeComentada);
+      } else {
+        console.error('Erro ao carregar comentário do backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+    }
+  };
+
+  // Executar a função `comentario` dentro de um `useEffect` para carregar o comentário ao montar o componente
+  useEffect(() => {
+    comentario();
+  }, []); // O array vazio garante que o efeito execute apenas uma vez após o primeiro render
+
+
   // Estado para o tempo de execução
   const [horas, setHoras] = useState(0);
   const [minutos, setMinutos] = useState(0);
   const [segundos, setSegundos] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
-  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+  
   
 
   // Função para carregar o tempo de execução do backend
@@ -148,6 +214,8 @@ export default function Card({ index, listIndex, data, setTasks }) {
     const ano = encerramentoDate.getFullYear();
     return `${dia}/${mes}/${ano}`;
   }
+
+
 
   function formatMemberName(name) {
     if (name) {
@@ -383,38 +451,6 @@ const fetchProjectMembers = async () => {
   }
 };
 
-const ComentarioTheme = createTheme({
-    pallete:{
-      primary:{
-        main: 'black',
-      },
-      background: {
-        default: 'green',
-      }
-    },
-
-    typography: {
-        fontSize: 16,
-    },
-    shape:{
-      borderRadius: 20,
-    },
-    Overrides: {
-        MuiButton: {
-          root: {
-            textTransform: 'none',
-          },
-        },
-        MuiTextField: {
-          root: {
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 8,
-              borderColor: '#ccc'
-            }
-          }
-        }
-    }
-})
 
 const theme = createTheme({
   components: {
@@ -625,36 +661,49 @@ const theme = createTheme({
           marginLeft: '95px',
            }}> 
             <h1 className="titulo" sx={{}}>Comentários</h1>
-            <Box sx={{ width: 30, height: 30, background: '#79a2fe', margin: '5px 0', marginBottom: '5px', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Box sx={{ width: 30, height: 30, backgroundColor: '#79a2fe', margin: '5px 0', marginBottom: '5px', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
               <CloseIcon style={{color: 'white', fontSize: 15}} />
             </Box>
           </DialogTitle>
-          <DialogContent sx={{ backgroundColor: '', width: '100%', padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-            <Box sx={{ width: '90%', backgroundColor: '', boxSizing: 'border-box' }}>
-              <form onSubmit={handleEditSubmit}>
-                <Input
-                  id="titulo-kanban"
-                  type="text"
-                  name="titulo"
-                  value={formAtividade.titulo}
-                  onChange={(e) => handleInputChange(e, "titulo")}
-                  label="Digite o título do comentário"
-                  size = 'small'
-                />
-                <Input
-                  id="titulo-kanban"
-                  type="text"
-                  name="titulo"
-                  value={formAtividade.titulo}
-                  onChange={(e) => handleInputChange(e, "titulo")}
-                  label="Insira o comentário"
-                  style={{ borderRadius: '10px', width: '300px'}}
-                  size = 'small'
-                />
+          <DialogContent sx={{ backgroundColor: '', width: '100%', height: 500 , padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+            <Box sx={{ width: '90%', height: 280, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
+              <form onSubmit={handleEditSubmit} style={{height: 260, backgroundColor: ''}}>
+              <TextField 
+                id="outlined-basic" 
+                label="Título"
+                name="titulo"
+                variant="outlined" 
+                value={formAtividade.titulo}
+                onChange={(e) => handleInputChange(e, "titulo")}
+                sx={{ 
+                  backgroundColor: "#f5f8ff", 
+                  width: '100%',
+                  marginBottom: 1.5,
+                }} 
+              />
+              <TextField 
+                id="outlined-basic" 
+                label="Data"
+                name="titulo"
+                variant="outlined" 
+                value={formAtividade.titulo}
+                onChange={(e) => handleInputChange(e, "titulo")}
+                sx={{ width: '100%', marginBottom: 1.5, backgroundColor: "#f5f8ff",  }} // Adiciona a margem inferior
+              />
+              <TextField
+                id="outlined-multiline-static"
+                label="Escreva um comentário"
+                name="comentario"
+                value={formAtividade.comentario}
+                onChange={(e) => handleInputChange(e, "comentario")}
+                multiline
+                rows={4}
+                defaultValue=""
+                sx={{ width: '100%', backgroundColor: "#f5f8ff", }}
+              />
               </form>
             </Box>
-            <Box sx={{ width: '100%', height: '20%', backgroundColor: '#fbfbfb', margintop: 50, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                  <h1>teste</h1>
+            <Box sx={{ width: '100%', backgroundColor: '#fbfbfb', marginTop: 1.5, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             </Box>
           </DialogContent>
 
