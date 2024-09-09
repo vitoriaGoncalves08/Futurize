@@ -310,6 +310,7 @@ const handleClose = () => {
     }
   };
 
+
   const [formAtividade, setFormAtividade] = useState({
     id: '',
     titulo: '',
@@ -634,6 +635,10 @@ const theme = createTheme({
       <Dialog
         open={deleteConfirmationOpen}
         onClose={closeDeleteConfirmationDialog}
+        sx={{
+          display: 'flex', 
+          justifyContent: 'center',
+          alignItems: 'center'}}
         
       >
         <DialogTitle>Confirmação de Exclusão</DialogTitle>
@@ -651,7 +656,7 @@ const theme = createTheme({
       <Dialog
       open={commentWindow}
       onClose={commentWindowClose} 
-      sx={{ width: 500, height: 1000}}
+      sx={{ width: 500, height: 850}}
       >
           <DialogTitle sx={{
           display: 'flex',
@@ -665,7 +670,7 @@ const theme = createTheme({
               <CloseIcon style={{color: 'white', fontSize: 15}} />
             </Box>
           </DialogTitle>
-          <DialogContent sx={{ backgroundColor: '', width: '100%', height: 500 , padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+          <DialogContent sx={{ backgroundColor: '', width: '100%', height: 650 , padding: 0, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
             <Box sx={{ width: '90%', height: 280, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
               <form onSubmit={handleEditSubmit} style={{height: 260, backgroundColor: ''}}>
               <TextField 
@@ -703,7 +708,90 @@ const theme = createTheme({
               />
               </form>
             </Box>
-            <Box sx={{ width: '100%', backgroundColor: '#fbfbfb', marginTop: 1.5, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Box sx={{ 
+              width: '100%', 
+              height: '350px',
+              backgroundColor: '#fbfbfb', 
+              marginTop: 1.5, 
+              display: 'flex', 
+              flexDirection: 'column',  
+              alignItems: 'center',
+              overflowY: 'auto'  // Adiciona o scroll vertical
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                marginTop: '20px',
+                width: '90%', 
+                alignItems: 'center', 
+                flexDirection: 'column',  
+                justifyContent: 'center',
+              }}>
+                <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+                  <div>
+                    <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
+                  </div>
+                  <div style={{ marginLeft: '10px' }}>
+                    <p style={{ fontWeight: 'bold', fontSize: 15}}>Titulo do comentário</p>
+                  </div>
+                </div>
+                
+                <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
+                  <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
+                    <p style={{fontSize: 13, color: '#626366'}}>Conteúdo do comentário aqui</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Repetição do bloco com scroll */}
+              <div style={{ 
+                display: 'flex', 
+                marginTop: '10px',
+                width: '90%', 
+                alignItems: 'center', 
+                flexDirection: 'column',  
+                justifyContent: 'center'
+              }}>
+                <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+                  <div>
+                    <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
+                  </div>
+                  <div style={{ marginLeft: '10px' }}>
+                    <p style={{ fontWeight: 'bold', fontSize: 15}}>Titulo do comentário</p>
+                  </div>
+                </div>
+                
+                <div style={{ marginTop: '10px',  marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
+                  <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px' }}>
+                    <p style={{fontSize: 13, color: '#626366'}}>Conteúdo do comentário aqui</p>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ 
+                display: 'flex', 
+                marginTop: '10px',
+                width: '90%', 
+                alignItems: 'center', 
+                flexDirection: 'column',  
+                justifyContent: 'center',
+              }}>
+                <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+                  <div>
+                    <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
+                  </div>
+                  <div style={{ marginLeft: '10px' }}>
+                    <p style={{ fontWeight: 'bold', fontSize: 15}}>Titulo do comentário</p>
+                  </div>
+                </div>
+                
+                <div style={{ marginTop: '10px',  marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
+                  <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
+                    <p style={{fontSize: 13, color: '#626366'}}>Conteúdo do comentário aqui</p>
+                  </div>
+                </div>
+              </div>
+
+              
             </Box>
           </DialogContent>
 
