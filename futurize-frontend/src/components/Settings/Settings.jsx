@@ -12,10 +12,12 @@ function Settings() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT; // Obtém o token de autenticação
 
+  // Função para buscar os dados do usuário logado
   useEffect(() => {
-    // Função para buscar os dados do usuário logado
     const fetchUserData = async () => {
       try {
         if (!token) {
@@ -49,6 +51,41 @@ function Settings() {
 
     fetchUserData(); // Chama a função para buscar os dados do usuário ao carregar a página
   }, [usuarioLogadoId, token]);
+
+  // Função para salvar as alterações dos dados do usuário
+  const handleUpdateUser = async () => {
+    try {
+      if (!token) {
+        console.error("Token JWT não encontrado no localStorage.");
+        return;
+      }
+
+      // Faz a requisição para atualizar os dados do usuário
+      const response = await axios.put(
+        `http://localhost:8080/Usuario/${usuarioLogadoId}`, // Endpoint para atualizar o usuário
+        {
+          nome,
+          email,
+          senha,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setSuccessMessage("Dados alterados com sucesso!"); // Mensagem de sucesso
+      } else {
+        setErrorMessage("Erro ao alterar os dados do usuário.");
+      }
+    } catch (error) {
+      setErrorMessage("Erro ao conectar-se ao backend."); // Mensagem de erro
+      console.error("Erro ao conectar-se ao backend:", error);
+    }
+  };
 
   return (
     <div className="container">
@@ -93,8 +130,10 @@ function Settings() {
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
             />
-            <Buttons>Alterar Senha</Buttons>
+            <Buttons onClick={handleUpdateUser}>Alterar Dados</Buttons>
           </div>
+          {successMessage && <p className="success-message">{successMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
       </div>
     </div>
