@@ -10,6 +10,7 @@ import Dashboard from './app/Dashboard';
 import axios from 'axios';
 import PerfilSettings from './app/PerfilSettings';
 import Dashboard_User from './app/Dashboard_User';
+import Tarefas from './app/Tarefas';
 
 const api = axios.create({
   baseURL: 'http://192.168.56.1:5173/api', // replace with your API URL
@@ -59,6 +60,11 @@ export default function App() {
         <Stack.Screen
           name="Dashboard_User"
           component={Dashboard_User}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Tarefas"
+          component={Tarefas}
           options={{ headerShown: false }}
         />
      

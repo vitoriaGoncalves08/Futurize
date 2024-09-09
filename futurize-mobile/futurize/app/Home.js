@@ -40,7 +40,7 @@ const Home = ({ navigation }) => {
       </View>
 
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={() => navigation.navigate("Tarefas")}>
           <Text style={styles.buttonText}>Para Fazer</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
