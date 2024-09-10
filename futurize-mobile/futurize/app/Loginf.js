@@ -63,9 +63,7 @@ const Loginf = () => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <View style={styles.accountContainer}>
-        <Text style={styles.accountText}>Não tem uma conta?</Text>
-      </View>
+      
       <TouchableOpacity onPress={() => navigation.navigate("RecuperarSenha")}>
         <Text style={styles.forgotPassword}>
           Esqueceu sua senha? Redefinir agora
