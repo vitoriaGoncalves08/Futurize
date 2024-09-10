@@ -33,7 +33,9 @@ import { fontSize } from "@mui/system";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "styled-components";
 
-export default function Card({ index, listIndex, data, setTasks }) {
+export default function Card({ index, listIndex, data, setTasks, comentarios, setComentarios }) {
+  console.log('Lista comentario:', comentario);
+
   const ref = useRef();
   const { projectId } = useParams();
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -46,7 +48,6 @@ export default function Card({ index, listIndex, data, setTasks }) {
   const [rows, setRows] = useState([]);
   const [editedResponsavel, setEditedResponsavel] = useState('');
   const [totalCards, setTotalCards] = useState(0);
-  const [comentarios, setComentarios] = useState([]);
 
   useEffect(() => {
     // Certifique-se de que a busca de membros alocados seja acionada quando necessário
@@ -57,11 +58,56 @@ export default function Card({ index, listIndex, data, setTasks }) {
   }, []);
 
 
+  const [formComment, setFormComment] = useState({
+    id: 1,
+    titulo_comentario: '',
+    descricao_comentario: '',
+    data_comentario: '',
+    usuario_comentario: {
+      id: '',
+    },
+    atividade_comentada: {
+      id: '',
+    }
+  });
+
+  const handleInputChangeComment = (e, field) => {
+    setFormComment({
+      ...formComment,
+      [field]: e.target.value,
+    });
+  };
+
+  const [forceRender, setForceRender] = useState(false);
+  useEffect(() => {
+    console.log('Comments in List updated:', comments);
+  }, [comments, forceRender]);
+  
+  useEffect(() => {
+    setForceRender(prev => !prev);  // Forçar uma nova renderização
+  }, [comments]);
+
+  function addSucesso(success) {
+    ToastSuccess({
+      text: success,
+      title: 'Sucesso!!',
+    });
+    setOpen(false);
+  }
+
+  function addError(error) {
+    ToastError({
+      text: error,
+      title: 'Error!!',
+    });
+  }
+
+
   const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
 
   // Função para carregar o comentário do backend
-  const comentario = async () => {
+  const fetchComentario = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/Comentario/${data.id}`, {
         headers: {
@@ -85,8 +131,62 @@ export default function Card({ index, listIndex, data, setTasks }) {
 
   // Executar a função `comentario` dentro de um `useEffect` para carregar o comentário ao montar o componente
   useEffect(() => {
-    comentario();
+    fetchComentario();
   }, []); // O array vazio garante que o efeito execute apenas uma vez após o primeiro render
+
+
+  const handleCreateComment = async (e) => {
+    e.preventDefault();
+  
+    const {
+      id,
+      titulo_comentario,
+      descricao_comentario,
+      data_comentario,
+      usuario_comentario,
+      atividade_comentada,
+    } = formComment;
+  
+    const data_comentarioDate = new Date(formComment.data_comentario);
+    const formattedDate = `${data_comentarioDate.getFullYear()}-${(data_comentarioDate.getMonth() + 1).toString().padStart(2, '0')}-${data_comentarioDate.getDate().toString().padStart(2, '0')}`;
+  
+    const activityData = {
+      id: id,
+      titulo_comentario: titulo_comentario,
+      descricao_comentario: descricao_comentario,
+      data_comentario: formattedDate,
+      usuario_comentario: {},
+      atividade_comentada: {id:data.id}
+
+    };
+  
+    try {
+      console.log('atividade', activityData);
+      const response = await axios.post(
+        `http://localhost:8080/Comentario`,
+        activityData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        // Depois de criar a tarefa, faça a requisição para buscar as tarefas atualizadas
+        await fetchComentario();
+        handleClose();
+        console.log('Comentario adicionado com sucesso');
+        addSucesso('Comentario adicionado com sucesso');
+      } else {
+        console.error('Erro ao adicionar o comentário');
+        addError('Erro ao adicionar o comentário');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+      addError('Erro ao conectar-se ao backend');
+    }
+  };
 
 
   // Estado para o tempo de execução
@@ -94,10 +194,7 @@ export default function Card({ index, listIndex, data, setTasks }) {
   const [minutos, setMinutos] = useState(0);
   const [segundos, setSegundos] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-
   
-  
-
   // Função para carregar o tempo de execução do backend
   const loadExecutionTime = async () => {
     try {
@@ -642,38 +739,38 @@ const theme = createTheme({
           </DialogTitle>
           <DialogContent sx={{ backgroundColor: '', width: '100%', height: 650 , padding: 0, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
             <Box sx={{ width: '90%', height: 280, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
-              <form onSubmit={handleEditSubmit} style={{height: 260, backgroundColor: ''}}>
-              <TextField 
-                id="outlined-basic" 
-                label="Título"
-                name="titulo"
-                variant="outlined" 
-                value={formAtividade.titulo}
-                onChange={(e) => handleInputChange(e, "titulo")}
-                sx={{  
-                  width: '100%',
-                  marginBottom: 0.5,
-                }} 
-              />
-              <Input
-                id="data_comentario"
-                type="date"
-                name="data_comentario"
-                value={formAtividade.data_comentario}
-                onChange={(e) => handleInputChange(e, "data_comentario")}
-                label="Digite a data do comentário"
-              />
-              <TextField
-                id="outlined-multiline-static"
-                label="Escreva um comentário"
-                name="comentario"
-                value={formAtividade.comentario}
-                onChange={(e) => handleInputChange(e, "comentario")}
-                multiline
-                rows={4}
-                defaultValue=""
-                sx={{ width: '100%', marginTop: 0.5, }}
-              />
+              <form onSubmit={handleCreateComment} style={{height: 260, backgroundColor: ''}}>
+                <TextField 
+                  id="outlined-basic" 
+                  label="Título"
+                  name="titulo_comentario"
+                  variant="outlined" 
+                  value={formComment.titulo_comentario}
+                  onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
+                  sx={{  
+                    width: '100%',
+                    marginBottom: 0.5,
+                  }} 
+                />
+                <Input
+                  id="data_comentario"
+                  type="date"
+                  name="data_comentario"
+                  value={formAtividade.data_comentario}
+                  onChange={(e) => handleInputChangeComment(e, "data_comentario")}
+                  label="Digite a data do comentário"
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Escreva um comentário"
+                  name="descricao_comentario"
+                  value={formComment.descricao_comentario}
+                  onChange={(e) => handleInputChangeComment(e, "descricao_comentario")}
+                  multiline
+                  rows={4}
+                  defaultValue=""
+                  sx={{ width: '100%', marginTop: 0.5, }}
+                />
               </form>
             </Box>
             <Box sx={{ 
