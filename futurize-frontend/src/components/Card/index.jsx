@@ -46,6 +46,7 @@ export default function Card({ index, listIndex, data, setTasks }) {
   const [rows, setRows] = useState([]);
   const [editedResponsavel, setEditedResponsavel] = useState('');
   const [totalCards, setTotalCards] = useState(0);
+  const [comentarios, setComentarios] = useState([]);
 
   useEffect(() => {
     // Certifique-se de que a busca de membros alocados seja acionada quando necessário
@@ -58,13 +59,6 @@ export default function Card({ index, listIndex, data, setTasks }) {
 
   const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
 
-  // Estados para o comentário
-  const [atividade_comentada, setAtividade_comentada] = useState(null); // Use null para objetos
-  const [id_comentario, setIdComentario] = useState(0); // ID como número
-  const [titulo_comentario, setTitulo_comentario] = useState(''); // Título como string
-  const [descricao_comentario, setDescricao_comentario] = useState(''); // Descrição como string
-  const [data_comentario, setData_comentario] = useState(''); // Data como string
-  const [usuario_comentario, setUsuario_comentario] = useState(null); // Usuário como objeto
 
   // Função para carregar o comentário do backend
   const comentario = async () => {
@@ -75,36 +69,12 @@ export default function Card({ index, listIndex, data, setTasks }) {
           'Content-Type': 'application/json',
         },
       });
-
+  
       if (response.status === 200) {
-        // Imprimindo a resposta do backend no console
         console.log('Resposta do backend:', response.data);
-
-        // Desestruturando os dados da resposta conforme a estrutura do backend
-        const {
-          id,
-          titulo_comentario,
-          descricao_comentario,
-          data_comentario,
-          usuario_comentario,
-          atividadeComentada
-        } = response.data;
-
-        // Atualizando o estado corretamente
-        setIdComentario(id); // Atualiza o ID do comentário
-        setTitulo_comentario(titulo_comentario); // Atualiza o título do comentário
-        setDescricao_comentario(descricao_comentario); // Atualiza a descrição do comentário
-        setData_comentario(data_comentario); // Atualiza a data do comentário
-        setUsuario_comentario(usuario_comentario); // Atualiza os dados do usuário que comentou
-        setAtividade_comentada(atividadeComentada); // Atualiza a atividade comentada
-
-        // Imprimindo os valores atualizados no console
-        console.log('ID do comentário:', id);
-        console.log('Título do comentário:', titulo_comentario);
-        console.log('Descrição do comentário:', descricao_comentario);
-        console.log('Data do comentário:', data_comentario);
-        console.log('Usuário que comentou:', usuario_comentario);
-        console.log('Atividade comentada:', atividadeComentada);
+  
+        // Aqui você vai salvar os comentários no estado
+        setComentarios(response.data);
       } else {
         console.error('Erro ao carregar comentário do backend.');
       }
@@ -716,81 +686,33 @@ const theme = createTheme({
               alignItems: 'center',
               overflowY: 'auto'  // Adiciona o scroll vertical
             }}>
-              <div style={{ 
-                display: 'flex', 
-                marginTop: '20px',
-                width: '90%', 
-                alignItems: 'center', 
-                flexDirection: 'column',  
-                justifyContent: 'center',
-              }}>
-                <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
-                  <div>
-                    <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
+              {comentarios.map((comentario, index) => (
+                <div key={index} style={{ 
+                  display: 'flex', 
+                  marginTop: '20px',
+                  width: '90%', 
+                  alignItems: 'center', 
+                  flexDirection: 'column',  
+                  justifyContent: 'center',
+                }}>
+                  <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+                    <div>
+                      <Avatar>{formatMemberName(comentario.usuario_comentario.nome)}</Avatar>
+                    </div>
+                    <div style={{ marginLeft: '10px' }}>
+                      <p style={{ fontWeight: 'bold', fontSize: 15}}>{comentario.titulo_comentario}</p>
+                    </div>
                   </div>
-                  <div style={{ marginLeft: '10px' }}>
-                    <p style={{ fontWeight: 'bold', fontSize: 15}}>Titulo do comentário</p>
-                  </div>
-                </div>
-                
-                <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
-                  <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
-                    <p style={{fontSize: 13, color: '#626366'}}>Conteúdo do comentário aqui</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Repetição do bloco com scroll */}
-              <div style={{ 
-                display: 'flex', 
-                marginTop: '10px',
-                width: '90%', 
-                alignItems: 'center', 
-                flexDirection: 'column',  
-                justifyContent: 'center'
-              }}>
-                <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
-                  <div>
-                    <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
-                  </div>
-                  <div style={{ marginLeft: '10px' }}>
-                    <p style={{ fontWeight: 'bold', fontSize: 15}}>Titulo do comentário</p>
+                  
+                  <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
+                    <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
+                      <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
+                    </div>
                   </div>
                 </div>
-                
-                <div style={{ marginTop: '10px',  marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
-                  <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px' }}>
-                    <p style={{fontSize: 13, color: '#626366'}}>Conteúdo do comentário aqui</p>
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ 
-                display: 'flex', 
-                marginTop: '10px',
-                width: '90%', 
-                alignItems: 'center', 
-                flexDirection: 'column',  
-                justifyContent: 'center',
-              }}>
-                <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
-                  <div>
-                    <Avatar>{formatMemberName(data.responsavel.nome)}</Avatar>
-                  </div>
-                  <div style={{ marginLeft: '10px' }}>
-                    <p style={{ fontWeight: 'bold', fontSize: 15}}>Titulo do comentário</p>
-                  </div>
-                </div>
-                
-                <div style={{ marginTop: '10px',  marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
-                  <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
-                    <p style={{fontSize: 13, color: '#626366'}}>Conteúdo do comentário aqui</p>
-                  </div>
-                </div>
-              </div>
-
-              
+              ))}
             </Box>
+
           </DialogContent>
 
           <DialogActions sx={{          
