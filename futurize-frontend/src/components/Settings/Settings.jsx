@@ -37,10 +37,10 @@ function Settings() {
         );
 
         if (response.status === 200) {
-          const { nome, email, senha } = response.data; // Desestrutura os dados do usuário
+          const { nome, email } = response.data;
           setNome(nome); // Define o nome no state
           setEmail(email); // Define o email no state
-          setSenha(senha); // Define a senha no state
+          // senha geralmente não é retornada por questões de segurança
         } else {
           console.error("Erro ao buscar dados do usuário.");
         }
@@ -64,6 +64,7 @@ function Settings() {
       const response = await axios.put(
         `http://localhost:8080/Usuario/${usuarioLogadoId}`, // Endpoint para atualizar o usuário
         {
+          id: usuarioLogadoId, // Usar o id do usuário logado
           nome,
           email,
           senha,
