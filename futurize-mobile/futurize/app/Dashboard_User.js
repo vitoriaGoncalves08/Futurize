@@ -5,6 +5,17 @@ import { useNavigation } from '@react-navigation/native';
 
 const Dashboard_User = () => {
   const navigation = useNavigation();
+  
+  // Removido o estado e dados dos projetos e modal
+  // const [projects, setProjects] = useState([
+  //   { id: '1', name: 'Projeto A' },
+  //   { id: '2', name: 'Projeto B' },
+  //   { id: '3', name: 'Projeto C' },
+  // ]);
+  // const [selectedProject, setSelectedProject] = useState(projects[0]);
+  // const [modalVisible, setModalVisible] = useState(false);
+
+  // Mantendo os dados das tarefas
   const [tasks, setTasks] = useState([
     {
       type: 'Tarefa',
@@ -18,19 +29,40 @@ const Dashboard_User = () => {
       due: 'Hoje, 6:20pm',
       completed: false,
     },
-  ])
-const handleGoHome = () => {
+  ]);
+
+  // Dados fixos para os gráficos
+  const [barData, setBarData] = useState([
+    { label: 'Jan', value: 10, color: 'red' },
+    { label: 'Feb', value: 20, color: 'blue' },
+    { label: 'Mar', value: 15, color: 'green' },
+    { label: 'Apr', value: 30, color: 'orange' },
+    { label: 'May', value: 25, color: 'purple' },
+  ]);
+
+  const [activityData, setActivityData] = useState([
+    { label: 'Tarefas', value: 16, color: '#007BFF' },
+    { label: 'Concluído', value: 12, color: '#00C851' },
+    { label: 'Trabalhando', value: 8, color: '#FFC107' },
+  ]);
+
+  const handleGoHome = () => {
     navigation.navigate('Home'); // Navega para a tela "Home"
   };
+
+  // Encontrar o valor máximo para normalizar as barras
+  const maxBarValue = Math.max(...barData.map(item => item.value));
+  const maxActivityValue = Math.max(...activityData.map(item => item.value));
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}> 
+        <TouchableOpacity onPress={handleGoHome}> 
           <MaterialCommunityIcons name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>Meu Dashboard</Text>
+        <Text style={styles.title}>VISÃO GERAL DOS SEUS PROJETOS</Text>
       </View>
+
       <View style={styles.summaryContainer}>
         <View style={styles.summaryItemContainer}>
           <View style={styles.summaryItem}>
@@ -45,13 +77,9 @@ const handleGoHome = () => {
             <Text style={styles.summaryItemNumber}>0</Text>
             <Text style={styles.summaryItemLabel}>Feito</Text>
           </View>
-         
-         
         </View>
-
-       
-
       </View>
+
       <View style={styles.progressContainer}>
         <Text style={styles.progressTitle}>Progresso Atual</Text>
         <View style={styles.progressItems}>
@@ -61,54 +89,63 @@ const handleGoHome = () => {
           <Text style={styles.progressItemLabel}>Tarefas à concluir</Text>
         </View>
       </View>
-   
 
-
-   <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Minhas Atividades</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>ATIVIDADE RECENTE</Text>
         <View style={styles.activityChart}>
-          {/* Adicione um gráfico de linha ou gráfico de barras aqui
-            usando uma biblioteca de gráficos como 'react-native-chart-kit' */}
+          {activityData.map((item, index) => (
+            <View key={index} style={[styles.activityBar, { height: `${(item.value / maxActivityValue) * 100}%`, backgroundColor: item.color || 'blue' }]}>
+              <Text style={styles.activityLabel}>{item.label}</Text>
+            </View>
+          ))}
         </View>
         <ScrollView horizontal={true} style={styles.activityLegendContainer}>
-    <View style={styles.activityLegend}>
-      <View style={styles.legendItem}>
-        <View style={styles.legendCircle} />
-        <Text style={styles.legendText}>Total de Tarefas</Text>
+          <View style={styles.activityLegend}>
+            {activityData.map((item, index) => (
+              <View key={index} style={styles.legendItem}>
+                <View style={[styles.legendCircle, { backgroundColor: item.color }]} />
+                <Text style={styles.legendText}>{item.label}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
-      <View style={styles.legendItem}>
-        <View style={[styles.legendCircle, { backgroundColor: '#00C851' }]} />
-        <Text style={styles.legendText}>Feito</Text>
-      </View>
-      <View style={styles.legendItem}>
-        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
-        <Text style={styles.legendText}>Em andamento</Text>
-      </View>
-      <View style={styles.legendItem}>
-        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
-        <Text style={styles.legendText}>Tarefas a Fazer</Text>
-      </View>
-      <View style={styles.legendItem}>
-        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
-        <Text style={styles.legendText}>A Revisar</Text>
-      </View>
-      <View style={styles.legendItem}>
-        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
-        <Text style={styles.legendText}>Revisado</Text>
-      </View>
-      <View style={styles.legendItem}>
-        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
-        <Text style={styles.legendText}>Refazendo</Text>
-      </View>
-      <View style={styles.legendItem}>
-        <View style={[styles.legendCircle, { backgroundColor: '#FFC107' }]} />
-        <Text style={styles.legendText}>Concluído</Text>
-      </View>
-    </View>
-  </ScrollView>
-</View>
 
+      <View style={styles.barChartContainer}>
+        <Text style={styles.sectionTitle}>ATIVIDADES CONCLUÍDAS POR PROJETO</Text>
+        <View style={styles.barChart}>
+          {barData.map((item, index) => (
+            <View key={index} style={styles.barContainer}>
+              <View
+                style={[
+                  styles.bar,
+                  {
+                    height: `${(item.value / maxBarValue) * 100}%`,
+                    backgroundColor: item.color || 'blue',
+                  },
+                ]}
+              />
+              <Text style={styles.barLabel}>{item.label}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
 
+      <View style={styles.tasksContainer}>
+        <Text style={styles.tasksTitle}>TAREFAS EM REVISÃO</Text>
+        {tasks.map((task, index) => (
+          <View key={index} style={styles.taskItem}>
+            <View style={styles.taskDetails}>
+              <Text style={styles.taskType}>{task.type}</Text>
+              <Text style={styles.taskDescription}>{task.description}</Text>
+              <Text style={styles.taskDue}>{task.due}</Text>
+            </View>
+            <View style={styles.taskStatus}>
+              <Text style={styles.taskStatusText}>{task.completed ? 'Concluída' : 'Pendente'}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
     </ScrollView>
   );
 };
@@ -133,10 +170,6 @@ const styles = StyleSheet.create({
   summaryContainer: {
     padding: 16,
     backgroundColor: '#fff',
-    marginBottom: 16,
-  },
-  summaryText: {
-    fontSize: 16,
     marginBottom: 16,
   },
   summaryItemContainer: {
@@ -186,11 +219,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  tasksSubtitle: {
-    fontSize: 14,
-    marginBottom: 16,
-  },
-
   taskItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -228,7 +256,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 8,
   },
-section: {
+  section: {
     marginBottom: 20,
     backgroundColor: '#fff',
     padding: 15,
@@ -238,10 +266,23 @@ section: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-  }, 
+  },
   activityChart: {
     height: 200,
-    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+  },
+  activityBar: {
+    width: 40,
+    alignItems: 'center',
+  },
+  activityLabel: {
+    marginTop: 5,
+    fontSize: 12,
+  },
+  activityLegendContainer: {
+    marginTop: 10,
   },
   activityLegend: {
     flexDirection: 'row',
@@ -255,15 +296,36 @@ section: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#007BFF',
     marginRight: 5,
   },
   legendText: {
     fontSize: 12,
     color: '#666',
-
   },
-
+  barChartContainer: {
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 8,
+  },
+  barChart: {
+    height: 200,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+  },
+  barContainer: {
+    alignItems: 'center',
+    width: 40,
+  },
+  bar: {
+    width: '100%',
+  },
+  barLabel: {
+    marginTop: 5,
+    fontSize: 12,
+  },
+  // Removido o estilo do modal
 });
 
 export default Dashboard_User;
