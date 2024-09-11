@@ -33,8 +33,7 @@ import { fontSize } from "@mui/system";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "styled-components";
 
-export default function Card({ index, listIndex, data, setTasks, comentarios, setComentarios }) {
-  console.log('Lista comentario:', comentario);
+export default function Card({ index, listIndex, data, setTasks}) {
 
   const ref = useRef();
   const { projectId } = useParams();
@@ -48,6 +47,7 @@ export default function Card({ index, listIndex, data, setTasks, comentarios, se
   const [rows, setRows] = useState([]);
   const [editedResponsavel, setEditedResponsavel] = useState('');
   const [totalCards, setTotalCards] = useState(0);
+  const [comentarios, setComentarios] = useState([]);
 
   useEffect(() => {
     // Certifique-se de que a busca de membros alocados seja acionada quando necessário
@@ -80,12 +80,12 @@ export default function Card({ index, listIndex, data, setTasks, comentarios, se
 
   const [forceRender, setForceRender] = useState(false);
   useEffect(() => {
-    console.log('Comments in List updated:', comments);
-  }, [comments, forceRender]);
+    console.log('comentarios in List updated:', comentarios);
+  }, [comentarios, forceRender]);
   
   useEffect(() => {
     setForceRender(prev => !prev);  // Forçar uma nova renderização
-  }, [comments]);
+  }, [comentarios]);
 
   function addSucesso(success) {
     ToastSuccess({
