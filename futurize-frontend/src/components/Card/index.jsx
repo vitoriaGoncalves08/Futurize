@@ -39,10 +39,12 @@ export default function Card({ index, listIndex, data, setTasks}) {
   const ref = useRef();
   const { projectId } = useParams();
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [deleteConfirmationCommentOpen, setDeleteConfirmationCommentOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingData, setEditingData] = useState(null);
   const [open, setOpen] = useState(false);
   const [commentWindow, setCommentWindow] = useState(false);
+  const [commentEditWindow, setCommentEditWindow] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
   const [allocatedUser, setAllocatedUser] = useState([]);
   const [rows, setRows] = useState([]);
@@ -81,6 +83,12 @@ export default function Card({ index, listIndex, data, setTasks}) {
       [field]: e.target.value,
     });
   };
+
+  const handleClickCommentOpen = () => {
+    setOpen(true);
+    openEditActivity(data);
+    console.log('Open Edit Comment');
+}
 
   const [forceRender, setForceRender] = useState(false);
   useEffect(() => {
@@ -193,6 +201,16 @@ export default function Card({ index, listIndex, data, setTasks}) {
   };
 
 
+  const openEditActivity = (activity) => {
+    setFormAtividade({
+      id: activity.id,
+      titulo_comentario: activity.titulo,
+      data_comentario: format(new Date(activity.data_comentario), 'dd-MM-yyyy'),
+      descricao_comentario: activity.descricao,
+    });
+    setOpen(true);
+  };
+
   // Estado para o tempo de execução
   const [horas, setHoras] = useState(0);
   const [minutos, setMinutos] = useState(0);
@@ -287,7 +305,6 @@ export default function Card({ index, listIndex, data, setTasks}) {
   }
 
 
-
   function formatMemberName(name) {
     if (name) {
       const names = name.split(" ");
@@ -322,6 +339,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
     console.log('Open Edit Dialog');  // Adicione log para depuração
   };
 
+
 const handleClose = () => {
   setOpen(false);
   console.log('Close Edit Dialog');  // Adicione log para depuração
@@ -333,6 +351,23 @@ const handleClose = () => {
 
   const closeDeleteConfirmationDialog = () => {
     setDeleteConfirmationOpen(false);
+  };
+
+  const openCommentDeleteConfirmationDialog = () => {
+    setDeleteConfirmationCommentOpen(true);
+  };
+
+  const closeCommentDeleteConfirmationDialog = () => {
+    setDeleteConfirmationCommentOpen(false);
+  };
+
+
+  const commentEditWindowOpen = () => {
+    setCommentEditWindow(true);
+  };
+
+  const commentEditWindowClose = () => {
+    setCommentEditWindow(false);
   };
 
   const commentWindowOpen = () => {
@@ -464,26 +499,9 @@ const handleClose = () => {
       console.error('Erro ao conectar-se ao backend:', error);
       addError('Erro ao conectar-se ao backend: ' + error.message);
     }
-};
-
-  const openEditActivity = (activity) => {
-    setFormAtividade({
-      id: activity.id,
-      titulo: activity.titulo,
-      descricao: activity.descricao,
-      inicio: format(new Date(activity.inicio), 'dd-MM-yyyy'),
-      encerramento: format(new Date(activity.encerramento), 'dd-MM-yyyy'),
-      estado: activity.estado,
-      dificuldade: activity.dificuldade,
-      prioridade: activity.prioridade,
-      tempo_execucao: activity.tempo_execucao,
-      projeto: activity.projeto,
-      responsavel: { id: activity.responsavel.id },
-    });
-    setEditedResponsavel(activity.responsavel.id);
-    setSelectedUser(activity.responsavel.id);
-    setOpen(true);
   };
+
+
 
   const handleInputChange = (e, field) => {
   if (field === 'responsavel') {
@@ -499,7 +517,7 @@ const handleClose = () => {
     });
   }
   console.log('Field changed:', field, 'Value:', e.target.value);  // Adicione log para depuração
-};
+ };
 
 
 const fetchProjectMembers = async () => {
@@ -829,36 +847,147 @@ const theme = createTheme({
                 </div>
               ) : (
                 comentarios.map((comentario, index) => (
-                  <div key={index} style={{ 
+                  comentario.usuario_comentario.id === usuarioLogadoId ? (
+                    <div key={index} style={{ 
+                      display: 'flex', 
+                      marginTop: '20px',
+                      width: '90%', 
+                      alignItems: 'center', 
+                      flexDirection: 'column',  
+                      justifyContent: 'center',
+                    }}>
+                      <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+                        <div>
+                          <Avatar>{formatMemberName(comentario.usuario_comentario.nome)}</Avatar>
+                        </div>
+                        <div style={{ marginLeft: '10px' }}>
+                          <p style={{ fontWeight: 'bold', fontSize: 15}}>{comentario.titulo_comentario}</p>
+                        </div>
+                      </div>
+                      
+                      <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', width: '100%' }}> 
+                        <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
+                          <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
+                        </div>
+                        <div  style={{width: '90%', display: 'flex', justifyContent: 'flex-end', marginTop: '3px', paddingRight: '7px'}}>
+                          <DeleteIcon className="delete-card" onClick={openCommentDeleteConfirmationDialog}  style={{ fontSize: '20px', marginRight: '3px', color: "#8d8e8e" }}  />
+                          <ModeEditIcon className="edit-card" onClick={commentEditWindowOpen} style={{ fontSize: '20px', color: '#8d8e8e' }}/>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div key={index} style={{ 
                     display: 'flex', 
                     marginTop: '20px',
                     width: '90%', 
                     alignItems: 'center', 
                     flexDirection: 'column',  
                     justifyContent: 'center',
-                  }}>
-                    <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
-                      <div>
-                        <Avatar>{formatMemberName(comentario.usuario_comentario.nome)}</Avatar>
+                    }}>
+                      <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+                        <div>
+                          <Avatar>{formatMemberName(comentario.usuario_comentario.nome)}</Avatar>
+                        </div>
+                        <div style={{ marginLeft: '10px' }}>
+                          <p style={{ fontWeight: 'bold', fontSize: 15}}>{comentario.titulo_comentario}</p>
+                        </div>
                       </div>
-                      <div style={{ marginLeft: '10px' }}>
-                        <p style={{ fontWeight: 'bold', fontSize: 15}}>{comentario.titulo_comentario}</p>
+                      
+                      <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
+                        <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
+                          <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
+                        </div>
                       </div>
                     </div>
-                    
-                    <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
-                      <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
-                        <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
-                      </div>
-                    </div>
-                  </div>
+                  )  
                 ))
               )}
             </Box>
-
           </DialogContent>
+      </Dialog>
+      {/* Diálogo de confirmação para edição do comentário */}
+      <Dialog classes={{ paper: 'comment-dialog' }} open={commentEditWindow} onClose={commentEditWindowClose}>
+        <DialogTitle>
+          <h1 className="titulo">Editar Atividade</h1>
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={closeCommentDeleteConfirmationDialog}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
 
-         
+        </IconButton>
+        {/* Diálog de edição da atividade */}
+        <DialogContent>
+          <form onSubmit={handleEditSubmit}>
+            <Input
+              id="titulo-kanban"
+              type="text"
+              name="titulo"
+              value={formAtividade.titulo}
+              onChange={(e) => handleInputChange(e, "titulo")}
+              label="Digite seu titulo"
+            />
+            <Input
+              id="encerramento-kanban"
+              type="date"
+              name="encerramento"
+              value={formAtividade.encerramento}
+              onChange={(e) => handleInputChange(e, "encerramento")}
+              label="Digite a data de encerramento"
+            />
+            <TextField
+              id="outlined-multiline-static"
+              label="Escreva um comentário"
+              name="descricao_comentario"
+              value={formComment.descricao_comentario}
+              onChange={(e) => handleInputChangeComment(e, "descricao_comentario")}
+              multiline
+              rows={4}
+              defaultValue=""
+              sx={{ width: '100%', marginTop: 0.5, }}
+            />
+            <Input
+              id="descricao-kanban"
+              type="text"
+              name="descricao"
+              value={formAtividade.descricao}
+              onChange={(e) => handleInputChange(e, "descricao")}
+              label="Digite o descricao"
+              multiline={true}
+            />
+            <DialogActions>
+              <Buttons type="submit">Editar</Buttons>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+        {/* Diálogo de confirmação para exclusão */}
+        <Dialog
+          open={deleteConfirmationCommentOpen}
+          onClose={closeCommentDeleteConfirmationDialog}
+          sx={{
+            display: 'flex', 
+            justifyContent: 'center',
+            alignItems: 'center'}}
+        
+        >
+        <DialogTitle>Confirmação de Exclusão</DialogTitle>
+
+        <DialogContent>
+          Tem certeza de que deseja excluir este comentário?
+        </DialogContent>
+
+        <DialogActions>
+          <Buttons onClick={closeCommentDeleteConfirmationDialog}>Cancelar</Buttons>
+          <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
+        </DialogActions>
       </Dialog>
     </>
   );
