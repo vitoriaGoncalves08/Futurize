@@ -61,8 +61,8 @@ const Tarefas = ({ navigation }) => {
         <Text style={styles.backButtonText}>← Voltar</Text>
       </TouchableOpacity>
       
-      <Text style={styles.title}>Todas as Tarefas</Text>
-      <Text style={styles.subtitle}>Abaixo está um resumo das tarefas.</Text>
+      <Text style={styles.title}>Tarefas</Text>
+      <Text style={styles.subtitle}>Abaixo está um resumo das tarefas dos seus Projetos.</Text>
 
       <View style={styles.filterContainer}>
         <View style={styles.filterSection}>

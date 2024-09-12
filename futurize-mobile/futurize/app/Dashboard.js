@@ -17,11 +17,11 @@ const Dashboard = () => {
 
   // Dados dinâmicos para os gráficos, baseados no projeto selecionado
   const [barData, setBarData] = useState([
-    { label: 'Jan', value: 10, color: 'red' },
-    { label: 'Feb', value: 20, color: 'blue' },
-    { label: 'Mar', value: 15, color: 'green' },
-    { label: 'Apr', value: 30, color: 'orange' },
-    { label: 'May', value: 25, color: 'purple' },
+    { label: 'Projeto A', value: 10, color: 'red' },
+    { label: 'Projeto B', value: 20, color: 'blue' },
+    { label: 'Projeto C', value: 15, color: 'green' },
+    { label: 'Projeto D', value: 30, color: 'orange' },
+    { label: 'Projeto E', value: 25, color: 'purple' },
   ]);
 
   const [activityData, setActivityData] = useState([
@@ -46,11 +46,11 @@ const Dashboard = () => {
     // Este é apenas um exemplo; você pode atualizar com dados reais
     if (project.id === '1') {
       setBarData([
-        { label: 'Jan', value: 10, color: 'red' },
-        { label: 'Feb', value: 20, color: 'blue' },
-        { label: 'Mar', value: 15, color: 'green' },
-        { label: 'Apr', value: 30, color: 'orange' },
-        { label: 'May', value: 25, color: 'purple' },
+        { label: 'Projeto A', value: 10, color: 'red' },
+        { label: 'Projeto B', value: 20, color: 'blue' },
+        { label: 'Projeto C', value: 15, color: 'green' },
+        { label: 'Projeto D', value: 30, color: 'orange' },
+        { label: 'Projeto E', value: 25, color: 'purple' },
       ]);
       setActivityData([
         { label: 'Tarefas', value: 16, color: '#007BFF' },
@@ -59,11 +59,11 @@ const Dashboard = () => {
       ]);
     } else if (project.id === '2') {
       setBarData([
-        { label: 'Jun', value: 20, color: 'cyan' },
-        { label: 'Jul', value: 30, color: 'magenta' },
-        { label: 'Aug', value: 40, color: 'yellow' },
-        { label: 'Sep', value: 35, color: 'green' },
-        { label: 'Oct', value: 28, color: 'orange' },
+        { label: 'Projeto', value: 20, color: 'cyan' },
+        { label: 'Projeto B', value: 30, color: 'magenta' },
+        { label: 'Projeto C', value: 40, color: 'yellow' },
+        { label: 'Projeto D', value: 35, color: 'green' },
+        { label: 'Projeto E', value: 28, color: 'orange' },
       ]);
       setActivityData([
         { label: 'Tarefas', value: 20, color: '#007BFF' },
@@ -72,11 +72,11 @@ const Dashboard = () => {
       ]);
     } else if (project.id === '3') {
       setBarData([
-        { label: 'Nov', value: 15, color: 'brown' },
-        { label: 'Dec', value: 25, color: 'gray' },
-        { label: 'Jan', value: 20, color: 'blue' },
-        { label: 'Feb', value: 10, color: 'red' },
-        { label: 'Mar', value: 30, color: 'purple' },
+        { label: 'Projeto A', value: 15, color: 'brown' },
+        { label: 'Projeto B', value: 25, color: 'gray' },
+        { label: 'Projeto C', value: 20, color: 'blue' },
+        { label: 'Projeto D', value: 10, color: 'red' },
+        { label: 'Projeto E', value: 30, color: 'purple' },
       ]);
       setActivityData([
         { label: 'Tarefas', value: 18, color: '#007BFF' },
@@ -145,7 +145,8 @@ const Dashboard = () => {
       </View>
 
       <View style={styles.barChartContainer}>
-        <Text style={styles.sectionTitle}>Gráfico de Barras</Text>
+        <Text style={styles.sectionTitle}>Atividades Concluídaspor Projeto</Text>
+        
         <View style={styles.barChart}>
           {barData.map((item, index) => (
             <View key={index} style={styles.barContainer}>

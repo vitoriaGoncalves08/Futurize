@@ -8,7 +8,6 @@ import RecuperarSenha from './app/RecuperarSenha';
 import Home from './app/Home';
 import Dashboard from './app/Dashboard';
 import axios from 'axios';
-import PerfilSettings from './app/PerfilSettings';
 import Dashboard_User from './app/Dashboard_User';
 import Tarefas from './app/Tarefas';
 
@@ -35,11 +34,6 @@ export default function App() {
         <Stack.Screen
           name="RecuperarSenha"
           component={RecuperarSenha}
-          options={{ headerShown: false }}
-        />
-         <Stack.Screen
-          name="PerfilSettings"
-          component={PerfilSettings}
           options={{ headerShown: false }}
         />
         <Stack.Screen
