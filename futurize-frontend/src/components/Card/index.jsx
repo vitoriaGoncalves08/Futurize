@@ -23,6 +23,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Input from '../../components/Input/input';
 import { format, parse, addDays } from 'date-fns';
+import useAuth from '../../hooks/useAuth';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -45,6 +46,9 @@ export default function Card({ index, listIndex, data, setTasks}) {
   const [selectedUser, setSelectedUser] = useState('');
   const [allocatedUser, setAllocatedUser] = useState([]);
   const [rows, setRows] = useState([]);
+  const { getLoginUser } = useAuth();
+  const usuarioLogado = getLoginUser();
+  const usuarioLogadoId = usuarioLogado.id;
   const [editedResponsavel, setEditedResponsavel] = useState('');
   const [totalCards, setTotalCards] = useState(0);
   const [comentarios, setComentarios] = useState([]);
@@ -144,7 +148,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
       descricao_comentario,
       data_comentario,
       usuario_comentario,
-      atividade_comentada,
+      atividadeComentada,
     } = formComment;
   
     const data_comentarioDate = new Date(formComment.data_comentario);
@@ -155,8 +159,8 @@ export default function Card({ index, listIndex, data, setTasks}) {
       titulo_comentario: titulo_comentario,
       descricao_comentario: descricao_comentario,
       data_comentario: formattedDate,
-      usuario_comentario: {},
-      atividade_comentada: {id:data.id}
+      usuario_comentario: {id:usuarioLogadoId},
+      atividadeComentada: {id:data.id}
 
     };
   
@@ -733,13 +737,26 @@ const theme = createTheme({
           marginLeft: '95px',
            }}> 
             <h1 className="titulo" sx={{}}>Comentários</h1>
-            <Box sx={{ width: 30, height: 30, backgroundColor: '#79a2fe', margin: '5px 0', marginBottom: '5px', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <CloseIcon style={{color: 'white', fontSize: 15}} />
+            <Box
+              sx={{
+                width: 30,
+                height: 30,
+                backgroundColor: '#79a2fe',
+                margin: '5px 0',
+                borderRadius: 10,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer' // Adiciona um cursor de ponteiro para indicar que é clicável
+              }}
+              onClick={commentWindowClose} // Adiciona o manipulador de clique
+            >
+              <CloseIcon style={{ color: 'white', fontSize: 15 }} />
             </Box>
           </DialogTitle>
           <DialogContent sx={{ backgroundColor: '', width: '100%', height: 650 , padding: 0, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <Box sx={{ width: '90%', height: 280, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
-              <form onSubmit={handleCreateComment} style={{height: 260, backgroundColor: ''}}>
+            <Box sx={{ width: '90%', height: 315, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
+              <form onSubmit={handleCreateComment} style={{height: 315, backgroundColor: ''}}>
                 <TextField 
                   id="outlined-basic" 
                   label="Título"
@@ -771,7 +788,16 @@ const theme = createTheme({
                   defaultValue=""
                   sx={{ width: '100%', marginTop: 0.5, }}
                 />
+                <DialogActions sx={{          
+                display: 'flex',
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                textAlign: 'center',
+                }}>
+                  <Buttons sx={{borderRadius: 2, fontSize: 12, backgroundColor: '#407bff'}} type="submit">Comentar</Buttons>
+                </DialogActions>
               </form>
+
             </Box>
             <Box sx={{ 
               width: '100%', 
@@ -783,43 +809,56 @@ const theme = createTheme({
               alignItems: 'center',
               overflowY: 'auto'  // Adiciona o scroll vertical
             }}>
-              {comentarios.map((comentario, index) => (
-                <div key={index} style={{ 
-                  display: 'flex', 
-                  marginTop: '20px',
-                  width: '90%', 
-                  alignItems: 'center', 
-                  flexDirection: 'column',  
+              {comentarios.length === 0 ? (
+                <div style={{
+                  display: 'flex',
                   justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                  height: '75%', // Ajuste a altura conforme necessário
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  color: '#c6d4e5',
+                  textAlign: 'center',
+                  backgroundColor: '',
+                  borderRadius: '10px',
+                  padding: '20px',
+                  marginTop: '20px'
                 }}>
-                  <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
-                    <div>
-                      <Avatar>{formatMemberName(comentario.usuario_comentario.nome)}</Avatar>
-                    </div>
-                    <div style={{ marginLeft: '10px' }}>
-                      <p style={{ fontWeight: 'bold', fontSize: 15}}>{comentario.titulo_comentario}</p>
-                    </div>
-                  </div>
-                  
-                  <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
-                    <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
-                      <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
-                    </div>
-                  </div>
+                  <p>Ainda não há comentários cadastrados.</p>
                 </div>
-              ))}
+              ) : (
+                comentarios.map((comentario, index) => (
+                  <div key={index} style={{ 
+                    display: 'flex', 
+                    marginTop: '20px',
+                    width: '90%', 
+                    alignItems: 'center', 
+                    flexDirection: 'column',  
+                    justifyContent: 'center',
+                  }}>
+                    <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+                      <div>
+                        <Avatar>{formatMemberName(comentario.usuario_comentario.nome)}</Avatar>
+                      </div>
+                      <div style={{ marginLeft: '10px' }}>
+                        <p style={{ fontWeight: 'bold', fontSize: 15}}>{comentario.titulo_comentario}</p>
+                      </div>
+                    </div>
+                    
+                    <div style={{ marginTop: '10px', marginBottom: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}> 
+                      <div style={{width: '90%', height: '100px', backgroundColor: '#f5f8ff', borderRadius: '10px', paddingTop: '15px', paddingLeft: '20px'}}>
+                        <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </Box>
 
           </DialogContent>
 
-          <DialogActions sx={{          
-          display: 'flex',
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          textAlign: 'center',
-          }}>
-            <Buttons sx={{borderRadius: 2, fontSize: 12, backgroundColor: '#407bff'}} type="submit">Comentar</Buttons>
-          </DialogActions>
+         
       </Dialog>
     </>
   );
