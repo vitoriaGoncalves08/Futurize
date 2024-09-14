@@ -103,6 +103,7 @@
     .qrcode-container {
       flex-direction: column;
       text-align: center;
+      margin: 0;
     }
   
     .qrcode-left {
