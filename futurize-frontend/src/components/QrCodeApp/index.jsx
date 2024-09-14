@@ -43,11 +43,11 @@ const QrCode = () => {
         <div className="store-buttons">
           <div className="store-button apple">
             <i className="fab fa-apple"></i>
-            <span style={{margin: '0 auto'}}>Disponível em Android</span>
+            <span style={{margin: '0 auto'}}>Disponível em IOS</span>
           </div>
           <div className="store-button google">
             <i className="fab fa-google-play"></i>
-            <span style={{margin: '0 auto'}}>Disponível em IOS</span>
+            <span style={{margin: '0 auto'}}>Disponível em Android</span>
           </div>
         </div>
       </div>
