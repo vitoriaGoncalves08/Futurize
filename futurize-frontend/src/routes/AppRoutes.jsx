@@ -7,7 +7,7 @@ import Projeto from '../pages/projeto';
 import Kanban from '../pages/kanban';
 import MinhaDashboard from '../pages/minhadashboard';
 import DashboardProjeto from '../pages/dashboardprojeto';
-import QrcodeLogin from '../pages/qrcode-login';
+import QrcodeLogin from '../pages/qrcodeapp';
 import useAuth from '../hooks/useAuth';
 import App from '../Teste';
 import { AuthProvider } from '../context/auth';

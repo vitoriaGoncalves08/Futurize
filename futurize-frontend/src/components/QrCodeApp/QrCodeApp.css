@@ -1,0 +1,126 @@
+  .qrcode-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Garante o alinhamento vertical */
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 5rem 0 0 12rem;
+    height: auto; /* Adapta à altura do conteúdo */
+  }
+  
+  .qrcode-left {
+    flex: 1;
+    text-align: left;
+    margin-right: 20px;
+  }
+  
+  .qrcode-left h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .qrcode-left p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .qrcode-right {
+    display: flex;
+    flex-direction: column; /* Alinha os elementos na vertical */
+    align-items: center; /* Centraliza os elementos */
+    justify-content: center; /* Centraliza os elementos verticalmente */
+    flex: 1;
+    text-align: center;
+    margin-bottom: 100px;
+  }
+  
+  .qrcode-right .qrcode {
+    margin-bottom: 20px;
+    width: 250px;
+    height: 250px;
+    margin-top: 70px;
+  }
+  
+  .qrcode-right p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .store-buttons {
+    display: flex;
+    flex-direction: column; /* Alinha os botões na vertical */
+    gap: 10px; /* Espaço entre os botões */
+  }
+  
+  .store-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    width: 250px; /* Mesma largura do QR Code */
+  }
+  
+  .store-button.apple {
+    background-color: #000;
+  }
+  
+  .store-button.google {
+    background-color: #34a853;
+  }
+  
+  .store-button i {
+    margin-right: 10px;
+  }
+  
+  .qrcode-left .app-logo-wrapper {
+    background: radial-gradient(circle at center, #fff, #407bff);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  
+  .qrcode-left .app-logo {
+    width: 150px;
+    height: 150px;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .qrcode-container {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .qrcode-left {
+      margin-bottom: 20px;
+    }
+  
+    .store-buttons {
+      justify-content: center;
+      gap: 15px;
+      flex-direction: row; /* Botões ficam lado a lado em telas menores */
+    }
+  
+    .store-button {
+      width: auto; /* Ajuste automático da largura */
+    }
+  
+    .qrcode-right .app-logo {
+      width: 120px;
+    }
+  }
+  
