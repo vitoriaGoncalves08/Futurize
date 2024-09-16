@@ -54,6 +54,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
   const [editedResponsavel, setEditedResponsavel] = useState('');
   const [totalCards, setTotalCards] = useState(0);
   const [comentarios, setComentarios] = useState([]);
+  const [comentarioSelecionado, setComentarioSelecionado] = useState();
 
   useEffect(() => {
     // Certifique-se de que a busca de membros alocados seja acionada quando necessário
@@ -209,6 +210,36 @@ export default function Card({ index, listIndex, data, setTasks}) {
       descricao_comentario: activity.descricao,
     });
     setOpen(true);
+  };
+
+
+  const confirmDeleteComment = async (e) => {
+    e.preventDefault();
+    closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
+    addSucessoGeneral("Comentário excluído com sucesso!");
+    try {
+      const idToDelete = comentarioSelecionado;
+      console.log(idToDelete);
+
+      if (!idToDelete) {
+        console.error("ID do comentário não encontrado");
+        return;
+      }
+
+      // Faça a chamada de API para excluir a atividade no backend
+      await axios.delete(`http://localhost:8080/Comentario/${idToDelete}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log("Comentário excluído com sucesso!");
+       // Atualize o estado dos comentários removendo o comentário deletado
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== idToDelete));
+    } catch (error) {
+      console.error("Erro ao excluir a comentário:", error);
+    }
   };
 
   // Estado para o tempo de execução
@@ -870,7 +901,14 @@ const theme = createTheme({
                           <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
                         </div>
                         <div  style={{width: '90%', display: 'flex', justifyContent: 'flex-end', marginTop: '3px', paddingRight: '7px'}}>
-                          <DeleteIcon className="delete-card" onClick={openCommentDeleteConfirmationDialog}  style={{ fontSize: '20px', marginRight: '3px', color: "#8d8e8e" }}  />
+                        <DeleteIcon
+                          className="delete-card"
+                          onClick={() => {
+                            openCommentDeleteConfirmationDialog();
+                            setComentarioSelecionado(comentario.id);
+                          }}
+                          style={{ fontSize: '20px', marginRight: '3px', color: "#8d8e8e" }}
+                        />
                           <ModeEditIcon className="edit-card" onClick={commentEditWindowOpen} style={{ fontSize: '20px', color: '#8d8e8e' }}/>
                         </div>
                       </div>
@@ -985,8 +1023,8 @@ const theme = createTheme({
         </DialogContent>
 
         <DialogActions>
-          <Buttons onClick={closeCommentDeleteConfirmationDialog}>Cancelar</Buttons>
-          <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
+          <Buttons onClick={closeCommentDelaeteConfirmationDialog}>Cancelar</Buttons>
+          <Buttons onClick={confirmDeleteComment}>Confirmar</Buttons>
         </DialogActions>
       </Dialog>
     </>
