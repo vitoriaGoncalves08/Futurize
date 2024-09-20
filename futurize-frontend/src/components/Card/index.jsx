@@ -215,7 +215,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
 
   const confirmDeleteComment = async (e) => {
     e.preventDefault();
-    closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
+    closeCommentDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
     addSucessoGeneral("Comentário excluído com sucesso!");
     try {
       const idToDelete = comentarioSelecionado;
@@ -225,7 +225,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
         console.error("ID do comentário não encontrado");
         return;
       }
-
+      
       // Faça a chamada de API para excluir a atividade no backend
       await axios.delete(`http://localhost:8080/Comentario/${idToDelete}`,{
         headers: {
@@ -236,7 +236,11 @@ export default function Card({ index, listIndex, data, setTasks}) {
 
       console.log("Comentário excluído com sucesso!");
        // Atualize o estado dos comentários removendo o comentário deletado
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== idToDelete));
+      await fetchComentario();
+      handleClose();
+      console.log('Comentario excluído com sucesso');
+      addSucesso('Comentario excluído com sucesso');
+
     } catch (error) {
       console.error("Erro ao excluir a comentário:", error);
     }
@@ -1023,7 +1027,7 @@ const theme = createTheme({
         </DialogContent>
 
         <DialogActions>
-          <Buttons onClick={closeCommentDelaeteConfirmationDialog}>Cancelar</Buttons>
+          <Buttons onClick={closeCommentDeleteConfirmationDialog}>Cancelar</Buttons>
           <Buttons onClick={confirmDeleteComment}>Confirmar</Buttons>
         </DialogActions>
       </Dialog>
