@@ -52,7 +52,6 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem('users_bd', JSON.stringify(newUser));
-
     return;
   };
 

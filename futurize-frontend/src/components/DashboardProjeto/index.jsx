@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './minhaDashboard.css';
+import './Dashboard.css';
 import useAuth from "../../hooks/useAuth";
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart as MuiPieChart } from '@mui/x-charts/PieChart';
+import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 
-const MinhaDashboard = () => {
+const DashboardProjeto = () => {
     const [atividadesConcluidasPProjeto, setAtividadesConcluidasPProjeto] = useState([]);
     const [minhasAtividades, setMinhasAtividades] = useState([]);
     const [projetosCriados, setProjetosCriados] = useState(0);
@@ -94,18 +95,22 @@ const MinhaDashboard = () => {
 
     return (
         <>
-        <h1 className='title'>Minha Dashboard</h1>
+        <h1 className='title'>Dashboard Projeto</h1>
         <div className="dashboard-container">
-            <div className="main-chart">
-                <h2>Atividades Concluídas por Projeto</h2>
-                <BarChart
-                xAxis={[{ scaleType: 'band', data: atividadesConcluidasPProjeto.map(item => item.label) }]}
-                series={[{ data: atividadesConcluidasPProjeto.map(item => item.value), color: colors[1] }]}
-                width={500}
-                height={350}
-                barLabel="value"
-                />
-            </div>
+        <div className="main-chart" style={{ width: '450px', height: '450px' }}>
+    <h2>Atividades Concluídas por Projeto</h2>
+    <Gauge
+        value={75}
+        startAngle={-110}
+        endAngle={110}
+        sx={{
+            [`& .${gaugeClasses.valueText}`]: {
+                fontSize: 30,
+            },
+        }}
+        text={({ value, valueMax }) => `${value} / ${valueMax}`}
+    />
+</div>
             <div className="main-chart">
             <h2>Minhas atividades</h2>
             <MuiPieChart
@@ -143,4 +148,4 @@ const MinhaDashboard = () => {
     );
 };
 
-export default MinhaDashboard;
+export default DashboardProjeto;
