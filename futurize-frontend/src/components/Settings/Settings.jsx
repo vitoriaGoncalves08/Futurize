@@ -12,6 +12,7 @@ function Settings() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT; // Obtém o token de autenticação
@@ -54,6 +55,12 @@ function Settings() {
 
   // Função para salvar as alterações dos dados do usuário
   const handleUpdateUser = async () => {
+    // Verificação de senha antes de enviar a atualização
+    if (senha !== confirmarSenha) {
+      setErrorMessage("As senhas não coincidem.");
+      return;
+    }
+
     try {
       if (!token) {
         console.error("Token JWT não encontrado no localStorage.");
@@ -130,6 +137,13 @@ function Settings() {
               placeholder="senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+            />
+            <input
+              className="style-inputs"
+              type="password"
+              placeholder="confirmar senha"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
             />
             <Buttons onClick={handleUpdateUser}>Alterar Dados</Buttons>
           </div>
