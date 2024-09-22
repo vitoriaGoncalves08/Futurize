@@ -116,7 +116,7 @@ const DashboardProjeto = () => {
                 <h1 >Dashboard Projeto</h1>
                 <Box sx={{ marginRight: 8, marginBottom: 1 }}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Projeto</InputLabel>
+                        <InputLabel id="Select">Projeto</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -152,7 +152,7 @@ const DashboardProjeto = () => {
                     </div>
 
                     <div className="main-chart-p">
-                        <h2>Minhas atividades</h2>
+                        <h2>Todas atividades</h2>
                         <MuiPieChart
                             series={[
                                 {
