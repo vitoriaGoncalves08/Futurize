@@ -16,45 +16,45 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 function loadLists() {
   return [
     {
-      title: 'Backlog',
+      title: 'Total de Tarefas',
       creatable: true,
-      code: LIST_CODES.BACKLOG,
+      code: LIST_CODES.TOTAL_TAREFAS,
     },
     {
-      title: 'Sprint Backlog',
+      title: 'Tarefas a Fazer',
       creatable: false,
-      code: LIST_CODES.SPRINT_BACKLOG,
+      code: LIST_CODES.TAREFAS_A_FAZER,
     },
     {
-      title: 'Development',
+      title: 'Em Andamento',
       creatable: false,
-      code: LIST_CODES.DEVELOPMENT,
+      code: LIST_CODES.EM_ANDAMENTO,
     },
     {
-      title: 'Done Development',
+      title: 'Feito',
       creatable: false,
-      code: LIST_CODES.DONE_DEVELOPMENT,
+      code: LIST_CODES.FEITO,
     },
     {
-      title: 'Test',
+      title: 'A Revisar',
       creatable: false,
-      code: LIST_CODES.TEST,
+      code: LIST_CODES.A_REVISAR,
     },
     {
-      title: 'Done Test',
+      title: 'Revisado',
       creatable: false,
-      code: LIST_CODES.DONE_TEST,
+      code: LIST_CODES.REVISADO,
     },
     {
-      title: 'Rework',
+      title: 'Refazendo',
       creatable: false,
-      code: LIST_CODES.REWORK,
+      code: LIST_CODES.REFAZENDO,
     },
     {
-      title: 'DONE',
+      title: 'Concluído',
       creatable: false,
       done: true,
-      code: LIST_CODES.DONE,
+      code: LIST_CODES.CONCLUIDO,
     },
   ];
 }
@@ -122,27 +122,88 @@ export default function Board() {
     (code) => tasks?.filter((task) => task.estado === code),
     [tasks]
   );
-
+  const [forceRender, setForceRender] = useState(false);
   useEffect(() => {
-    const intervalId = setInterval(fetchProjectMembers, 60000);
+    fetchProjectMembers();
     fetchTasks();
-
-    return () => clearInterval(intervalId);
   }, []);
+  
+  useEffect(() => {
+    console.log('Tasks updated in Board:', tasks);
+  }, [tasks, forceRender]);
 
-  function onDragEnd(event) {
-    console.log(event);
+  async function updateTask(taskId, newState) {
+    try {
+        const response = await axios.put(
+            `http://localhost:8080/Atividade/${taskId}`,
+            {
+                estado: newState, // Envia apenas o estado atualizado
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+        );
 
-    const draggedTaskIdx = tasks.findIndex((task) => task.id == event.draggableId);
+        if (response.status === 200) {
+            console.log('Tarefa atualizada com sucesso no servidor.');
+        } else {
+            console.error('Erro ao atualizar a tarefa no servidor.');
+        }
+    } catch (error) {
+        console.error('Erro ao conectar-se ao backend:', error);
+    }
+}
 
-    if (draggedTaskIdx === -1) return;
+const updateTaskState = async (taskId, newState) => {
+  try {
+      const response = await axios.put(
+          `http://localhost:8080/Atividade/${taskId}/estado`,
+          { estado: newState },
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+              },
+          }
+      );
 
-    const newTasks = [...tasks];
+      if (response.status === 200) {
+          console.log('Estado da tarefa atualizado com sucesso.');
+      } else {
+          console.error('Erro ao atualizar o estado da tarefa.');
+      }
+  } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+  }
+};
 
-    newTasks[draggedTaskIdx].estado = event.destination.droppableId;
+const onDragEnd = (result) => {
+  const { destination, source, draggableId } = result;
 
-    setTasks(newTasks);
-    updateTask(newTasks[draggedTaskIdx].id, event.destination.droppableId);
+  if (!destination) {
+      return;
+  }
+
+  if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return;
+  }
+
+  const draggedTaskIdx = tasks.findIndex((task) => task.id == draggableId);
+
+  if (draggedTaskIdx === -1) return;
+
+  const newTasks = [...tasks];
+  const newState = destination.droppableId;
+
+  newTasks[draggedTaskIdx].estado = newState;
+  setTasks(newTasks);
+
+  updateTaskState(newTasks[draggedTaskIdx].id, newState);
+};
+
 
     /*
     só tá mudando no client-side, precisa agora salvar a alteração no banco, pra isso tu pode
@@ -150,7 +211,7 @@ export default function Board() {
     atualizada (newTasks[draggedTaskIdx].id) e o novo estado dela (event.destination.droppableId).
     Esse endpoint pode ser um PATCH ou PUT.
     */
-  }
+
 
   async function updateTask(taskId, newState) {
     try {
@@ -177,18 +238,19 @@ export default function Board() {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd} key={tasks}>
-      <ContainerBoard key={tasks}>
-        {lists.map((list, index) => (
-          <List
-            key={list.title}
-            index={index}
-            data={list}
-            tasks={getFilteredTasks(list.code)}
-            allocatedUsers={allocatedUsers}
-          />
-        ))}
-      </ContainerBoard>
-    </DragDropContext>
+  <DragDropContext onDragEnd={onDragEnd} key={tasks}>
+    <ContainerBoard>
+      {lists.map((list, index) => (
+        <List
+          key={list.code}  // Usar o código da lista como chave
+          index={index}
+          data={list}
+          tasks={getFilteredTasks(list.code)}
+          allocatedUsers={allocatedUsers}
+          setTasks={setTasks}
+        />
+      ))}
+    </ContainerBoard>
+  </DragDropContext>
   );
 }
