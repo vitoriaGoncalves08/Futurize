@@ -1,0 +1,129 @@
+/* body {
+  overflow: hidden;
+} */
+
+:root {
+  --stroke-color: #fff;
+  --surface-color: #8796A5;
+  --highlight-color: #c5c4c4;
+  --switch-bg-url: url(../../../public/assets/img/moon-stars.svg)
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.config-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 70%;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.headerProfile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 20%;
+}
+
+.profile-pic {
+  border-radius: 100%;
+  /* object-fit: cover; */
+}
+
+.user-info {
+  /* border: 1px solid red; */
+  flex-grow: 1;
+  padding-left: 20px;
+}
+
+.user-info .h2-user-info {
+  font-size: 1.5rem;
+  color: #000000;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.user-info .p-user-info {
+  color: grey;
+  font-size: 0.9rem;
+}
+
+/* #switch{
+
+  position: relative;
+  width: 64px;
+  margin: 4px auto;
+
+}
+
+#switch .switch-button{
+width: 32px;
+height: 32px;
+background: #003892 var(--switch-bg-url) no-repeat center;
+border: 0;
+border-radius: 50%;
+position: absolute;
+top: 50%;
+left: 0;
+z-index: 1;
+transform: translateY(-50%);
+animation: slide-back 0.2s;
+} 
+
+.light #switch .switch-button{
+  animation: slide-in 0.4s forwards;
+}
+
+#switch .switch-button:hover{
+  outline: 8px solid var(--highlight-color);
+}
+
+#switch .switch-span{
+  display: block;
+  width: 64px;
+  height: 24px;
+  background: var(--surface-color);
+  color: var(--stroke-color);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 9999px;
+} */
+
+.edit-profile {
+  width: 60%;
+  margin-top: 2rem;
+}
+
+.inputs-edit-profile {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+.style-inputs {
+  /* width: 50%; */
+  height: 3rem;
+  padding: .5rem;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  background: transparent;
+  color: #000000; 
+}
+
+.alterar-senha {
+  width: 50%;
+}
