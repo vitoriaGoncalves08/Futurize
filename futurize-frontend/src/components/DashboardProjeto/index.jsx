@@ -124,9 +124,9 @@ const DashboardProjeto = () => {
                             label="projeto"
                             onChange={handleChange}
                         >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            <MenuItem value={10}>Projetinho</MenuItem>
+                            <MenuItem value={20}>Trabalho web</MenuItem>
+                            <MenuItem value={30}>Trabalho de Math</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
