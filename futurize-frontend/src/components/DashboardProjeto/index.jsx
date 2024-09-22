@@ -133,7 +133,7 @@ const DashboardProjeto = () => {
                 {/* ESQUERDO */}
                 <div className="left-side-p">
                     <div className="main-chart-p">
-                        <h2>Atividades Concluídas por Projeto</h2>
+                        <h2>Atividades concluídas por projeto</h2>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Gauge
                                 height={260}
@@ -182,10 +182,10 @@ const DashboardProjeto = () => {
                 {/* DIREITO */}
                 <div className="right-side-p">
                     <List className="MuiListItem-root" sx={{
-                        width: '92%', maxHeight: 720, /* Altura máxima da lista */
+                        width: '92%', height: 650,
                         overflowY: 'auto' /* Habilita a rolagem vertical */
                     }}>
-                        <ListItem alignItems="flex-start" style={{ display: 'flex' }}>
+                        <ListItem className="line" alignItems="flex-start" style={{ display: 'flex' }}>
                             <ListItemAvatar>
                                 <Avatar alt="Vitória Goncalves" src="/static/images/avatar/1.jpg" />
                             </ListItemAvatar>
@@ -206,7 +206,7 @@ const DashboardProjeto = () => {
                                 }
                             />
                         </ListItem>
-                        <ListItem alignItems="flex-start" style={{ display: 'flex' }}>
+                        <ListItem className="line"alignItems="flex-start" style={{ display: 'flex' }}>
                             <ListItemAvatar>
                                 <Avatar alt="Vitória Passos" src="/static/images/avatar/1.jpg" />
                             </ListItemAvatar>
@@ -228,6 +228,16 @@ const DashboardProjeto = () => {
                             />
                         </ListItem>
                     </List>
+                    <div className="bottom-section-p">
+                        <div className="chart-container-p">
+                            <h2>Total de atividades refeitas</h2>
+                            <p>{projetosConcluidos}</p>
+                        </div>
+                        <div className="chart-container-p">
+                            <h2>Integrante com mais entregas</h2>
+                            <p style={{fontSize: 14, margin: 3}}>vi@gmail.com</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
