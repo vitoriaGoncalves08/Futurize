@@ -848,9 +848,14 @@ const theme = createTheme({
       </Dialog>
       {/* Diálogo de adição e leitura de comentário */}
       <Dialog
-      open={commentWindow}
-      onClose={commentWindowClose} 
-      sx={{ width: 500, height: 850}}
+        open={commentWindow}
+        onClose={commentWindowClose}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          margin: '0 auto'
+        }}
       >
           <DialogTitle sx={{
           display: 'flex',
@@ -859,7 +864,7 @@ const theme = createTheme({
           textAlign: 'center',
           marginLeft: '95px',
            }}> 
-            <h1 className="titulo" sx={{}}>Comentários</h1>
+            <h1 className="titulo" style={{textAlign: 'center', marginLeft: 80}}>Comentários</h1>
             <Box
               sx={{
                 width: 30,

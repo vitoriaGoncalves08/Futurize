@@ -30,14 +30,15 @@ public class SecurityConfigurations {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors().configurationSource(corsConfigurationSource()).and() // Configurando CORS corretamente
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable()) // Desativando CSRF (para APIs RESTful)
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Configurando stateless session (sem sessões)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/login").permitAll();
-                    req.requestMatchers("/Usuario/cadastro").permitAll();
-                    req.anyRequest().authenticated();
-                    req.and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
-                });
+                    req.requestMatchers("/login").permitAll(); // Permitindo login sem autenticação
+                    req.requestMatchers("/Usuario/cadastro").permitAll(); // Permitindo cadastro sem autenticação
+                    req.anyRequest().authenticated(); // Requerendo autenticação para todas as outras requisições
+                })
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class); // Adicionando filtro de segurança (JWT)
+
         return http.build();
     }
 
@@ -54,13 +55,17 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Origem do seu frontend React
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:8081",
+                "http://localhost:5173",
+                "http://192.168.1.100:8081" // Adicionando IP local da sua máquina
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept")); // Cabeçalhos permitidos
+        configuration.setAllowCredentials(true); // Permite envio de cookies e credenciais
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Aplicando CORS para todas as rotas
         return source;
     }
 }

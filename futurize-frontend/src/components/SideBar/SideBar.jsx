@@ -6,20 +6,21 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AppShortcutIcon from '@mui/icons-material/AppShortcut';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ children }) => {
-    const { signout } = useAuth();
-    const navigate = useNavigate();
+  const { signout } = useAuth();
+  const navigate = useNavigate();
 
-    const handleLogout = () => {
-        signout();
-        navigate("/");
-    };
+  const handleLogout = () => {
+    signout();
+    navigate("/");
+  };
 
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
@@ -40,14 +41,24 @@ const Sidebar = ({ children }) => {
         //     icon: <CalendarMonthIcon />
         // },
         {
-            path: "/Dashboard",
-            name: "Dashboard",
+            path: "/MinhaDashboard",
+            name: "Minha Dashboard",
             icon: <DashboardIcon />
         },
         {
-            path: "/Configuracoes",
-            name: "Configurações",
-            icon: <SettingsIcon />
+            path: "/DashboardProjeto",
+            name: "Dashboard Projeto",
+            icon: <BarChartIcon />
+        },
+        {
+            path: "/QrcodeLogin",
+            name: "App Qrcode",
+            icon: <AppShortcutIcon />
+        },
+        {
+          path: "/Settings",
+          name: "Configurações",
+          icon: <SettingsIcon />,
         },
     ]
     return (
@@ -74,7 +85,7 @@ const Sidebar = ({ children }) => {
             </div>
             <main>{children}</main>
         </div>
-    );
+  );
 };
 
 export default Sidebar;
