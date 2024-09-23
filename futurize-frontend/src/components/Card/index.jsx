@@ -66,7 +66,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
 
 
   const [formComment, setFormComment] = useState({
-    id: 1,
+    id:'',
     titulo_comentario: '',
     descricao_comentario: '',
     data_comentario: '',
@@ -79,17 +79,21 @@ export default function Card({ index, listIndex, data, setTasks}) {
   });
 
   const handleInputChangeComment = (e, field) => {
-    setFormComment({
-      ...formComment,
-      [field]: e.target.value,
-    });
+      if (field === 'responsavel') {
+        setSelectedUser(e.target.value);
+        setFormComment({
+          ...formComment,
+          responsavel: { id: e.target.value },
+        });
+      } else {
+        setFormComment({  
+          ...formComment,
+          [field]: e.target.value,
+        });
+      }
+      console.log('Field changed:', field, 'Value:', e.target.value);  // Adicione log para depuração
   };
 
-  const handleClickCommentOpen = () => {
-    setOpen(true);
-    openEditActivity(data);
-    console.log('Open Edit Comment');
-}
 
   const [forceRender, setForceRender] = useState(false);
   useEffect(() => {
@@ -201,14 +205,80 @@ export default function Card({ index, listIndex, data, setTasks}) {
     }
   };
 
+  const handleEditCommentSubmit = async (e) => {
+    e.preventDefault();
+
+    const { id, titulo_comentario, data_comentario, descricao_comentario} = formComment;
+
+    // Função para converter data de DD-MM-YYYY para YYYY-MM-DD
+    const convertDateFormat = (dateString) => {
+      const [day, month, year] = dateString.split('-');
+      return `${year}-${month}-${day}`;
+    };
+
+    // Parse e validar datas
+    const parseDate = (dateString) => {
+      const formattedDate = convertDateFormat(dateString);
+      const parsedDate = parse(formattedDate, 'yyyy-MM-dd', new Date());
+      return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
+    };
+
+    const dataComentario = parseDate(data_comentario);
+
+    if (!dataComentario) {
+      console.error('Invalid date value provided.');
+      return;
+    }
+
+    const dataEditActivity = {
+      id,
+      titulo_comentario,
+      descricao_comentario,
+      data_comentario: dataComentario,
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:8080/comentario/${id}`, dataEditActivity, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
+        setRows(updatedRows);
+        setTasks((prevTasks) => 
+          prevTasks.map((task) => task.id === id ? { ...task, ...dataEditActivity } : task)
+        );
+        handleClose();
+        addSucessoGeneral('Comentário editado com sucesso!');
+      } else {
+        console.error('Erro ao atualizar os dados no backend.');
+        addError('Erro ao atualizar os dados no backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+      addError('Erro ao conectar-se ao backend: ' + error.message);
+    }
+  };
 
   const openEditActivity = (activity) => {
     setFormAtividade({
       id: activity.id,
-      titulo_comentario: activity.titulo,
-      data_comentario: format(new Date(activity.data_comentario), 'dd-MM-yyyy'),
-      descricao_comentario: activity.descricao,
+      titulo: activity.titulo,
+      descricao: activity.descricao,
+      inicio: format(new Date(activity.inicio), 'dd-MM-yyyy'),
+      encerramento: format(new Date(activity.encerramento), 'dd-MM-yyyy'),
+      estado: activity.estado,
+      dificuldade: activity.dificuldade,
+      prioridade: activity.prioridade,
+      tempo_execucao: activity.tempo_execucao,
+      projeto: activity.projeto,
+      responsavel: { id: activity.responsavel.id },
     });
+    setEditedResponsavel(activity.responsavel.id);
+    setSelectedUser(activity.responsavel.id);
     setOpen(true);
   };
 
@@ -811,7 +881,7 @@ const theme = createTheme({
             <Box sx={{ width: '90%', height: 315, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
               <form onSubmit={handleCreateComment} style={{height: 315, backgroundColor: ''}}>
                 <TextField 
-                  id="outlined-basic" 
+                  id="titulo_comentario" 
                   label="Título"
                   name="titulo_comentario"
                   variant="outlined" 
@@ -831,7 +901,7 @@ const theme = createTheme({
                   label="Digite a data do comentário"
                 />
                 <TextField
-                  id="outlined-multiline-static"
+                  id="descricao_comentario"
                   label="Escreva um comentário"
                   name="descricao_comentario"
                   value={formComment.descricao_comentario}
@@ -913,7 +983,14 @@ const theme = createTheme({
                           }}
                           style={{ fontSize: '20px', marginRight: '3px', color: "#8d8e8e" }}
                         />
-                          <ModeEditIcon className="edit-card" onClick={commentEditWindowOpen} style={{ fontSize: '20px', color: '#8d8e8e' }}/>
+                        <ModeEditIcon 
+                            className="edit-card" 
+                            onClick={ () => {
+                              commentEditWindowOpen();
+                              setFormComment(comentario);
+                            }} 
+                            style={{ fontSize: '20px', color: '#8d8e8e' }}
+                        /> 
                         </div>
                       </div>
                     </div>
@@ -950,11 +1027,11 @@ const theme = createTheme({
       {/* Diálogo de confirmação para edição do comentário */}
       <Dialog classes={{ paper: 'comment-dialog' }} open={commentEditWindow} onClose={commentEditWindowClose}>
         <DialogTitle>
-          <h1 className="titulo">Editar Atividade</h1>
+          <h1 className="titulo">Editar Comentário</h1>
         </DialogTitle>
         <IconButton
           aria-label="close"
-          onClick={closeCommentDeleteConfirmationDialog}
+          onClick={commentEditWindowClose}
           sx={{
             position: "absolute",
             right: 8,
@@ -967,21 +1044,21 @@ const theme = createTheme({
         </IconButton>
         {/* Diálog de edição da atividade */}
         <DialogContent>
-          <form onSubmit={handleEditSubmit}>
+          <form onSubmit={handleEditCommentSubmit}>
             <Input
               id="titulo-kanban"
               type="text"
               name="titulo"
-              value={formAtividade.titulo}
-              onChange={(e) => handleInputChange(e, "titulo")}
+              value={formComment.titulo_comentario}
+              onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
               label="Digite seu titulo"
             />
             <Input
               id="encerramento-kanban"
               type="date"
               name="encerramento"
-              value={formAtividade.encerramento}
-              onChange={(e) => handleInputChange(e, "encerramento")}
+              value={formComment.data_comentario}
+              onChange={(e) => handleInputChangeComment(e, "data_comentario")}
               label="Digite a data de encerramento"
             />
             <TextField
@@ -994,16 +1071,7 @@ const theme = createTheme({
               rows={4}
               defaultValue=""
               sx={{ width: '100%', marginTop: 0.5, }}
-            />
-            <Input
-              id="descricao-kanban"
-              type="text"
-              name="descricao"
-              value={formAtividade.descricao}
-              onChange={(e) => handleInputChange(e, "descricao")}
-              label="Digite o descricao"
-              multiline={true}
-            />
+            />  
             <DialogActions>
               <Buttons type="submit">Editar</Buttons>
             </DialogActions>
