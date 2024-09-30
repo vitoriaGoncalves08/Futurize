@@ -204,10 +204,19 @@ export default function Card({ index, listIndex, data, setTasks}) {
   const openEditActivity = (activity) => {
     setFormAtividade({
       id: activity.id,
-      titulo_comentario: activity.titulo,
-      data_comentario: format(new Date(activity.data_comentario), 'dd-MM-yyyy'),
-      descricao_comentario: activity.descricao,
+      titulo: activity.titulo,
+      descricao: activity.descricao,
+      inicio: format(new Date(activity.inicio), 'dd-MM-yyyy'),
+      encerramento: format(new Date(activity.encerramento), 'dd-MM-yyyy'),
+      estado: activity.estado,
+      dificuldade: activity.dificuldade,
+      prioridade: activity.prioridade,
+      tempo_execucao: activity.tempo_execucao,
+      projeto: activity.projeto,
+      responsavel: { id: activity.responsavel.id },
     });
+    setEditedResponsavel(activity.responsavel.id);
+    setSelectedUser(activity.responsavel.id);
     setOpen(true);
   };
 
@@ -745,7 +754,7 @@ const theme = createTheme({
       <Dialog
       open={commentWindow}
       onClose={commentWindowClose} 
-      sx={{ width: 500, height: 850}}
+      sx={{ width: 500, height: 750}}
       >
           <DialogTitle sx={{
           display: 'flex',
