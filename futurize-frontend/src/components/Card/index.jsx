@@ -245,6 +245,8 @@ export default function Card({ index, listIndex, data, setTasks}) {
         },
       });
 
+      setCommentEditWindow(false);
+
       if (response.status === 200) {
         const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
         setRows(updatedRows);
