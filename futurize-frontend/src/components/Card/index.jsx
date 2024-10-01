@@ -238,7 +238,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
     };
 
     try {
-      const response = await axios.put(`http://localhost:8080/comentario/${id}`, dataEditActivity, {
+      const response = await axios.put(`http://localhost:8080/Comentario/${id}`, dataEditActivity, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
