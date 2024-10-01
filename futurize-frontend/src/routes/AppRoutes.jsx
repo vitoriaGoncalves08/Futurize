@@ -6,9 +6,12 @@ import Cadastro from '../pages/cadastro';
 import Projeto from '../pages/projeto';
 import Kanban from '../pages/kanban';
 import MinhaDashboard from '../pages/minhadashboard';
+import DashboardProjeto from '../pages/dashboardprojeto';
+import QrcodeLogin from '../pages/qrcodeapp';
 import useAuth from '../hooks/useAuth';
 import App from '../Teste';
 import { AuthProvider } from '../context/auth';
+import Settings from "../pages/settings";
 
 const PrivateRoute = ({ children }) => {
   const { signed } = useAuth();
@@ -34,19 +37,42 @@ export default function AppRoutes() {
             }
           />
           <Route
-          path="/kanban/:projectId" 
-          element={
-            <PrivateRoute>
-              <Kanban />
-            </PrivateRoute>}
+            path="/kanban/:projectId"
+            element={
+              <PrivateRoute>
+                <Kanban />
+              </PrivateRoute>
+            }
           />
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute>
+                <Settings />
+              </PrivateRoute>
+            }
+            />
         <Route
-          path="/dashboard" 
+          path="/minhadashboard" 
           element={
             <PrivateRoute>
               <MinhaDashboard />
             </PrivateRoute>}
           />
+        <Route
+          path="/dashboardprojeto" 
+          element={
+            <PrivateRoute>
+              <DashboardProjeto />
+            </PrivateRoute>}
+          />
+           <Route
+            path="/qrcodelogin" 
+            element={
+              <PrivateRoute>
+                <QrcodeLogin />
+              </PrivateRoute>}
+            />
         </Routes>
       </AuthProvider>
     </Router>

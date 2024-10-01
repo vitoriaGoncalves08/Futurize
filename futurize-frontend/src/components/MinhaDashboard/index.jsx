@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart as MuiPieChart } from '@mui/x-charts/PieChart';
 
-const Dashboard = () => {
+const MinhaDashboard = () => {
     const [atividadesConcluidasPProjeto, setAtividadesConcluidasPProjeto] = useState([]);
     const [minhasAtividades, setMinhasAtividades] = useState([]);
     const [projetosCriados, setProjetosCriados] = useState(0);
@@ -97,7 +97,7 @@ const Dashboard = () => {
         <h1 className='title'>Minha Dashboard</h1>
         <div className="dashboard-container">
             <div className="main-chart">
-                <h2>Atividades Concluídas por Projeto</h2>
+                <h2>Atividades concluídas por projeto</h2>
                 <BarChart
                 xAxis={[{ scaleType: 'band', data: atividadesConcluidasPProjeto.map(item => item.label) }]}
                 series={[{ data: atividadesConcluidasPProjeto.map(item => item.value), color: colors[1] }]}
@@ -123,19 +123,19 @@ const Dashboard = () => {
                 />
             </div>
             <div className="chart-container">
-                <h2>Projetos Criados</h2>
+                <h2>Projetos criados</h2>
                 <p>{projetosCriados}</p>
             </div>
             <div className="chart-container">
-                <h2>Projetos Alocados</h2>
+                <h2>Projetos alocados</h2>
                 <p>{projetosAlocados}</p>
             </div>
             <div className="chart-container">
-                <h2>Projetos Concluídos</h2>
+                <h2>Projetos concluídos</h2>
                 <p>{projetosConcluidos}</p>
             </div>
             <div className="chart-container">
-                <h2>Atividades Em Andamento</h2>
+                <h2>Atividades em andamento</h2>
                 <p>{atividadesAndamento}</p>
             </div>
         </div>
@@ -143,4 +143,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default MinhaDashboard;

@@ -54,6 +54,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
   const [editedResponsavel, setEditedResponsavel] = useState('');
   const [totalCards, setTotalCards] = useState(0);
   const [comentarios, setComentarios] = useState([]);
+  const [comentarioSelecionado, setComentarioSelecionado] = useState();
 
   useEffect(() => {
     // Certifique-se de que a busca de membros alocados seja acionada quando necessário
@@ -65,7 +66,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
 
 
   const [formComment, setFormComment] = useState({
-    id: 1,
+    id:'',
     titulo_comentario: '',
     descricao_comentario: '',
     data_comentario: '',
@@ -78,17 +79,21 @@ export default function Card({ index, listIndex, data, setTasks}) {
   });
 
   const handleInputChangeComment = (e, field) => {
-    setFormComment({
-      ...formComment,
-      [field]: e.target.value,
-    });
+      if (field === 'responsavel') {
+        setSelectedUser(e.target.value);
+        setFormComment({
+          ...formComment,
+          responsavel: { id: e.target.value },
+        });
+      } else {
+        setFormComment({  
+          ...formComment,
+          [field]: e.target.value,
+        });
+      }
+      console.log('Field changed:', field, 'Value:', e.target.value);  // Adicione log para depuração
   };
 
-  const handleClickCommentOpen = () => {
-    setOpen(true);
-    openEditActivity(data);
-    console.log('Open Edit Comment');
-}
 
   const [forceRender, setForceRender] = useState(false);
   useEffect(() => {
@@ -200,6 +205,63 @@ export default function Card({ index, listIndex, data, setTasks}) {
     }
   };
 
+  const handleEditCommentSubmit = async (e) => {
+    e.preventDefault();
+
+    const { id, titulo_comentario, data_comentario, descricao_comentario} = formComment;
+
+    // Função para converter data de DD-MM-YYYY para YYYY-MM-DD
+    const convertDateFormat = (dateString) => {
+      const [day, month, year] = dateString.split('-');
+      return `${year}-${month}-${day}`;
+    };
+
+    // Parse e validar datas
+    const parseDate = (dateString) => {
+      const formattedDate = convertDateFormat(dateString);
+      const parsedDate = parse(formattedDate, 'yyyy-MM-dd', new Date());
+      return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
+    };
+
+    const dataComentario = parseDate(data_comentario);
+
+    if (!dataComentario) {
+      console.error('Invalid date value provided.');
+      return;
+    }
+
+    const dataEditActivity = {
+      id,
+      titulo_comentario,
+      descricao_comentario,
+      data_comentario: dataComentario,
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:8080/comentario/${id}`, dataEditActivity, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
+        setRows(updatedRows);
+        setTasks((prevTasks) => 
+          prevTasks.map((task) => task.id === id ? { ...task, ...dataEditActivity } : task)
+        );
+        handleClose();
+        addSucessoGeneral('Comentário editado com sucesso!');
+      } else {
+        console.error('Erro ao atualizar os dados no backend.');
+        addError('Erro ao atualizar os dados no backend.');
+      }
+    } catch (error) {
+      console.error('Erro ao conectar-se ao backend:', error);
+      addError('Erro ao conectar-se ao backend: ' + error.message);
+    }
+  };
 
   const openEditActivity = (activity) => {
     setFormAtividade({
@@ -218,6 +280,40 @@ export default function Card({ index, listIndex, data, setTasks}) {
     setEditedResponsavel(activity.responsavel.id);
     setSelectedUser(activity.responsavel.id);
     setOpen(true);
+  };
+
+
+  const confirmDeleteComment = async (e) => {
+    e.preventDefault();
+    closeCommentDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
+    addSucessoGeneral("Comentário excluído com sucesso!");
+    try {
+      const idToDelete = comentarioSelecionado;
+      console.log(idToDelete);
+
+      if (!idToDelete) {
+        console.error("ID do comentário não encontrado");
+        return;
+      }
+      
+      // Faça a chamada de API para excluir a atividade no backend
+      await axios.delete(`http://localhost:8080/Comentario/${idToDelete}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log("Comentário excluído com sucesso!");
+       // Atualize o estado dos comentários removendo o comentário deletado
+      await fetchComentario();
+      handleClose();
+      console.log('Comentario excluído com sucesso');
+      addSucesso('Comentario excluído com sucesso');
+
+    } catch (error) {
+      console.error("Erro ao excluir a comentário:", error);
+    }
   };
 
   // Estado para o tempo de execução
@@ -752,9 +848,14 @@ const theme = createTheme({
       </Dialog>
       {/* Diálogo de adição e leitura de comentário */}
       <Dialog
-      open={commentWindow}
-      onClose={commentWindowClose} 
-      sx={{ width: 500, height: 750}}
+        open={commentWindow}
+        onClose={commentWindowClose}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          margin: '0 auto'
+        }}
       >
           <DialogTitle sx={{
           display: 'flex',
@@ -763,7 +864,7 @@ const theme = createTheme({
           textAlign: 'center',
           marginLeft: '95px',
            }}> 
-            <h1 className="titulo" sx={{}}>Comentários</h1>
+            <h1 className="titulo" style={{textAlign: 'center', marginLeft: 80}}>Comentários</h1>
             <Box
               sx={{
                 width: 30,
@@ -785,7 +886,7 @@ const theme = createTheme({
             <Box sx={{ width: '90%', height: 315, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
               <form onSubmit={handleCreateComment} style={{height: 315, backgroundColor: ''}}>
                 <TextField 
-                  id="outlined-basic" 
+                  id="titulo_comentario" 
                   label="Título"
                   name="titulo_comentario"
                   variant="outlined" 
@@ -805,7 +906,7 @@ const theme = createTheme({
                   label="Digite a data do comentário"
                 />
                 <TextField
-                  id="outlined-multiline-static"
+                  id="descricao_comentario"
                   label="Escreva um comentário"
                   name="descricao_comentario"
                   value={formComment.descricao_comentario}
@@ -879,8 +980,22 @@ const theme = createTheme({
                           <p style={{fontSize: 13, color: '#626366'}}>{comentario.descricao_comentario}</p>
                         </div>
                         <div  style={{width: '90%', display: 'flex', justifyContent: 'flex-end', marginTop: '3px', paddingRight: '7px'}}>
-                          <DeleteIcon className="delete-card" onClick={openCommentDeleteConfirmationDialog}  style={{ fontSize: '20px', marginRight: '3px', color: "#8d8e8e" }}  />
-                          <ModeEditIcon className="edit-card" onClick={commentEditWindowOpen} style={{ fontSize: '20px', color: '#8d8e8e' }}/>
+                        <DeleteIcon
+                          className="delete-card"
+                          onClick={() => {
+                            openCommentDeleteConfirmationDialog();
+                            setComentarioSelecionado(comentario.id);
+                          }}
+                          style={{ fontSize: '20px', marginRight: '3px', color: "#8d8e8e" }}
+                        />
+                        <ModeEditIcon 
+                            className="edit-card" 
+                            onClick={ () => {
+                              commentEditWindowOpen();
+                              setFormComment(comentario);
+                            }} 
+                            style={{ fontSize: '20px', color: '#8d8e8e' }}
+                        /> 
                         </div>
                       </div>
                     </div>
@@ -917,11 +1032,11 @@ const theme = createTheme({
       {/* Diálogo de confirmação para edição do comentário */}
       <Dialog classes={{ paper: 'comment-dialog' }} open={commentEditWindow} onClose={commentEditWindowClose}>
         <DialogTitle>
-          <h1 className="titulo">Editar Atividade</h1>
+          <h1 className="titulo">Editar Comentário</h1>
         </DialogTitle>
         <IconButton
           aria-label="close"
-          onClick={closeCommentDeleteConfirmationDialog}
+          onClick={commentEditWindowClose}
           sx={{
             position: "absolute",
             right: 8,
@@ -934,21 +1049,21 @@ const theme = createTheme({
         </IconButton>
         {/* Diálog de edição da atividade */}
         <DialogContent>
-          <form onSubmit={handleEditSubmit}>
+          <form onSubmit={handleEditCommentSubmit}>
             <Input
               id="titulo-kanban"
               type="text"
               name="titulo"
-              value={formAtividade.titulo}
-              onChange={(e) => handleInputChange(e, "titulo")}
+              value={formComment.titulo_comentario}
+              onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
               label="Digite seu titulo"
             />
             <Input
               id="encerramento-kanban"
               type="date"
               name="encerramento"
-              value={formAtividade.encerramento}
-              onChange={(e) => handleInputChange(e, "encerramento")}
+              value={formComment.data_comentario}
+              onChange={(e) => handleInputChangeComment(e, "data_comentario")}
               label="Digite a data de encerramento"
             />
             <TextField
@@ -961,16 +1076,7 @@ const theme = createTheme({
               rows={4}
               defaultValue=""
               sx={{ width: '100%', marginTop: 0.5, }}
-            />
-            <Input
-              id="descricao-kanban"
-              type="text"
-              name="descricao"
-              value={formAtividade.descricao}
-              onChange={(e) => handleInputChange(e, "descricao")}
-              label="Digite o descricao"
-              multiline={true}
-            />
+            />  
             <DialogActions>
               <Buttons type="submit">Editar</Buttons>
             </DialogActions>
@@ -995,7 +1101,7 @@ const theme = createTheme({
 
         <DialogActions>
           <Buttons onClick={closeCommentDeleteConfirmationDialog}>Cancelar</Buttons>
-          <Buttons onClick={confirmDeleteAllocation}>Confirmar</Buttons>
+          <Buttons onClick={confirmDeleteComment}>Confirmar</Buttons>
         </DialogActions>
       </Dialog>
     </>
