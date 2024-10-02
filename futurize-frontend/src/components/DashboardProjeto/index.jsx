@@ -201,7 +201,8 @@ const DashboardProjeto = () => {
                                         >
                                             Vitória Goncalves
                                         </Typography>
-                                        {" — CONCLUIDO"}
+                                        {" — 00:02:30"}
+                                        {" — MODERADO"}
                                     </React.Fragment>
                                 }
                             />
@@ -222,7 +223,8 @@ const DashboardProjeto = () => {
                                         >
                                             Vitória Passos
                                         </Typography>
-                                        {" — EM ANDAMENTO"}
+                                        {" — 00:00:20"}
+                                        {" — COMPLEXO"}
                                     </React.Fragment>
                                 }
                             />
