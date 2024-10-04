@@ -221,7 +221,7 @@ const DashboardProjeto = () => {
                                             variant="body2"
                                             color="text.primary"
                                         >
-                                            Vitória Passos
+                                            Refeita 2 VEZES
                                         </Typography>
                                         {" — 00:00:20"}
                                         {" — COMPLEXO"}

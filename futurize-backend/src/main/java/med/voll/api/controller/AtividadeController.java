@@ -49,7 +49,7 @@ public class AtividadeController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity ExcluirAtividade(@PathVariable Long id){
+    public ResponseEntity ExcluirAtividade(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -110,9 +110,17 @@ public class AtividadeController {
 
             if (atividadeOptional.isPresent()) {
                 Atividade atividade = atividadeOptional.get();
-                atividade.setEstado(Estado.valueOf(novoEstado));
-                repository.save(atividade);
-                return ResponseEntity.ok("Estado da tarefa atualizado com sucesso.");
+                Estado estadoAtual = atividade.getEstado();
+                Estado estadoNovo = Estado.valueOf(novoEstado);
+
+                // Verificar se o novo estado é "REFAZENDO" e se o estado anterior era diferente de "REFAZENDO"
+                if (estadoNovo == Estado.REFAZENDO && estadoAtual != Estado.REFAZENDO) {
+                    atividade.incrementarRetrabalho();  // Incrementar o contador de retrabalho
+                }
+
+                atividade.setEstado(estadoNovo);  // Atualizar o estado
+                repository.save(atividade);  // Salvar a alteração da atividade
+                return ResponseEntity.ok("Atividade '"+ atividade.getTitulo() +"' atualizada com sucesso para o estado: "+atividade.getEstado()+"!");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Atividade não encontrada.");
             }
