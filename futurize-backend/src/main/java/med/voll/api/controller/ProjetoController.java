@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class ProjetoController {
     @Autowired
     private ProjetoRepository repository;
+
     @CrossOrigin("*")
     @PostMapping
     @Transactional

@@ -97,7 +97,7 @@ const MinhaDashboard = () => {
         <h1 className='title'>Minha Dashboard</h1>
         <div className="dashboard-container">
             <div className="main-chart">
-                <h2>Atividades concluídas por projeto</h2>
+                <h2>Atividades concluídas por trabalho</h2>
                 <BarChart
                 xAxis={[{ scaleType: 'band', data: atividadesConcluidasPProjeto.map(item => item.label) }]}
                 series={[{ data: atividadesConcluidasPProjeto.map(item => item.value), color: colors[1] }]}
@@ -123,15 +123,15 @@ const MinhaDashboard = () => {
                 />
             </div>
             <div className="chart-container">
-                <h2>Projetos criados</h2>
+                <h2>Trabalhos criados</h2>
                 <p>{projetosCriados}</p>
             </div>
             <div className="chart-container">
-                <h2>Projetos alocados</h2>
+                <h2>Trabalhos alocados</h2>
                 <p>{projetosAlocados}</p>
             </div>
             <div className="chart-container">
-                <h2>Projetos concluídos</h2>
+                <h2>Trabalhos concluídos</h2>
                 <p>{projetosConcluidos}</p>
             </div>
             <div className="chart-container">

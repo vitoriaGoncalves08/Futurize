@@ -48,7 +48,7 @@ const Sidebar = ({ children }) => {
         },
         {
             path: "/DashboardProjeto",
-            name: "Dashboard Projeto",
+            name: "Dashboard Trabalho",
             icon: <BarChartIcon />
         },
         {
