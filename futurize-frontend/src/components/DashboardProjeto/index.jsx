@@ -296,9 +296,10 @@ const DashboardProjeto = () => {
                                                         color="text.primary"
                                                     >
                                                         <h4 style={{color: '#407BFF'}}>Atividade do responsável {atividade.responsavel.nome} -  REFEITA {atividade.quantidade_retrabalho}x</h4>
+                                              
                                                     </Typography>
-                                                    <p style={{ display: 'flex' }}>{"Tempo de execução: " + atividade.tempo_execucao} {" - Dificuldade: " + atividade.dificuldade}</p>
-                                                </React.Fragment>
+                                                    <p style={{ display: 'flex' }}>{"Tempo de execução: " + atividade.tempo_execucao} {" - Dificuldade: " + atividade.dificuldade} {" - Estado atual: " + atividade.estado}</p>
+                                                      </React.Fragment>
                                             }
                                         />
                                     </ListItem>
