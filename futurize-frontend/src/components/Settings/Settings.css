@@ -114,16 +114,29 @@ animation: slide-back 0.2s;
   margin-top: 1rem;
 }
 
-.style-inputs {
-  /* width: 50%; */
-  height: 3rem;
-  padding: .5rem;
-  border: 2px solid #000000;
-  border-radius: 8px;
-  background: transparent;
-  color: #000000; 
-}
-
 .alterar-senha {
   width: 50%;
+}
+
+.link {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.link::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 5px;
+  background-color: var(--primary);
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.link:hover::before {
+  visibility: visible;
+  width: 97%;
 }

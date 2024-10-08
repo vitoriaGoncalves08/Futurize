@@ -211,11 +211,11 @@ function Settings() {
             />
             <Buttons onClick={handleUpdateUser}>Alterar Dados</Buttons>
 
-            <div className="conta">
+            {/* <div className="conta">
               <Link className="link" to="/forgetpasswor">
                 &nbsp;Esqueci minha senha
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
