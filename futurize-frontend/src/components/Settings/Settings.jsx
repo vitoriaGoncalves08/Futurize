@@ -4,19 +4,18 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth"; // Importe o hook de autenticação
 import Buttons from "../Buttons/Buttons";
 import { ToastError, ToastSuccess } from "../Alert/Toast";
+import { Link, useNavigate } from 'react-router-dom';
 
 function Settings() {
   const { getLoginUser } = useAuth(); // Obtém o usuário logado
   const usuarioLogado = getLoginUser(); // Dados do usuário logado
   const usuarioLogadoId = usuarioLogado.id; // ID do usuário logado
+  const navigate = useNavigate();
+
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [confirmarSenha, setConfirmarSenha] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [senhaError, setSenhaError] = useState("");
-  const [confirmarSenhaError, setConfirmarSenhaError] = useState("");
   const [error, setError] = useState("");
   const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT; // Obtém o token de autenticação
 
@@ -40,31 +39,6 @@ function Settings() {
       title: "Sucesso!",
     });
   }
-
-  // Função para validar a senha
-  const isSenhaValida = (senha) => {
-    // Pelo menos uma letra maiúscula
-    if (!/[A-Z]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos uma letra minúscula
-    if (!/[a-z]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos um caractere especial
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos um número
-    if (!/[0-9]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos 8 caracteres
-    if (senha.length < 8) {
-      return false;
-    }
-    return true;
-  };
 
   // Função para buscar os dados do usuário logado
   useEffect(() => {
@@ -106,20 +80,11 @@ function Settings() {
   const handleUpdateUser = async () => {
     // Função para validar se tudo foi atendido
     const isFormValid = () => {
-      if (!email || !confirmarSenha || !senha || !nome) {
+      if (!email || !nome) {
         isFilled("Preencha todos os campos!");
-        return;
-      } else if (senha !== confirmarSenha) {
-        setSenhaError("As senhas não são iguais");
-        setConfirmarSenhaError("As senhas não são iguais");
         return;
       } else if (!isEmailValid(email)) {
         setEmailError("Email inválido");
-        return;
-      } else if (!isSenhaValida(senha)) {
-        setSenhaError(
-          "A senha deve ter 1 caractere minúsculo, 1 maiúsculo e 8 dígitos totais"
-        );
         return;
       }
     };
@@ -137,7 +102,6 @@ function Settings() {
           id: usuarioLogadoId, // Usar o id do usuário logado
           nome,
           email,
-          senha,
         },
         {
           headers: {
@@ -195,27 +159,13 @@ function Settings() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <input
-              className="style-inputs"
-              type="password"
-              placeholder="senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-            <input
-              className="style-inputs"
-              type="password"
-              placeholder="confirmar senha"
-              value={confirmarSenha}
-              onChange={(e) => setConfirmarSenha(e.target.value)}
-            />
             <Buttons onClick={handleUpdateUser}>Alterar Dados</Buttons>
 
-            {/* <div className="conta">
-              <Link className="link" to="/forgetpasswor">
+            <div className="conta">
+              <Link className="link" to="/forgetpassword">
                 &nbsp;Esqueci minha senha
               </Link>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
