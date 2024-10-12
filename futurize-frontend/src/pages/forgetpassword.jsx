@@ -138,6 +138,8 @@ export default function Settings() {
   return (
     <>
       <div className="container">
+        <div className="forget-container">
+          <h2>Esqueci minha senha</h2>
         <input
           className="style-inputs"
           type="password"
@@ -148,18 +150,19 @@ export default function Settings() {
         <input
           className="style-inputs"
           type="password"
-          placeholder="senha"
+          placeholder="senha nova"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
         <input
           className="style-inputs"
           type="password"
-          placeholder="confirmar senha"
+          placeholder="confirmar senha nova"
           value={confirmarSenha}
           onChange={(e) => setConfirmarSenha(e.target.value)}
         />
         <Buttons onClick={handleUpdateUser}>Alterar Dados</Buttons>
+        </div>
       </div>
     </>
   );
