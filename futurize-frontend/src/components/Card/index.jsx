@@ -230,7 +230,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
       return;
     }
 
-    const dataEditActivity = {
+    const dataEditComment = {
       id,
       titulo_comentario,
       descricao_comentario,
@@ -238,7 +238,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
     };
 
     try {
-      const response = await axios.put(`http://localhost:8080/Comentario/${id}`, dataEditActivity, {
+      const response = await axios.put(`http://localhost:8080/Comentario/${id}`, dataEditComment, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -248,13 +248,10 @@ export default function Card({ index, listIndex, data, setTasks}) {
       setCommentEditWindow(false);
 
       if (response.status === 200) {
-        const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
-        setRows(updatedRows);
-        setTasks((prevTasks) => 
-          prevTasks.map((task) => task.id === id ? { ...task, ...dataEditActivity } : task)
-        );
+        await fetchComentario();
         handleClose();
-        addSucessoGeneral('Comentário editado com sucesso!');
+        console.log('Comentario adicionado com sucesso');
+        addSucesso('Comentario adicionado com sucesso');
       } else {
         console.error('Erro ao atualizar os dados no backend.');
         addError('Erro ao atualizar os dados no backend.');
@@ -892,7 +889,6 @@ const theme = createTheme({
                   label="Título"
                   name="titulo_comentario"
                   variant="outlined" 
-                  value={formComment.titulo_comentario}
                   onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
                   sx={{  
                     width: '100%',
@@ -911,7 +907,6 @@ const theme = createTheme({
                   id="descricao_comentario"
                   label="Escreva um comentário"
                   name="descricao_comentario"
-                  value={formComment.descricao_comentario}
                   onChange={(e) => handleInputChangeComment(e, "descricao_comentario")}
                   multiline
                   rows={4}
