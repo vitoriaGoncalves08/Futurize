@@ -20,4 +20,6 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
             "WHERE a.estado = 'CONCLUIDO' AND a.responsavel.id = :responsavelId " +
             "GROUP BY p.titulo")
     List<Object[]> countConcludedActivitiesByProject(@Param("responsavelId") Long responsavelId);
+
+
 }

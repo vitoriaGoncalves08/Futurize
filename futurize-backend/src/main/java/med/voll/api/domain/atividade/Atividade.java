@@ -46,6 +46,8 @@ public class Atividade {
 
     private Boolean ativo;
 
+    private int quantidade_retrabalho = 0;
+
 
     public Atividade(DadosCadastroAtividade dadosCadastroAtividade){
         this.ativo = true;
@@ -59,6 +61,10 @@ public class Atividade {
         this.tempo_execucao = dadosCadastroAtividade.tempo_execucao();
         this.projeto = dadosCadastroAtividade.projeto();
         this.responsavel = dadosCadastroAtividade.responsavel();
+    }
+
+    public void incrementarRetrabalho() {
+        this.quantidade_retrabalho++;
     }
 
     public void atualizarInformacoes(DadosAtualizarAtividade dadosAtualizarAtividade) {
@@ -85,6 +91,13 @@ public class Atividade {
         }
         if(dadosAtualizarAtividade.responsavel() != null){
             this.responsavel = dadosAtualizarAtividade.responsavel();
+        }
+        // Verificar mudança no estado
+        if (dadosAtualizarAtividade.estado() != null && !this.estado.equals(dadosAtualizarAtividade.estado())) {
+            if (dadosAtualizarAtividade.estado().equals(Estado.REFAZENDO)) {
+                incrementarRetrabalho();  // Contabiliza retrabalho
+            }
+            this.estado = dadosAtualizarAtividade.estado(); // Atualiza o estado
         }
 
     }
