@@ -49,7 +49,7 @@ public class AtividadeController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity ExcluirAtividade(@PathVariable Long id){
+    public ResponseEntity ExcluirAtividade(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
