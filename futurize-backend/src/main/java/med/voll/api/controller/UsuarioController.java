@@ -57,13 +57,37 @@ public class UsuarioController {
         return ResponseEntity.ok(new DadosListagemUsuario(usuario));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity AtualizarUsuario(@RequestBody @Valid DadosAtualizarUsuario dadosAtualizarUsuario){
-        var usuario = repository.getReferenceById(dadosAtualizarUsuario.id());
-        usuario.atualizarInformacoes(dadosAtualizarUsuario);
+    public ResponseEntity<?> AtualizarUsuario(@PathVariable Long id, @RequestBody @Valid DadosAtualizarUsuario dadosAtualizarUsuario) {
+        // Verifica se o usuário com o ID existe
+        Usuario usuario = repository.findById(id).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+
+        // Verifica se o e-mail já está em uso por outro usuário
+        Usuario usuarioExistente = repository.findByEmail(dadosAtualizarUsuario.email());
+        if (usuarioExistente != null && !usuarioExistente.getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já cadastrado por outro usuário");
+        }
+
+        // Atualiza os dados do usuário
+        usuario.setNome(dadosAtualizarUsuario.nome());
+        usuario.setEmail(dadosAtualizarUsuario.email());
+
+        // Criptografa a nova senha se for diferente da senha atual
+        if (!usuario.getSenha().equals(dadosAtualizarUsuario.senha())) {
+            usuario.setSenha(passwordEncoder.encode(dadosAtualizarUsuario.senha()));
+        }
+
+        // Salva as atualizações no banco de dados
+        repository.save(usuario);
+
+        // Retorna o status de sucesso e os dados atualizados
         return ResponseEntity.ok(new DadosListagemUsuario(usuario));
     }
+
 
     @DeleteMapping("/{id}")
     @Transactional

@@ -10,18 +10,17 @@ import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ children }) => {
-    const { signout } = useAuth();
-    const navigate = useNavigate();
+  const { signout } = useAuth();
+  const navigate = useNavigate();
 
-    const handleLogout = () => {
-        signout();
-        navigate("/");
-    };
+  const handleLogout = () => {
+    signout();
+    navigate("/");
+  };
 
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
@@ -57,9 +56,9 @@ const Sidebar = ({ children }) => {
             icon: <AppShortcutIcon />
         },
         {
-            path: "/Configuracoes",
-            name: "Configurações",
-            icon: <SettingsIcon />
+          path: "/Settings",
+          name: "Configurações",
+          icon: <SettingsIcon />,
         },
     ]
     return (
@@ -86,7 +85,7 @@ const Sidebar = ({ children }) => {
             </div>
             <main>{children}</main>
         </div>
-    );
+  );
 };
 
 export default Sidebar;
