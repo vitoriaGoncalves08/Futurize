@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Settings.css";
+import Buttons from "../Buttons/Buttons";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth"; // Importe o hook de autenticação
 import Buttons from "../Buttons/Buttons";
@@ -15,7 +16,11 @@ function Settings() {
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [senhaError, setSenhaError] = useState("");
+  const [confirmarSenhaError, setConfirmarSenhaError] = useState("");
   const [error, setError] = useState("");
   const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT; // Obtém o token de autenticação
 
@@ -39,6 +44,31 @@ function Settings() {
       title: "Sucesso!",
     });
   }
+
+  // Função para validar a senha
+  const isSenhaValida = (senha) => {
+    // Pelo menos uma letra maiúscula
+    if (!/[A-Z]/.test(senha)) {
+      return false;
+    }
+    // Pelo menos uma letra minúscula
+    if (!/[a-z]/.test(senha)) {
+      return false;
+    }
+    // Pelo menos um caractere especial
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
+      return false;
+    }
+    // Pelo menos um número
+    if (!/[0-9]/.test(senha)) {
+      return false;
+    }
+    // Pelo menos 8 caracteres
+    if (senha.length < 8) {
+      return false;
+    }
+    return true;
+  };
 
   // Função para buscar os dados do usuário logado
   useEffect(() => {
@@ -80,11 +110,20 @@ function Settings() {
   const handleUpdateUser = async () => {
     // Função para validar se tudo foi atendido
     const isFormValid = () => {
-      if (!email || !nome) {
+      if (!email || !confirmarSenha || !senha || !nome) {
         isFilled("Preencha todos os campos!");
+        return;
+      } else if (senha !== confirmarSenha) {
+        setSenhaError("As senhas não são iguais");
+        setConfirmarSenhaError("As senhas não são iguais");
         return;
       } else if (!isEmailValid(email)) {
         setEmailError("Email inválido");
+        return;
+      } else if (!isSenhaValida(senha)) {
+        setSenhaError(
+          "A senha deve ter 1 caractere minúsculo, 1 maiúsculo e 8 dígitos totais"
+        );
         return;
       }
     };
@@ -112,9 +151,9 @@ function Settings() {
       );
 
       if (response.status === 200) {
-        isSuccess("Dados alterados com sucesso!"); // Mensagem de sucesso
+        setSuccessMessage("Dados alterados com sucesso!"); // Mensagem de sucesso
       } else {
-        isFilled("Erro ao alterar os dados do usuário."); // Mensagem de erro
+        setErrorMessage("Erro ao alterar os dados do usuário.");
       }
     } catch (error) {
       setErrorMessage("Erro ao conectar-se ao backend."); // Mensagem de erro
@@ -147,8 +186,7 @@ function Settings() {
             <input
               className="style-inputs"
               type="text"
-              // placeholder="nome"
-              label="Digite seu Nome"
+              placeholder="nome"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
             />
@@ -167,6 +205,8 @@ function Settings() {
               </Link>
             </div>
           </div>
+          {successMessage && <p className="success-message">{successMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
       </div>
     </div>
