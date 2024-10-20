@@ -48,6 +48,9 @@ public class Atividade {
 
     private int quantidade_retrabalho = 0;
 
+    @Column(name = "mensagem_notificacao")
+    private String mensagemNotificacao;
+
 
     public Atividade(DadosCadastroAtividade dadosCadastroAtividade){
         this.ativo = true;
