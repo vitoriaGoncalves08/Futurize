@@ -107,12 +107,16 @@ public class AtividadeController {
         try {
             String novoEstado = requestBody.get("estado");
             Optional<Atividade> atividadeOptional = repository.findById(id);
-            String mensagem = "Atividade alterada para o estado: " + novoEstado;
+
 
             if (atividadeOptional.isPresent()) {
                 Atividade atividade = atividadeOptional.get();
                 Estado estadoAtual = atividade.getEstado();
                 Estado estadoNovo = Estado.valueOf(novoEstado);
+
+                // Construir a mensagem de notificação com ID e título da atividade
+                String mensagem = "Atividade [" + atividade.getId() + " - " + atividade.getTitulo() +
+                        "] alterada para o estado: " + novoEstado;
                 atividade.setMensagemNotificacao(mensagem);
 
                 // Verificar se o novo estado é "REFAZENDO" e se o estado anterior era diferente de "REFAZENDO"
@@ -133,27 +137,30 @@ public class AtividadeController {
         }
     }
 
-    @GetMapping("/notificacao/{id}")
-    public ResponseEntity<?> verificarNotificacao(@PathVariable Long id) {
-        Optional<Atividade> atividadeOptional = repository.findById(id);
-        if (atividadeOptional.isPresent()) {
-            Atividade atividade = atividadeOptional.get();
-            String mensagem = atividade.getMensagemNotificacao();
+    @GetMapping("/notificacao/{userId}")
+    public ResponseEntity<?> verificarNotificacao(@PathVariable Long userId) {
+        // Obter as atividades do usuário
+        List<Object[]> atividades = repository.findAtividadeIdsAndMensagensByUsuarioOuGestor(userId);
+
+        for (Object[] atividade : atividades) {
+            Long idAtividade = (Long) atividade[0];
+            String mensagem = (String) atividade[1];
 
             if (mensagem != null && !mensagem.isEmpty()) {
                 // Limpa a mensagem de notificação para evitar loop
-                atividade.setMensagemNotificacao("");
-                repository.save(atividade);
+                Optional<Atividade> atividadeOptional = repository.findById(idAtividade);
+                if (atividadeOptional.isPresent()) {
+                    Atividade atividadeEntidade = atividadeOptional.get();
+                    atividadeEntidade.setMensagemNotificacao("");
+                    repository.save(atividadeEntidade);
+                }
 
                 return ResponseEntity.ok(Map.of("mensagem", mensagem));
-            } else {
-                return ResponseEntity.ok(Map.of("mensagem", ""));
             }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Atividade não encontrada.");
         }
-    }
 
+        return ResponseEntity.ok(Map.of("mensagem", ""));
+    }
 
     @PutMapping("/notificacao/limpar/{id}")
     public ResponseEntity<?> limparNotificacao(@PathVariable Long id) {

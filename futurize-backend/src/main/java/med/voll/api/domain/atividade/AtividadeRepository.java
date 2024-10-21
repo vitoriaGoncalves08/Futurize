@@ -94,4 +94,11 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     List<Object[]> findAtividadesConcluidasPorUsuario(@Param("projetoId") Long projetoId);
 
 
+    @Query("SELECT DISTINCT atividade.Id , atividade.mensagemNotificacao " +
+            "FROM atividade atividade " +
+            "JOIN atividade.projeto projeto " +
+            "LEFT JOIN alocacao_projeto ap " +
+            "WHERE ap.usuario.id = :userId OR projeto.gestor = :userId")
+    List<Object[]> findAtividadeIdsAndMensagensByUsuarioOuGestor(@Param("userId") Long userId);
+
 }
