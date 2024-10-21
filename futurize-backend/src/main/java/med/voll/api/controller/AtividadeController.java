@@ -43,6 +43,12 @@ public class AtividadeController {
     @PutMapping("/{id}")
     public ResponseEntity AtualizarAtividade(@PathVariable Long id, @RequestBody @Valid DadosAtualizarAtividade dadosAtualizarAtividade){
         var atividade = repository.getReferenceById(id);
+
+        // Construir a mensagem de notificação com ID e título da atividade
+        String mensagem = "Atividade [" + atividade.getTitulo() +
+                "] foi atualizada com sucesso, entre no app para visualizar as mudanças!";
+        atividade.setMensagemNotificacao(mensagem);
+
         atividade.atualizarInformacoes(dadosAtualizarAtividade);
         return ResponseEntity.ok(new DadosListagemAtividade(atividade));
     }
@@ -115,7 +121,7 @@ public class AtividadeController {
                 Estado estadoNovo = Estado.valueOf(novoEstado);
 
                 // Construir a mensagem de notificação com ID e título da atividade
-                String mensagem = "Atividade [" + atividade.getId() + " - " + atividade.getTitulo() +
+                String mensagem = "Atividade [" + atividade.getTitulo() +
                         "] alterada para o estado: " + novoEstado;
                 atividade.setMensagemNotificacao(mensagem);
 
