@@ -96,6 +96,21 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/buscar/{email}")
+    public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email) {
+        // Busca o usuário pelo e-mail
+        Usuario usuario = repository.findByEmail(email);
+
+        // Verifica se o usuário foi encontrado
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+
+        // Retorna o usuário encontrado
+        return ResponseEntity.ok(new DadosListagemUsuario(usuario));
+    }
+
+
     // @CrossOrigin("*")
     //@PostMapping("/login")
     // public ResponseEntity<Object> login(@RequestBody Usuario data) {
