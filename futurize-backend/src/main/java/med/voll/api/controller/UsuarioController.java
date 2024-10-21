@@ -99,15 +99,15 @@ public class UsuarioController {
     // @CrossOrigin("*")
     //@PostMapping("/login")
     // public ResponseEntity<Object> login(@RequestBody Usuario data) {
-        //    Usuario usuario = repository.findByEmail(data.getEmail());
+    //    Usuario usuario = repository.findByEmail(data.getEmail());
 
-        //    if (usuario != null && usuario.getSenha().equals(data.getSenha())) {
-            //        // Adicione o ID do usuário no corpo da resposta
-            //        return ResponseEntity.ok(usuario.getId());
-            //    } else if (usuario == null) {
-            //        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não cadastrado");
-            //    } else {
-            //        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha incorretos");
-            //     }
-        //}
+    //    if (usuario != null && usuario.getSenha().equals(data.getSenha())) {
+    //        // Adicione o ID do usuário no corpo da resposta
+    //        return ResponseEntity.ok(usuario.getId());
+    //    } else if (usuario == null) {
+    //        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não cadastrado");
+    //    } else {
+    //        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha incorretos");
+    //     }
+    //}
 }

@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Settings.css";
-import Buttons from "../Buttons/Buttons";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth"; // Importe o hook de autenticação
 import Buttons from "../Buttons/Buttons";
 import { ToastError, ToastSuccess } from "../Alert/Toast";
-import { Link, useNavigate } from 'react-router-dom';
 
 function Settings() {
   const { getLoginUser } = useAuth(); // Obtém o usuário logado
   const usuarioLogado = getLoginUser(); // Dados do usuário logado
   const usuarioLogadoId = usuarioLogado.id; // ID do usuário logado
-  const navigate = useNavigate();
-
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -141,6 +137,7 @@ function Settings() {
           id: usuarioLogadoId, // Usar o id do usuário logado
           nome,
           email,
+          senha,
         },
         {
           headers: {
@@ -151,12 +148,12 @@ function Settings() {
       );
 
       if (response.status === 200) {
-        setSuccessMessage("Dados alterados com sucesso!"); // Mensagem de sucesso
+        isSuccess("Dados alterados com sucesso!"); // Mensagem de sucesso
       } else {
-        setErrorMessage("Erro ao alterar os dados do usuário.");
+        isFilled("Erro ao alterar os dados do usuário."); // Mensagem de erro
       }
     } catch (error) {
-      setErrorMessage("Erro ao conectar-se ao backend."); // Mensagem de erro
+      setError("Erro ao conectar-se ao backend."); // Mensagem de erro
       console.error("Erro ao conectar-se ao backend:", error);
     }
   };
@@ -186,7 +183,8 @@ function Settings() {
             <input
               className="style-inputs"
               type="text"
-              placeholder="nome"
+              // placeholder="nome"
+              label="Digite seu Nome"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
             />
@@ -197,16 +195,22 @@ function Settings() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            <input
+              className="style-inputs"
+              type="password"
+              placeholder="senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+            <input
+              className="style-inputs"
+              type="password"
+              placeholder="confirmar senha"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
+            />
             <Buttons onClick={handleUpdateUser}>Alterar Dados</Buttons>
-
-            <div className="conta">
-              <Link className="link" to="/forgetpassword">
-                &nbsp;Esqueci minha senha
-              </Link>
-            </div>
           </div>
-          {successMessage && <p className="success-message">{successMessage}</p>}
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
       </div>
     </div>

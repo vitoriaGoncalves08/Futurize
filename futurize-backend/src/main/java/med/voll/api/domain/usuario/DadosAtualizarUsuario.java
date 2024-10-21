@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record DadosAtualizarUsuario(
-        @NotNull
         Long id,
         String nome,
         String email,

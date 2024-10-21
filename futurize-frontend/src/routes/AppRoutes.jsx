@@ -12,7 +12,6 @@ import useAuth from '../hooks/useAuth';
 import App from '../Teste';
 import { AuthProvider } from '../context/auth';
 import Settings from "../pages/settings";
-import ForgetPassword from "../pages/forgetpassword";
 
 const PrivateRoute = ({ children }) => {
   const { signed } = useAuth();
@@ -50,14 +49,6 @@ export default function AppRoutes() {
             element={
               <PrivateRoute>
                 <Settings />
-              </PrivateRoute>
-            }
-            />
-          <Route
-            path="/forgetpassword"
-            element={
-              <PrivateRoute>
-                <ForgetPassword />
               </PrivateRoute>
             }
             />
