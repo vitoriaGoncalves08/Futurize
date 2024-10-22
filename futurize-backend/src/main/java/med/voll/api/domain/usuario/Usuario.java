@@ -2,6 +2,7 @@ package med.voll.api.domain.usuario;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,9 @@ public class Usuario implements UserDetails {
     private String email;
     private String senha;
     private Boolean ativo;
+
+    @Autowired
+    private EmailService emailService;
 
     public Usuario(DadosCadastroUsuario dados) {
         this.ativo = true;
