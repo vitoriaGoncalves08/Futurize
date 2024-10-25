@@ -106,7 +106,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/Atividade/${projectId}`, {
+        `https://deployfuturize-production.up.railway.app/Atividade/${projectId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -161,7 +161,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
     try {
       console.log('atividade', activityData);
       const response = await axios.post(
-        `http://localhost:8080/Atividade`,
+        `https://deployfuturize-production.up.railway.app/Atividade`,
         activityData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -193,7 +193,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/${projectId}`,{
+          `https://deployfuturize-production.up.railway.app/Alocacao_projeto/${projectId}`,{
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',

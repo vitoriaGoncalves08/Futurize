@@ -126,7 +126,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
   // Função para carregar o comentário do backend
   const fetchComentario = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/Comentario/${data.id}`, {
+      const response = await axios.get(`https://deployfuturize-production.up.railway.app/Comentario/${data.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
     try {
       console.log('atividade', activityData);
       const response = await axios.post(
-        `http://localhost:8080/Comentario`,
+        `https://deployfuturize-production.up.railway.app/Comentario`,
         activityData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -238,7 +238,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
     };
 
     try {
-      const response = await axios.put(`http://localhost:8080/Comentario/${id}`, dataEditComment, {
+      const response = await axios.put(`https://deployfuturize-production.up.railway.app/Comentario/${id}`, dataEditComment, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -296,7 +296,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
       }
       
       // Faça a chamada de API para excluir a atividade no backend
-      await axios.delete(`http://localhost:8080/Comentario/${idToDelete}`,{
+      await axios.delete(`https://deployfuturize-production.up.railway.app/Comentario/${idToDelete}`,{
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -324,7 +324,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
   // Função para carregar o tempo de execução do backend
   const loadExecutionTime = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/Atividade/${data.id}/tempo-execucao`, {
+      const response = await axios.get(`https://deployfuturize-production.up.railway.app/Atividade/${data.id}/tempo-execucao`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -379,7 +379,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
   const saveExecutionTime = async (executionTime) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/Atividade/${data.id}/tempo-execucao`,
+        `https://deployfuturize-production.up.railway.app/Atividade/${data.id}/tempo-execucao`,
         executionTime,
         {
           headers: {
@@ -505,7 +505,7 @@ const handleClose = () => {
       }
 
       // Faça a chamada de API para excluir a atividade no backend
-      await axios.delete(`http://localhost:8080/Atividade/${idToDelete}`,{
+      await axios.delete(`https://deployfuturize-production.up.railway.app/Atividade/${idToDelete}`,{
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -580,7 +580,7 @@ const handleClose = () => {
     };
 
     try {
-      const response = await axios.put(`http://localhost:8080/Atividade/${id}`, dataEditActivity, {
+      const response = await axios.put(`https://deployfuturize-production.up.railway.app/Atividade/${id}`, dataEditActivity, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -627,7 +627,7 @@ const handleClose = () => {
 const fetchProjectMembers = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:8080/Alocacao_projeto/${projectId}`,{
+      `https://deployfuturize-production.up.railway.app/Alocacao_projeto/${projectId}`,{
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

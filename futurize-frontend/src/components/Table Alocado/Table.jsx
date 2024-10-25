@@ -62,7 +62,7 @@ export default function TableAlocado() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/porUser/${usuarioLogadoId}`, {
+          `https://deployfuturize-production.up.railway.app/Alocacao_projeto/porUser/${usuarioLogadoId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',

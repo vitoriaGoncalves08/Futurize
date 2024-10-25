@@ -77,7 +77,7 @@ function Settings() {
 
         // Faz a requisição para buscar os dados do usuário pelo ID
         const response = await axios.get(
-          `http://localhost:8080/Usuario/${usuarioLogadoId}`, // Endpoint para buscar o usuário
+          `https://deployfuturize-production.up.railway.app/Usuario/${usuarioLogadoId}`, // Endpoint para buscar o usuário
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -132,7 +132,7 @@ function Settings() {
 
       // Faz a requisição para atualizar os dados do usuário
       const response = await axios.put(
-        `http://localhost:8080/Usuario/${usuarioLogadoId}`, // Endpoint para atualizar o usuário
+        `https://deployfuturize-production.up.railway.app/Usuario/${usuarioLogadoId}`, // Endpoint para atualizar o usuário
         {
           id: usuarioLogadoId, // Usar o id do usuário logado
           nome,

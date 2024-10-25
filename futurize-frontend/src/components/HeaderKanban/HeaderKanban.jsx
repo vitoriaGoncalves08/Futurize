@@ -44,7 +44,7 @@ export default function HeaderKanban() {
   useEffect(() => {
     const fetchUsuarios = async () => { 
       try {
-        const response = await axios.get('http://localhost:8080/Usuario',{
+        const response = await axios.get('https://deployfuturize-production.up.railway.app/Usuario',{
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export default function HeaderKanban() {
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/${projectId}`, {
+          `https://deployfuturize-production.up.railway.app/Alocacao_projeto/${projectId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ export default function HeaderKanban() {
 
       try {
         const response = await axios.post(
-          'http://localhost:8080/Alocacao_projeto', newMemberData ,{
+          'https://deployfuturize-production.up.railway.app/Alocacao_projeto', newMemberData ,{
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ export default function HeaderKanban() {
     addSucessoGeneral('Membro excluído com sucesso!');
     try {
       const response = await axios.delete(
-        `http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`, {
+        `https://deployfuturize-production.up.railway.app/Alocacao_projeto/${projectId}/${selectedUserId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',

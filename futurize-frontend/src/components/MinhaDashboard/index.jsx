@@ -24,7 +24,7 @@ const MinhaDashboard = () => {
         const fetchData = async () => {
             try {
                 // Atividades Concluídas por Projeto
-                const responseAtividadesConcluidasPProjeto = await axios.get(`http://localhost:8080/dashboard/atividades-concluidas-por-projeto/${userId}`, {
+                const responseAtividadesConcluidasPProjeto = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard/atividades-concluidas-por-projeto/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -39,7 +39,7 @@ const MinhaDashboard = () => {
                 setAtividadesConcluidasPProjeto(transformedAtividadesConcluidas);
                 
                 // Minhas atividades
-                const responseMinhasAtividades = await axios.get(`http://localhost:8080/dashboard/atividades/${userId}`, {
+                const responseMinhasAtividades = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard/atividades/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -54,7 +54,7 @@ const MinhaDashboard = () => {
                 setMinhasAtividades(transformedMinhasAtividades);
 
                 // Projetos Criados
-                const responseProjetosCriados = await axios.get(`http://localhost:8080/dashboard/projetos-criados/${userId}`, {
+                const responseProjetosCriados = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard/projetos-criados/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -62,7 +62,7 @@ const MinhaDashboard = () => {
                 setProjetosCriados(responseProjetosCriados.data);
 
                 // Projetos Alocados
-                const responseProjetosAlocados = await axios.get(`http://localhost:8080/dashboard/projetos-alocados/${userId}`, {
+                const responseProjetosAlocados = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard/projetos-alocados/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -70,7 +70,7 @@ const MinhaDashboard = () => {
                 setProjetosAlocados(responseProjetosAlocados.data);
 
                 // Projetos Concluídos
-                const responseProjetosConcluidos = await axios.get(`http://localhost:8080/dashboard/projetos-concluidos/${userId}`, {
+                const responseProjetosConcluidos = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard/projetos-concluidos/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -78,7 +78,7 @@ const MinhaDashboard = () => {
                 setProjetosConcluidos(responseProjetosConcluidos.data);
 
                 // Atividades Em Andamento
-                const responseAtividadesAndamento = await axios.get(`http://localhost:8080/dashboard/atividades-andamento/${userId}`, {
+                const responseAtividadesAndamento = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard/atividades-andamento/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

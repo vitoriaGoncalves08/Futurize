@@ -120,7 +120,7 @@ export default function TableC() {
             return;
         }
 
-        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogadoId}`, {
+        const response = await axios.get(`https://deployfuturize-production.up.railway.app/Projeto/porUsuario/${usuarioLogadoId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ export default function TableC() {
             return;
         }
 
-        const response = await axios.post("http://localhost:8080/Projeto", newRow, {
+        const response = await axios.post("https://deployfuturize-production.up.railway.app/Projeto", newRow, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -192,7 +192,7 @@ export default function TableC() {
             return;
         }
 
-        await axios.delete(`http://localhost:8080/Projeto/${idToDelete}`, {
+        await axios.delete(`https://deployfuturize-production.up.railway.app/Projeto/${idToDelete}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -252,7 +252,7 @@ export default function TableC() {
         return;
       }
   
-      const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData, {
+      const response = await axios.put(`https://deployfuturize-production.up.railway.app/Projeto/${id}`, updatedProjectData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -291,7 +291,7 @@ export default function TableC() {
       };
 
       axios
-        .post('http://localhost:8080/Alocacao_projeto', newMemberData,{
+        .post('https://deployfuturize-production.up.railway.app/Alocacao_projeto', newMemberData,{
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',

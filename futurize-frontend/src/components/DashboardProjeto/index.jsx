@@ -50,7 +50,7 @@ const DashboardProjeto = () => {
     useEffect(() => {
         const fetchProjetos = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${userId}`, {
+                const response = await axios.get(`https://deployfuturize-production.up.railway.app/Projeto/porUsuario/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -76,7 +76,7 @@ const DashboardProjeto = () => {
     useEffect(() => {
         const fetchAtividades = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/dashboard-projeto/listagem-das-atividades-por-projeto/${userId}/${projeto}`, {
+                const response = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard-projeto/listagem-das-atividades-por-projeto/${userId}/${projeto}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -96,7 +96,7 @@ const DashboardProjeto = () => {
         const fetchData = async () => {
             try {
                 // Total de atividades não iniciadas
-                const responseAtividadesNIniciadasPProjeto = await axios.get(`http://localhost:8080/dashboard-projeto/total-atividades-nao-iniciadas-por-projeto/${userId}/${projeto}`, {
+                const responseAtividadesNIniciadasPProjeto = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard-projeto/total-atividades-nao-iniciadas-por-projeto/${userId}/${projeto}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -104,7 +104,7 @@ const DashboardProjeto = () => {
                 setAtividadesNIniciadasPProjeto(responseAtividadesNIniciadasPProjeto.data);
 
                 // Total de atividades para concluir
-                const responseAtividadesParaConcluirPProjeto = await axios.get(`http://localhost:8080/dashboard-projeto/total-atividades-nao-concluidas/${userId}/${projeto}`, {
+                const responseAtividadesParaConcluirPProjeto = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard-projeto/total-atividades-nao-concluidas/${userId}/${projeto}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -113,7 +113,7 @@ const DashboardProjeto = () => {
 
 
                 // Total de atividades refeitas
-                const responseAtividadesRefeitasPProjeto = await axios.get(`http://localhost:8080/dashboard-projeto/total-atividades-refeitas/${userId}/${projeto}`, {
+                const responseAtividadesRefeitasPProjeto = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard-projeto/total-atividades-refeitas/${userId}/${projeto}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -122,7 +122,7 @@ const DashboardProjeto = () => {
 
 
                 // Integrante com mais entregas
-                const responseIntegranteMaisEntregasPProjeto = await axios.get(`http://localhost:8080/dashboard-projeto/usuario-mais-atividades-concluidas/${projeto}`, {
+                const responseIntegranteMaisEntregasPProjeto = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard-projeto/usuario-mais-atividades-concluidas/${projeto}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -141,7 +141,7 @@ const DashboardProjeto = () => {
 
 
                 // Atividades Concluidas Por Projeto
-                const responseAtividadesConcluidasPProjeto = await axios.get(`http://localhost:8080/dashboard-projeto/atividades-concluidas-por-projeto/${userId}/${projeto}`, {
+                const responseAtividadesConcluidasPProjeto = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard-projeto/atividades-concluidas-por-projeto/${userId}/${projeto}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -160,7 +160,7 @@ const DashboardProjeto = () => {
                 }
 
                 // TODAS ATIVIDADES
-                const responseMinhasAtividades = await axios.get(`http://localhost:8080/dashboard-projeto/total-atividades-por-projeto/${userId}/${projeto}`, {
+                const responseMinhasAtividades = await axios.get(`https://deployfuturize-production.up.railway.app/dashboard-projeto/total-atividades-por-projeto/${userId}/${projeto}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

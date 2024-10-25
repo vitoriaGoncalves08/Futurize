@@ -72,7 +72,7 @@ export default function Board() {
   const fetchProjectMembers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/Alocacao_projeto/${projectId}`,{
+        `https://deployfuturize-production.up.railway.app/Alocacao_projeto/${projectId}`,{
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export default function Board() {
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/Atividade/${projectId}`,{
+        `https://deployfuturize-production.up.railway.app/Atividade/${projectId}`,{
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ export default function Board() {
   async function updateTask(taskId, newState) {
     try {
         const response = await axios.put(
-            `http://localhost:8080/Atividade/${taskId}`,
+            `https://deployfuturize-production.up.railway.app/Atividade/${taskId}`,
             {
                 estado: newState, // Envia apenas o estado atualizado
             },
@@ -160,7 +160,7 @@ export default function Board() {
 const updateTaskState = async (taskId, newState) => {
   try {
       const response = await axios.put(
-          `http://localhost:8080/Atividade/${taskId}/estado`,
+          `https://deployfuturize-production.up.railway.app/Atividade/${taskId}/estado`,
           { estado: newState },
           {
               headers: {
@@ -216,7 +216,7 @@ const onDragEnd = (result) => {
   async function updateTask(taskId, newState) {
     try {
       const response = await axios.put(
-        `http://localhost:8080/Atividade/${taskId}`,
+        `https://deployfuturize-production.up.railway.app/Atividade/${taskId}`,
         {
           id: taskId, // Certifique-se de incluir o ID aqui
           estado: newState,
