@@ -69,10 +69,10 @@ public class DashboardProjetoController {
     }
 
     //Integrante com mais entregas
-    @GetMapping("/usuario-mais-atividades-concluidas/{projetoId}")
-    public ResponseEntity<List<Object[]>> getUsuarioMaisAtividadesConcluidas(@PathVariable Long projetoId) {
+    @GetMapping("/usuario-mais-atividades-concluidas/{userId}/{projetoId}")
+    public ResponseEntity<List<Object[]>> getUsuarioMaisAtividadesConcluidas(@PathVariable Long userId, @PathVariable Long projetoId) {
         // 1. Buscar as atividades concluídas por cada usuário
-        List<Object[]> usuariosAtividades = atividadeRepository.findAtividadesConcluidasPorUsuario(projetoId);
+        List<Object[]> usuariosAtividades = atividadeRepository.findAtividadesConcluidasPorUsuario(userId, projetoId);
 
         // 2. Encontrar o valor máximo de atividades concluídas
         Long maxAtividadesConcluidas = usuariosAtividades.stream()
