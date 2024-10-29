@@ -107,7 +107,7 @@ export default function TableAlocado() {
   return (
     <div className="table">
       <div className="meus-projetos">
-        <h1 className="subtitulo">Projetos que participo</h1>
+        <h1 className="subtitulo">Trabalhos que participo</h1>
       </div>
       <TableContainer
         component={Paper}
@@ -121,7 +121,7 @@ export default function TableAlocado() {
         {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
         <Table sx={{ minWidth: 1500 }} aria-label="simple table">
           <TableHead>
-            <TableRow className="row">
+            <TableRow className="row" style={{background: '#4F4FFF'}}>
               <TableCell className="cel">TÍtulo</TableCell>
               <TableCell className="cel">Data de Início</TableCell>
               <TableCell className="cel">Data de Término</TableCell>

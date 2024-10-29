@@ -317,7 +317,7 @@ export default function TableC() {
   return (
     <div className='table'>
        <div className='meus-projetos'>
-        <h1 className="subtitulo">Meus Projetos</h1>
+        <h1 className="subtitulo">Meus Trabalhos</h1>
         <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
           +
         </Buttons>
@@ -367,7 +367,7 @@ export default function TableC() {
       </TableContainer>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Novo Projeto</DialogTitle>
+        <DialogTitle>Novo Trabalho</DialogTitle>
         <DialogContent>
           <Input
             autoFocus
@@ -421,7 +421,7 @@ export default function TableC() {
       </Dialog>
 
       <Dialog open={editOpen} onClose={handleEditClose}>
-    <DialogTitle>Editar Projeto</DialogTitle>
+    <DialogTitle>Atualizar Trabalho</DialogTitle>
     <DialogContent>
       <Input
         autoFocus
