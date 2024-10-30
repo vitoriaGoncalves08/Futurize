@@ -149,19 +149,22 @@ public class AtividadeController {
         List<Object[]> atividades = repository.findAtividadeIdsAndMensagensByUsuarioOuGestor(userId);
 
         for (Object[] atividade : atividades) {
-            Long idAtividade = (Long) atividade[0];
-            String mensagem = (String) atividade[1];
+            // Verifique se o array tem pelo menos dois elementos
+            if (atividade.length >= 2) {
+                Long idAtividade = (atividade[0] != null) ? (Long) atividade[0] : null;
+                String mensagem = (atividade[1] != null) ? atividade[1].toString() : "";
 
-            if (mensagem != null && !mensagem.isEmpty()) {
-                // Limpa a mensagem de notificação para evitar loop
-                Optional<Atividade> atividadeOptional = repository.findById(idAtividade);
-                if (atividadeOptional.isPresent()) {
-                    Atividade atividadeEntidade = atividadeOptional.get();
-                    atividadeEntidade.setMensagemNotificacao("");
-                    repository.save(atividadeEntidade);
+                if (mensagem != null && !mensagem.isEmpty() && idAtividade != null) {
+                    // Limpa a mensagem de notificação para evitar loop
+                    Optional<Atividade> atividadeOptional = repository.findById(idAtividade);
+                    if (atividadeOptional.isPresent()) {
+                        Atividade atividadeEntidade = atividadeOptional.get();
+                        atividadeEntidade.setMensagemNotificacao("");
+                        repository.save(atividadeEntidade);
+
+                        return ResponseEntity.ok(Map.of("mensagem", mensagem));
+                    }
                 }
-
-                return ResponseEntity.ok(Map.of("mensagem", mensagem));
             }
         }
 

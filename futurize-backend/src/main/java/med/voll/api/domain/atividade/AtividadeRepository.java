@@ -17,81 +17,81 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     Long countAtividadesAndamentoByUserId(@Param("userId") Long userId);
 
     //Listagem de todas as atividades por projeto
-    @Query("SELECT a " +
-            "FROM alocacao_projeto ap " +
-            "JOIN atividade a " +
-            "JOIN ap.projeto p " +
-            "JOIN ap.usuario u " +
-            "WHERE ap.usuario.id = :userId " +
-            "AND ap.projeto.id = :projetoId")
+    @Query("SELECT a FROM atividade a " +
+            "JOIN a.projeto p " +
+            "WHERE p.gestor = :userId " +
+            "AND p.id = :projetoId")
     List<Object[]> findAtividadesByUsuarioAndProjeto(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
 
     //Atividades Concluidas Por Projeto
-    @Query("SELECT " +
+    @Query(value = "SELECT " +
             "COUNT(CASE WHEN a.estado = 'CONCLUIDO' THEN 1 END) AS totalAtividadesConcluidas, " +
-            "COUNT(a.Id) AS totalAtividades " +
-            "FROM alocacao_projeto ap " +
-            "JOIN atividade a " +
-            "JOIN ap.projeto p " +
-            "WHERE ap.usuario.id = :userId " +
-            "AND ap.projeto.id = :projetoId")
+            "COUNT(a.id) AS totalAtividades " +
+            "FROM atividade a " +
+            "JOIN projeto p ON a.id_projeto = p.id " +
+            "WHERE p.gestor = :userId " +
+            "AND p.id = :projetoId",
+            nativeQuery = true)
     Object[] countAtividadesConcluidasAndTotal(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Todas atividades
-    @Query("SELECT COUNT(a.Id), a.estado " +
-            "FROM alocacao_projeto ap " +
-            "JOIN atividade a " +
-            "JOIN ap.projeto p " +
-            "JOIN ap.usuario u " +
-            "WHERE ap.usuario.id = :userId " +
-            "AND ap.projeto.id = :projetoId " +
-            "GROUP BY a.estado")
+    @Query(value = "SELECT COUNT(a.id), a.estado " +
+            "FROM atividade a " +
+            "JOIN projeto p ON a.id_projeto = p.id " +
+            "WHERE p.gestor = :userId " +
+            "AND p.id = :projetoId " +
+            "GROUP BY a.estado",
+            nativeQuery = true)
     List<Object[]> countAtividadesByEstadoAndProjeto(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Total de atividades não iniciadas
-    @Query("SELECT COUNT(a.Id) " +
+    @Query(value = "SELECT COUNT(a.id) " +
             "FROM alocacao_projeto ap " +
-            "JOIN atividade a " +
-            "JOIN ap.projeto p " +
-            "JOIN ap.usuario u " +
-            "WHERE ap.usuario.id = :userId " +
-            "AND ap.projeto.id = :projetoId " +
-            "AND (a.estado = 'TOTAL_TAREFAS' OR a.estado = 'TAREFAS_A_FAZER')")
+            "JOIN atividade a ON a.id_projeto = ap.id_projeto " +
+            "JOIN projeto p ON p.id = ap.id_projeto " +
+            "WHERE p.gestor = :userId " +
+            "AND ap.id_projeto = :projetoId " +
+            "AND (a.estado = 'TOTAL_TAREFAS' OR a.estado = 'TAREFAS_A_FAZER')",
+            nativeQuery = true)
     Long countAtividadesNaoIniciadas(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Total de atividades para concluir
-    @Query("SELECT COUNT(a.Id) " +
+    @Query(value = "SELECT COUNT(a.id) " +
             "FROM alocacao_projeto ap " +
-            "JOIN atividade a " +
-            "JOIN ap.projeto p " +
-            "JOIN ap.usuario u " +
-            "WHERE ap.usuario.id = :userId " +
-            "AND ap.projeto.id = :projetoId " +
-            "AND a.estado <> 'CONCLUIDO'")
+            "JOIN atividade a ON a.id_projeto = ap.id_projeto " +
+            "JOIN projeto p ON p.id = ap.id_projeto " +
+            "WHERE p.gestor = :userId " +
+            "AND ap.id_projeto = :projetoId " +
+            "AND a.estado <> 'CONCLUIDO'",
+            nativeQuery = true)
     Long countAtividadesNaoConcluidas(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Total de atividades refeitas
-    @Query("SELECT COUNT(a.Id) " +
+    @Query(value = "SELECT COUNT(a.id) " +
             "FROM alocacao_projeto ap " +
-            "JOIN atividade a " +
-            "JOIN ap.projeto p " +
-            "JOIN ap.usuario u " +
-            "WHERE ap.usuario.id = :userId " +
-            "AND ap.projeto.id = :projetoId " +
-            "AND a.quantidade_retrabalho > 0")
+            "JOIN atividade a ON a.id_projeto = ap.id_projeto " +
+            "JOIN projeto p ON p.id = ap.id_projeto " +
+            "WHERE p.gestor = :userId " +
+            "AND ap.id_projeto = :projetoId " +
+            "AND a.quantidade_retrabalho > 0",
+            nativeQuery = true)
     Long countAtividadesRefeitas(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Integrante com mais entregas
     //Contar atividades concluídas por usuário
-    @Query("SELECT u.id AS idUsuario, u.nome AS nomeUsuario, u.email AS emailUsuario, COUNT(a.Id) AS totalAtividadesConcluidas " +
+    @Query(value = "SELECT u.id AS idUsuario, u.nome AS nomeUsuario, u.email AS emailUsuario, " +
+            "COUNT(a.id) AS totalAtividadesConcluidas " +
             "FROM alocacao_projeto ap " +
-            "JOIN atividade a " +
-            "JOIN a.responsavel u " +
+            "JOIN projeto p ON p.id = ap.id_projeto " +
+            "JOIN atividade a ON a.id_projeto = p.id " +
+            "JOIN usuario u ON u.id = a.responsavel " +
             "WHERE a.estado = 'CONCLUIDO' " +
-            "AND ap.projeto.id = :projetoId " +
-            "GROUP BY u.id, u.nome, u.email")
-    List<Object[]> findAtividadesConcluidasPorUsuario(@Param("projetoId") Long projetoId);
+            "AND p.gestor = :userId " +
+            "AND ap.id_projeto = :projetoId " +
+            "GROUP BY u.id, u.nome, u.email",
+            nativeQuery = true)
+    List<Object[]> findAtividadesConcluidasPorUsuario(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
 
     @Query("SELECT DISTINCT atividade.Id , atividade.mensagemNotificacao " +

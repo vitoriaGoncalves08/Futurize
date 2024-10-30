@@ -36,6 +36,7 @@ const DashboardProjeto = () => {
     const { getLoginUser } = useAuth();
     const usuarioLogado = getLoginUser();
     const userId = usuarioLogado.id;
+    console.log("USER AQUI",usuarioLogado.id);
 
     const [projetos, setProjetos] = useState([]); // Armazenar projetos
     const [projeto, setProjeto] = useState('');   // Armazenar o projeto selecionado

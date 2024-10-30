@@ -230,7 +230,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
       return;
     }
 
-    const dataEditComment = {
+    const dataEditActivity = {
       id,
       titulo_comentario,
       descricao_comentario,
@@ -248,10 +248,13 @@ export default function Card({ index, listIndex, data, setTasks}) {
       setCommentEditWindow(false);
 
       if (response.status === 200) {
-        await fetchComentario();
+        const updatedRows = rows.map((row) => row.id === id ? { ...row, ...dataEditActivity } : row);
+        setRows(updatedRows);
+        setTasks((prevTasks) => 
+          prevTasks.map((task) => task.id === id ? { ...task, ...dataEditActivity } : task)
+        );
         handleClose();
-        console.log('Comentario adicionado com sucesso');
-        addSucesso('Comentario adicionado com sucesso');
+        addSucessoGeneral('Comentário editado com sucesso!');
       } else {
         console.error('Erro ao atualizar os dados no backend.');
         addError('Erro ao atualizar os dados no backend.');
@@ -889,6 +892,7 @@ const theme = createTheme({
                   label="Título"
                   name="titulo_comentario"
                   variant="outlined" 
+                  value={formComment.titulo_comentario}
                   onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
                   sx={{  
                     width: '100%',
@@ -907,6 +911,7 @@ const theme = createTheme({
                   id="descricao_comentario"
                   label="Escreva um comentário"
                   name="descricao_comentario"
+                  value={formComment.descricao_comentario}
                   onChange={(e) => handleInputChangeComment(e, "descricao_comentario")}
                   multiline
                   rows={4}
