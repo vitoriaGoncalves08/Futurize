@@ -46,7 +46,7 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     List<Object[]> countAtividadesByEstadoAndProjeto(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Total de atividades não iniciadas
-    @Query(value = "SELECT COUNT(a.id) " +
+    @Query(value = "SELECT COUNT(DISTINCT a.id) " +
             "FROM alocacao_projeto ap " +
             "JOIN atividade a ON a.id_projeto = ap.id_projeto " +
             "JOIN projeto p ON p.id = ap.id_projeto " +
@@ -57,7 +57,7 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     Long countAtividadesNaoIniciadas(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Total de atividades para concluir
-    @Query(value = "SELECT COUNT(a.id) " +
+    @Query(value = "SELECT COUNT(DISTINCT a.id) " +
             "FROM alocacao_projeto ap " +
             "JOIN atividade a ON a.id_projeto = ap.id_projeto " +
             "JOIN projeto p ON p.id = ap.id_projeto " +
@@ -68,7 +68,7 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     Long countAtividadesNaoConcluidas(@Param("userId") Long userId, @Param("projetoId") Long projetoId);
 
     //Total de atividades refeitas
-    @Query(value = "SELECT COUNT(a.id) " +
+    @Query(value = "SELECT COUNT(DISTINCT a.id) " +
             "FROM alocacao_projeto ap " +
             "JOIN atividade a ON a.id_projeto = ap.id_projeto " +
             "JOIN projeto p ON p.id = ap.id_projeto " +
