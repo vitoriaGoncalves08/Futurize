@@ -28,6 +28,7 @@ public class Usuario implements UserDetails {
     @Autowired
     private EmailService emailService;
 
+
     public Usuario(DadosCadastroUsuario dados) {
         this.ativo = true;
         this.nome = dados.nome();
@@ -46,6 +47,9 @@ public class Usuario implements UserDetails {
         if(dadosAtualizarUsuario.senha() != null){
             this.senha = dadosAtualizarUsuario.senha();
         }
+        emailService.enviarEmailTexto(dadosAtualizarUsuario.getEmail(),
+                "Atualização de cadastro",
+                "E-mail de verificação");
     }
 
     public void excluir() {
