@@ -35,6 +35,7 @@ export default function TableC() {
   const [estado, setEstado] = useState("");
   const [error, setError] = useState();
   const [rows, setRows] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
@@ -140,7 +141,7 @@ export default function TableC() {
       }
     };
     fetchData(); // Chame a função para buscar os dados ao carregar a página
-  }, []);
+  }, [refresh]); // Agora o useEffect será executado toda vez que `refresh` mudar.
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -179,13 +180,12 @@ export default function TableC() {
       );
 
       if (response.status === 200) {
-        const updatedRows = [...rows, newRow];
-        setRows(updatedRows);
-        localStorage.setItem("formProjeto", JSON.stringify(updatedRows));
+        setRows((prevRows) => [...prevRows, newRow]); // Adicione o novo projeto aos dados existentes
+        setRefresh((prev) => !prev); // Atualize o estado `refresh`
         handleClose();
-        return;
+      } else {
+        console.error("Erro ao salvar os dados no backend.");
       }
-      console.error("Erro ao salvar os dados no backend.");
     } catch (error) {
       console.error("Erro ao conectar-se ao backend:", error);
     }
