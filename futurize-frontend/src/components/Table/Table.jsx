@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Input from '../Input/input';
-import Buttons from '../Buttons/Buttons';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { isValid, format, parse } from 'date-fns';
+import React, { useState, useEffect } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Input from "../Input/input";
+import Buttons from "../Buttons/Buttons";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { isValid, format, parse } from "date-fns";
 import "./Table.css";
-import { AlertError } from '../Alert/Modal';
+import { AlertError } from "../Alert/Modal";
 import axios from "axios";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import { useNavigate } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import Box from '@mui/material/Box';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import Box from "@mui/material/Box";
 import useAuth from "../../hooks/useAuth";
 
 export default function TableC() {
@@ -35,6 +35,7 @@ export default function TableC() {
   const [estado, setEstado] = useState("");
   const [error, setError] = useState();
   const [rows, setRows] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
@@ -46,17 +47,17 @@ export default function TableC() {
   const usuarioLogadoName = usuarioLogado.sub;
   const [allocatedUsers, setAllocatedUsers] = useState([]);
 
-  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+  const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT;
 
   const handleClickOpen = () => {
     // Limpa os campos do formulário
     setFormProjeto({
       id: 0,
-      titulo: '',
-      inicio: '',
-      encerramento: '',
-      estado: 'ANDAMENTO',
-      gestor: '',
+      titulo: "",
+      inicio: "",
+      encerramento: "",
+      estado: "ANDAMENTO",
+      gestor: "",
     });
 
     setOpen(true);
@@ -73,7 +74,7 @@ export default function TableC() {
     if (id !== undefined && !isNaN(id)) {
       openDeleteConfirmation(id);
     } else {
-      console.error('ID de projeto inválido:', id);
+      console.error("ID de projeto inválido:", id);
     }
   };
   const cancelDelete = () => {
@@ -84,31 +85,31 @@ export default function TableC() {
     setEditOpen(false);
   };
   const [formProjeto, setFormProjeto] = useState({
-    titulo: '',
-    inicio: '',
-    encerramento: '',
-    estado: 'ANDAMENTO',
-    gestor: '',
+    titulo: "",
+    inicio: "",
+    encerramento: "",
+    estado: "ANDAMENTO",
+    gestor: "",
   });
 
   const handleInputChange = (e, title) => {
     const { value } = e.target;
-    if (title === 'titulop') {
+    if (title === "titulop") {
       setTitulo(value);
     } else {
       setFormProjeto({ ...formProjeto, [title]: value });
     }
-  }
+  };
   function getStatusTagClass(estado) {
     switch (estado) {
-      case 'ANDAMENTO':
-        return 'tag-andamento';
-      case 'CONCLUIDO':
-        return 'tag-concluido';
-      case 'PAUSADO':
-        return 'tag-pausado';
+      case "ANDAMENTO":
+        return "tag-andamento";
+      case "CONCLUIDO":
+        return "tag-concluido";
+      case "PAUSADO":
+        return "tag-pausado";
       default:
-        return 'tag-status';
+        return "tag-status";
     }
   }
   useEffect(() => {
@@ -116,16 +117,19 @@ export default function TableC() {
     const fetchData = async () => {
       try {
         if (!token) {
-            console.error('Token JWT não encontrado no localStorage.');
-            return;
+          console.error("Token JWT não encontrado no localStorage.");
+          return;
         }
 
-        const response = await axios.get(`http://localhost:8080/Projeto/porUsuario/${usuarioLogadoId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:8080/Projeto/porUsuario/${usuarioLogadoId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.status === 200) {
           setRows(response.data); // Atualize o estado 'rows' com os dados do banco
@@ -137,7 +141,7 @@ export default function TableC() {
       }
     };
     fetchData(); // Chame a função para buscar os dados ao carregar a página
-  }, []);
+  }, [refresh]); // Agora o useEffect será executado toda vez que `refresh` mudar.
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -145,10 +149,10 @@ export default function TableC() {
     const { titulo, inicio, encerramento, estado, gestor } = formProjeto;
 
     const dataInicial = inicio
-      ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
-      : format(new Date(), 'yyyy-MM-dd');
-    const encerramentoEmData = parse(encerramento, 'dd-MM-yyyy', new Date());
-    const dataFinal = format(encerramentoEmData, 'yyyy-MM-dd');
+      ? format(parse(inicio, "dd-MM-yyyy", new Date()), "yyyy-MM-dd")
+      : format(new Date(), "yyyy-MM-dd");
+    const encerramentoEmData = parse(encerramento, "dd-MM-yyyy", new Date());
+    const dataFinal = format(encerramentoEmData, "yyyy-MM-dd");
 
     const newRow = {
       titulo: titulo,
@@ -159,37 +163,40 @@ export default function TableC() {
     };
 
     try {
-        if (!token) {
-            console.error('Token JWT não encontrado no localStorage.');
-            return;
-        }
+      if (!token) {
+        console.error("Token JWT não encontrado no localStorage.");
+        return;
+      }
 
-        const response = await axios.post("http://localhost:8080/Projeto", newRow, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-        });
-
-        if (response.status === 200) {
-            const updatedRows = [...rows, newRow];
-            setRows(updatedRows);
-            localStorage.setItem('formProjeto', JSON.stringify(updatedRows));
-            handleClose();
-            return;
+      const response = await axios.post(
+        "http://localhost:8080/Projeto",
+        newRow,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
-        console.error('Erro ao salvar os dados no backend.');
+      );
+
+      if (response.status === 200) {
+        setRows((prevRows) => [...prevRows, newRow]); // Adicione o novo projeto aos dados existentes
+        setRefresh((prev) => !prev); // Atualize o estado `refresh`
+        handleClose();
+      } else {
+        console.error("Erro ao salvar os dados no backend.");
+      }
     } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
+      console.error("Erro ao conectar-se ao backend:", error);
     }
-};
-  
+  };
+
   const confirmDelete = async () => {
     if (idToDelete !== null && idToDelete !== undefined && !isNaN(idToDelete)) {
       try {
         if (!token) {
-            console.error('Token JWT não encontrado no localStorage.');
-            return;
+          console.error("Token JWT não encontrado no localStorage.");
+          return;
         }
 
         await axios.delete(`http://localhost:8080/Projeto/${idToDelete}`, {
@@ -202,17 +209,21 @@ export default function TableC() {
         setRows(updatedRows);
         setDeleteConfirmationOpen(false);
       } catch (error) {
-        console.error('Erro ao excluir o item:', error);
+        console.error("Erro ao excluir o item:", error);
       }
     } else {
-      console.error('ID de projeto inválido:', idToDelete);
+      console.error("ID de projeto inválido:", idToDelete);
     }
   };
 
   const openEditProject = (project) => {
-    const formattedInicio = project.inicio ? format(new Date(project.inicio), 'dd-MM-yyyy') : '';
-    const formattedEncerramento = project.encerramento ? format(new Date(project.encerramento), 'dd-MM-yyyy') : '';
-  
+    const formattedInicio = project.inicio
+      ? format(new Date(project.inicio), "dd-MM-yyyy")
+      : "";
+    const formattedEncerramento = project.encerramento
+      ? format(new Date(project.encerramento), "dd-MM-yyyy")
+      : "";
+
     setFormProjeto({
       id: project.id,
       titulo: project.titulo,
@@ -221,22 +232,26 @@ export default function TableC() {
       estado: project.estado,
       gestor: project.gestor,
     });
-  
+
     setEditProjectData(project); // Armazena os dados do projeto selecionado
     setEditOpen(true);
   };
-  
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-  
+
     const { id, titulo, inicio, encerramento, estado, gestor } = formProjeto;
-  
-    let dataInicial = inicio ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd') : '';
-    let dataFinal = encerramento ? format(parse(encerramento, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd') : '';
-  
+
+    let dataInicial = inicio
+      ? format(parse(inicio, "dd-MM-yyyy", new Date()), "yyyy-MM-dd")
+      : "";
+    let dataFinal = encerramento
+      ? format(parse(encerramento, "dd-MM-yyyy", new Date()), "yyyy-MM-dd")
+      : "";
+
     // Debugging logs to check values before formatting
-    console.log('Data Inicial:', inicio, 'Data Final:', encerramento);
-  
+    console.log("Data Inicial:", inicio, "Data Final:", encerramento);
+
     const updatedProjectData = {
       id: id,
       titulo: titulo,
@@ -245,56 +260,63 @@ export default function TableC() {
       estado: estado,
       gestor: gestor,
     };
-  
+
     try {
       if (!token) {
-        console.error('Token JWT não encontrado no localStorage.');
+        console.error("Token JWT não encontrado no localStorage.");
         return;
       }
-  
-      const response = await axios.put(`http://localhost:8080/Projeto/${id}`, updatedProjectData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-  
+
+      const response = await axios.put(
+        `http://localhost:8080/Projeto/${id}`,
+        updatedProjectData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (response.status === 200) {
-        const updatedRows = rows.map((row) => (row.id === id ? { ...row, ...updatedProjectData } : row));
+        const updatedRows = rows.map((row) =>
+          row.id === id ? { ...row, ...updatedProjectData } : row
+        );
         setRows(updatedRows);
         handleEditClose();
       } else {
-        console.error('Erro ao atualizar os dados no backend.');
+        console.error("Erro ao atualizar os dados no backend.");
       }
     } catch (error) {
-      console.error('Erro ao conectar-se ao backend:', error);
+      console.error("Erro ao conectar-se ao backend:", error);
     }
   };
-  
 
   const openProjectKanban = (project) => {
     if (project && project.id) {
-      console.log('Dados do projeto:', project); // Verifique os dados do projeto
+      console.log("Dados do projeto:", project); // Verifique os dados do projeto
       setProjectData(project); // Define os dados do projeto selecionado
       navigate(`/kanban/${project.id}`, { state: { projectData: project } }); // Abra a tela Kanban para o projeto
     } else {
-      console.error('Projeto inválido:', project);
+      console.error("Projeto inválido:", project);
     }
   };
 
   const addMemberToProject = () => {
     if (selectedUserId) {
-      const selectedUser = rows.find((usuario) => usuario.id === selectedUserId);
+      const selectedUser = rows.find(
+        (usuario) => usuario.id === selectedUserId
+      );
       const newMemberData = {
         usuario: { id: selectedUserId },
         projeto: { id: projectData.id },
       };
 
       axios
-        .post('http://localhost:8080/Alocacao_projeto', newMemberData,{
+        .post("http://localhost:8080/Alocacao_projeto", newMemberData, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         })
         .then((response) => {
@@ -309,57 +331,80 @@ export default function TableC() {
           }
         })
         .catch((error) => {
-          console.error('Erro ao conectar-se ao backend:', error);
+          console.error("Erro ao conectar-se ao backend:", error);
         });
     }
-  }; 
-  
+  };
+
   return (
-    <div className='table'>
-       <div className='meus-projetos'>
+    <div className="table">
+      <div className="meus-projetos">
         <h1 className="subtitulo">Meus Trabalhos</h1>
-        <Buttons variant="outlined" className="button-circle" onClick={handleClickOpen}>
+        <Buttons
+          variant="outlined"
+          className="button-circle"
+          onClick={handleClickOpen}
+        >
           +
         </Buttons>
       </div>
 
-      <TableContainer component={Paper} style={{ maxHeight: '370px', overflowY: 'auto', overflowX: 'auto' }}>
+      <TableContainer
+        component={Paper}
+        style={{ maxHeight: "370px", overflowY: "auto", overflowX: "auto" }}
+      >
         {/* Defina a altura para 600px e habilita a barra de rolagem vertical */}
         <Table>
           <TableHead>
-            <TableRow className='row'>
-              <TableCell className='cel'>Título</TableCell>
-              <TableCell className='cel'>Data de Início</TableCell>
-              <TableCell className='cel'>Data de Encerramento</TableCell>
-              <TableCell className='cel'>Estado</TableCell>
-              <TableCell className='cel'>Gestor</TableCell>
-              <TableCell className='cel'>Ações</TableCell>
-              <TableCell className='cel'>Board</TableCell>
+            <TableRow className="row">
+              <TableCell className="cel">Título</TableCell>
+              <TableCell className="cel">Data de Início</TableCell>
+              <TableCell className="cel">Data de Encerramento</TableCell>
+              <TableCell className="cel">Estado</TableCell>
+              <TableCell className="cel">Gestor</TableCell>
+              <TableCell className="cel">Ações</TableCell>
+              <TableCell className="cel">Board</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>{row.titulo}</TableCell>
-                <TableCell>{format(new Date(row.inicio), 'dd-MM-yyyy')}</TableCell>
-                <TableCell>{format(new Date(row.encerramento), 'dd-MM-yyyy')}</TableCell>
                 <TableCell>
-                  <span className={`tag-status ${getStatusTagClass(row.estado)}`}>
+                  {format(new Date(row.inicio), "dd-MM-yyyy")}
+                </TableCell>
+                <TableCell>
+                  {format(new Date(row.encerramento), "dd-MM-yyyy")}
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={`tag-status ${getStatusTagClass(row.estado)}`}
+                  >
                     {row.estado}
                   </span>
                 </TableCell>
                 <TableCell>{usuarioLogadoName}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleDelete(row.id)} aria-label="delete" color="error">
+                  <IconButton
+                    onClick={() => handleDelete(row.id)}
+                    aria-label="delete"
+                    color="error"
+                  >
                     <DeleteIcon />
                   </IconButton>
-                  <IconButton onClick={() => openEditProject(row)} aria-label="edit" color="primary">
+                  <IconButton
+                    onClick={() => openEditProject(row)}
+                    aria-label="edit"
+                    color="primary"
+                  >
                     <EditIcon />
                   </IconButton>
-                  </TableCell>
-                  <TableCell>
-                    <Buttons onClick={() => openProjectKanban(row)}>Kanban</Buttons>
-                  </TableCell>
+                </TableCell>
+                <TableCell>
+                  <Buttons onClick={() => openProjectKanban(row)}>
+                    Kanban
+                  </Buttons>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -377,7 +422,7 @@ export default function TableC() {
             type="text"
             fullWidth
             value={formProjeto.titulo}
-            onChange={(e) => handleInputChange(e, 'titulo')}
+            onChange={(e) => handleInputChange(e, "titulo")}
           />
           <Input
             margin="dense"
@@ -386,7 +431,7 @@ export default function TableC() {
             type="date"
             fullWidth
             value={formProjeto.inicio}
-            onChange={(e) => handleInputChange(e, 'inicio')}
+            onChange={(e) => handleInputChange(e, "inicio")}
           />
           <Input
             margin="dense"
@@ -395,14 +440,14 @@ export default function TableC() {
             type="date"
             fullWidth
             value={formProjeto.encerramento}
-            onChange={(e) => handleInputChange(e, 'encerramento')}
+            onChange={(e) => handleInputChange(e, "encerramento")}
           />
           <FormControl fullWidth>
             <Select
               labelId="estado-label"
               id="estado"
               value={formProjeto.estado}
-              onChange={(e) => handleInputChange(e, 'estado')}
+              onChange={(e) => handleInputChange(e, "estado")}
             >
               <MenuItem value="ANDAMENTO">Andamento</MenuItem>
               <MenuItem value="CONCLUIDO">Concluído</MenuItem>
@@ -421,54 +466,53 @@ export default function TableC() {
       </Dialog>
 
       <Dialog open={editOpen} onClose={handleEditClose}>
-    <DialogTitle>Atualizar Trabalho</DialogTitle>
-    <DialogContent>
-      <Input
-        autoFocus
-        margin="dense"
-        id="titulo"
-        label="Título"
-        type="text"
-        fullWidth
-        value={formProjeto.titulo}
-        onChange={(e) => handleInputChange(e, 'titulo')}
-      />
-      <Input
-        margin="dense"
-        id="encerramento"
-        label="Data de Encerramento"
-        type="date"
-        fullWidth
-        value={formProjeto.encerramento}
-        onChange={(e) => handleInputChange(e, 'encerramento')}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <FormControl fullWidth>
-        <Select
-          labelId="estado-label"
-          id="estado"
-          value={formProjeto.estado}
-          onChange={(e) => handleInputChange(e, 'estado')}
-        >
-          <MenuItem value="ANDAMENTO">Andamento</MenuItem>
-          <MenuItem value="CONCLUIDO">Concluído</MenuItem>
-          <MenuItem value="PAUSADO">Pausado</MenuItem>
-        </Select>
-      </FormControl>
-    </DialogContent>
-  <DialogActions>
-    <Buttons onClick={handleEditClose} color="primary">
-      Cancelar
-    </Buttons>
-    <Buttons onClick={handleEditSubmit} color="primary">
-      Atualizar
-    </Buttons>
-  </DialogActions>
-</Dialog>
+        <DialogTitle>Atualizar Trabalho</DialogTitle>
+        <DialogContent>
+          <Input
+            autoFocus
+            margin="dense"
+            id="titulo"
+            label="Título"
+            type="text"
+            fullWidth
+            value={formProjeto.titulo}
+            onChange={(e) => handleInputChange(e, "titulo")}
+          />
+          <Input
+            margin="dense"
+            id="encerramento"
+            label="Data de Encerramento"
+            type="date"
+            fullWidth
+            value={formProjeto.encerramento}
+            onChange={(e) => handleInputChange(e, "encerramento")}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <FormControl fullWidth>
+            <Select
+              labelId="estado-label"
+              id="estado"
+              value={formProjeto.estado}
+              onChange={(e) => handleInputChange(e, "estado")}
+            >
+              <MenuItem value="ANDAMENTO">Andamento</MenuItem>
+              <MenuItem value="CONCLUIDO">Concluído</MenuItem>
+              <MenuItem value="PAUSADO">Pausado</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Buttons onClick={handleEditClose} color="primary">
+            Cancelar
+          </Buttons>
+          <Buttons onClick={handleEditSubmit} color="primary">
+            Atualizar
+          </Buttons>
+        </DialogActions>
+      </Dialog>
 
-      
       <Dialog open={deleteConfirmationOpen} onClose={cancelDelete}>
         <DialogTitle>Confirmação de Exclusão</DialogTitle>
         <DialogContent>
@@ -483,7 +527,6 @@ export default function TableC() {
           </Buttons>
         </DialogActions>
       </Dialog>
-      
     </div>
   );
 }
