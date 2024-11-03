@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import './HeaderKanban.css';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Avatar from '@mui/material/Avatar';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Buttons from '../Buttons/Buttons';
-import Input from '../Input/input';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import { ToastSuccess, ToastError } from '../Alert/Toast';
+import React, { useState, useEffect } from "react";
+import "./HeaderKanban.css";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Avatar from "@mui/material/Avatar";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Buttons from "../Buttons/Buttons";
+import Input from "../Input/input";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import { ToastSuccess, ToastError } from "../Alert/Toast";
 export default function HeaderKanban() {
   const { projectId } = useParams();
   const location = useLocation();
   const projectData = location.state && location.state.projectData;
   const [rows, setRows] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [projectMembers, setProjectMembers] = useState([]);
@@ -31,7 +31,7 @@ export default function HeaderKanban() {
   const [allocationDataFetched, setAllocationDataFetched] = useState(false); // No
   const [newMembers, setNewMembers] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false); // Estado para rastrear se os dados foram carregados
-  const token = JSON.parse(localStorage.getItem('@user'))?.tokenJWT;
+  const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT;
 
   const openDeleteConfirmationDialog = () => {
     setDeleteConfirmationOpen(true);
@@ -42,31 +42,32 @@ export default function HeaderKanban() {
   };
 
   useEffect(() => {
-    const fetchUsuarios = async () => { 
+    const fetchUsuarios = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/Usuario',{
+        const response = await axios.get("http://localhost:8080/Usuario", {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
         if (response.status === 200) {
           setRows(response.data);
           setDataLoaded(true); // Marque os dados como carregados
         } else {
-          console.error('Erro ao buscar dados de usuários no backend.');
+          console.error("Erro ao buscar dados de usuários no backend.");
         }
       } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
+        console.error("Erro ao conectar-se ao backend:", error);
       }
     };
     const fetchProjectMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/Alocacao_projeto/${projectId}`, {
+          `http://localhost:8080/Alocacao_projeto/${projectId}`,
+          {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
@@ -79,10 +80,12 @@ export default function HeaderKanban() {
           );
           setAllocatedUsers(allocatedUsersData); // Defina allocatedUsers com os usuários alocados
         } else if (response.status === 409) {
-          console.error('Erro ao buscar membros alocados ao projeto no backend.');
+          console.error(
+            "Erro ao buscar membros alocados ao projeto no backend."
+          );
         }
       } catch (error) {
-        console.error('Erro ao conectar-se ao backend:', error);
+        console.error("Erro ao conectar-se ao backend:", error);
       }
     };
     if (!dataLoaded) {
@@ -103,13 +106,13 @@ export default function HeaderKanban() {
   function addError(error) {
     ToastError({
       text: error,
-      title: 'Error!!',
+      title: "Error!!",
     });
   }
   function addSucesso() {
     ToastSuccess({
-      text: 'Membro adicionado com sucesso ao projeto.',
-      title: 'Sucesso!!',
+      text: "Membro adicionado com sucesso ao projeto.",
+      title: "Sucesso!!",
     });
     setEditOpen(false);
     setNewMembers([...newMembers, newMemberData]);
@@ -118,7 +121,7 @@ export default function HeaderKanban() {
   function addSucessoGeneral(suc) {
     ToastSuccess({
       text: suc,
-      title: 'Sucesso!',
+      title: "Sucesso!",
     });
     setEditOpen(false);
   }
@@ -130,7 +133,9 @@ export default function HeaderKanban() {
   };
   const addMemberToProject = async () => {
     if (selectedUserId) {
-      const selectedUser = rows.find((usuario) => usuario.id === selectedUserId);
+      const selectedUser = rows.find(
+        (usuario) => usuario.id === selectedUserId
+      );
       setProjectMembers([...projectMembers, selectedUser]);
       setSelectedUserId(null);
 
@@ -144,10 +149,12 @@ export default function HeaderKanban() {
 
       try {
         const response = await axios.post(
-          'http://localhost:8080/Alocacao_projeto', newMemberData ,{
+          "http://localhost:8080/Alocacao_projeto",
+          newMemberData,
+          {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
@@ -172,38 +179,41 @@ export default function HeaderKanban() {
   );
   function formatMemberName(name) {
     if (name) {
-      const names = name.split(' ');
+      const names = name.split(" ");
       if (names.length === 1) {
         return names[0].charAt(0).toUpperCase();
       } else {
-        return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+        return (
+          names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase()
+        );
       }
     } else {
-      return ''; // Retornar uma string vazia se o nome for nulo ou indefinido
+      return ""; // Retornar uma string vazia se o nome for nulo ou indefinido
     }
   }
 
   const confirmDeleteAllocation = async () => {
     closeDeleteConfirmationDialog(); // Fechar o diálogo de confirmação
-    addSucessoGeneral('Membro excluído com sucesso!');
+    addSucessoGeneral("Membro excluído com sucesso!");
     try {
       const response = await axios.delete(
-        `http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`, {
+        `http://localhost:8080/Alocacao_projeto/${projectId}/${selectedUserId}`,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
       if (response.status === 204) {
         // A alocação foi excluída com sucesso
-        console.log('Alocação excluída com sucesso.');
+        console.log("Alocação excluída com sucesso.");
         // Adicione qualquer lógica adicional após a exclusão, se necessário
       } else if (response.status === 200) {
-        console.log('Alocação excluída com sucesso.');
+        console.log("Alocação excluída com sucesso.");
       }
     } catch (error) {
-      console.error('Erro ao conectar-se ao backend:', error);
+      console.error("Erro ao conectar-se ao backend:", error);
     }
   };
 
@@ -238,7 +248,7 @@ export default function HeaderKanban() {
                   onClick={() => handleAddMemberClick(usuario.id)}
                   style={{
                     backgroundColor:
-                      usuario.id === selectedUserId ? '#e0e0e0' : 'transparent',
+                      usuario.id === selectedUserId ? "#e0e0e0" : "transparent",
                   }}
                 >
                   <ListItemText primary={usuario.email} />
@@ -246,7 +256,7 @@ export default function HeaderKanban() {
               ))}
             </div>
           </DialogContent>
-          <DialogActions style={{ display: 'block' }}>
+          <DialogActions style={{ display: "block" }}>
             <Buttons
               style={{ marginRight: 30 }}
               onClick={openDeleteConfirmationDialog}
@@ -273,7 +283,9 @@ export default function HeaderKanban() {
             </ul>
           </DialogContent>
           <DialogActions>
-            <Buttons onClick={() => setShowAllocatedUsers(false)}>Fechar</Buttons>
+            <Buttons onClick={() => setShowAllocatedUsers(false)}>
+              Fechar
+            </Buttons>
           </DialogActions>
         </Dialog>
 
