@@ -10,8 +10,8 @@
 }
 
 .container {
-  width: 100vw;
-  height: 100vh;
+  width: 80vw;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +23,6 @@
   align-items: center;
   justify-content: center;
   width: 50%;
-  height: 70%;
   background-color: #f9f9f9;
   padding: 1.5rem;
   border-radius: 10px;
@@ -34,8 +33,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60%;
-  height: 20%;
+  width: 100%;
+  height: 100%;
 }
 
 .profile-pic {
@@ -46,72 +45,25 @@
 .user-info {
   /* border: 1px solid red; */
   flex-grow: 1;
-  padding-left: 20px;
 }
 
-.user-info .h2-user-info {
-  font-size: 1.5rem;
-  color: #000000;
-  margin-bottom: 5px;
-  text-transform: uppercase;
+.deseja{
+  font-size: 15px;
+  margin-bottom: 1rem;
+  color: #8796A5;
+  margin-top: 2rem;
 }
 
 .user-info .p-user-info {
   color: grey;
   font-size: 0.9rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
-
-/* #switch{
-
-  position: relative;
-  width: 64px;
-  margin: 4px auto;
-
-}
-
-#switch .switch-button{
-width: 32px;
-height: 32px;
-background: #003892 var(--switch-bg-url) no-repeat center;
-border: 0;
-border-radius: 50%;
-position: absolute;
-top: 50%;
-left: 0;
-z-index: 1;
-transform: translateY(-50%);
-animation: slide-back 0.2s;
-} 
-
-.light #switch .switch-button{
-  animation: slide-in 0.4s forwards;
-}
-
-#switch .switch-button:hover{
-  outline: 8px solid var(--highlight-color);
-}
-
-#switch .switch-span{
-  display: block;
-  width: 64px;
-  height: 24px;
-  background: var(--surface-color);
-  color: var(--stroke-color);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 9999px;
-} */
-
-.edit-profile {
-  width: 60%;
-  margin-top: 2rem;
-}
-
 .inputs-edit-profile {
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  margin-top: 1rem;
 }
 
 .style-inputs {

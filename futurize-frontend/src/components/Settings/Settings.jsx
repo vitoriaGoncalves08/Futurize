@@ -1,72 +1,35 @@
 import React, { useEffect, useState } from "react";
 import "./Settings.css";
 import axios from "axios";
-import useAuth from "../../hooks/useAuth"; // Importe o hook de autenticação
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import Buttons from "../Buttons/Buttons";
 import { ToastError, ToastSuccess } from "../Alert/Toast";
+import emailjs from "emailjs-com";
+import Input from '../../components/Input/input';
+import { AlertWarning } from "../Alert/Modal";
 
 function Settings() {
-  const { getLoginUser } = useAuth(); // Obtém o usuário logado
-  const usuarioLogado = getLoginUser(); // Dados do usuário logado
-  const usuarioLogadoId = usuarioLogado.id; // ID do usuário logado
+  const { getLoginUser, signOut } = useAuth();
+  const navigate = useNavigate();
+  const usuarioLogado = getLoginUser();
+  const usuarioLogadoId = usuarioLogado.id;
 
   const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(usuarioLogado.email || "");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
+
+  const [nomeError, setNomeError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [senhaError, setSenhaError] = useState("");
-  const [confirmarSenhaError, setConfirmarSenhaError] = useState("");
+  const [confSenhaError, setConfSenhaError] = useState("");
   const [error, setError] = useState("");
-  const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT; // Obtém o token de autenticação
 
-  // Função para validar o formato do email
-  const isEmailValid = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const [originalEmail, setOriginalEmail] = useState(usuarioLogado.email);
 
-  // Função para mostrar o alerta caso os campos não estejam preenchidos
-  function isFilled(error) {
-    ToastError({
-      text: error,
-      title: "Erro!",
-    });
-  }
+  const token = JSON.parse(localStorage.getItem("@user"))?.tokenJWT;
 
-  function isSuccess(msg) {
-    ToastSuccess({
-      text: msg,
-      title: "Sucesso!",
-    });
-  }
-
-  // Função para validar a senha
-  const isSenhaValida = (senha) => {
-    // Pelo menos uma letra maiúscula
-    if (!/[A-Z]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos uma letra minúscula
-    if (!/[a-z]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos um caractere especial
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos um número
-    if (!/[0-9]/.test(senha)) {
-      return false;
-    }
-    // Pelo menos 8 caracteres
-    if (senha.length < 8) {
-      return false;
-    }
-    return true;
-  };
-
-  // Função para buscar os dados do usuário logado
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -74,10 +37,8 @@ function Settings() {
           console.error("Token JWT não encontrado no localStorage.");
           return;
         }
-
-        // Faz a requisição para buscar os dados do usuário pelo ID
         const response = await axios.get(
-          `http://localhost:8080/Usuario/${usuarioLogadoId}`, // Endpoint para buscar o usuário
+          `http://localhost:8080/Usuario/${usuarioLogadoId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -88,9 +49,9 @@ function Settings() {
 
         if (response.status === 200) {
           const { nome, email } = response.data;
-          setNome(nome); // Define o nome no state
-          setEmail(email); // Define o email no state
-          // senha geralmente não é retornada por questões de segurança
+          setNome(nome);
+          setEmail(email);
+          setOriginalEmail(email);
         } else {
           console.error("Erro ao buscar dados do usuário.");
         }
@@ -99,121 +60,49 @@ function Settings() {
       }
     };
 
-    fetchUserData(); // Chama a função para buscar os dados do usuário ao carregar a página
+    fetchUserData();
   }, [usuarioLogadoId, token]);
 
-  // Função para salvar as alterações dos dados do usuário
-  const handleUpdateUser = async () => {
-    // Função para validar se tudo foi atendido
-    const isFormValid = () => {
-      if (!email || !confirmarSenha || !senha || !nome) {
-        isFilled("Preencha todos os campos!");
-        return;
-      } else if (senha !== confirmarSenha) {
-        setSenhaError("As senhas não são iguais");
-        setConfirmarSenhaError("As senhas não são iguais");
-        return;
-      } else if (!isEmailValid(email)) {
-        setEmailError("Email inválido");
-        return;
-      } else if (!isSenhaValida(senha)) {
-        setSenhaError(
-          "A senha deve ter 1 caractere minúsculo, 1 maiúsculo e 8 dígitos totais"
-        );
-        return;
-      }
-    };
-
+  const handleEmailConfirmation = async () => {
     try {
-      if (!token) {
-        console.error("Token JWT não encontrado no localStorage.");
-        return;
-      }
-
-      // Faz a requisição para atualizar os dados do usuário
-      const response = await axios.put(
-        `http://localhost:8080/Usuario/${usuarioLogadoId}`, // Endpoint para atualizar o usuário
+      await emailjs.send(
+        "service_cywnwa8",
+        "template_9oqatw5",
         {
-          id: usuarioLogadoId, // Usar o id do usuário logado
-          nome,
-          email,
-          senha,
+          to_email: email,
+          to_name: nome,
+          to_token: token,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
+        "JbJ8giCPbMPBHHmUi"
       );
-
-      if (response.status === 200) {
-        isSuccess("Dados alterados com sucesso!"); // Mensagem de sucesso
-      } else {
-        isFilled("Erro ao alterar os dados do usuário."); // Mensagem de erro
-      }
+      alert("E-mail de confirmação enviado. Verifique sua caixa de entrada.");
     } catch (error) {
-      setErrorMessage("Erro ao conectar-se ao backend."); // Mensagem de erro
-      console.error("Erro ao conectar-se ao backend:", error);
+      console.error("Erro ao enviar o e-mail de confirmação:", error);
     }
   };
+
 
   return (
     <div className="container">
       <div className="config-profile">
+        <h2 className="title">Confirmação de Dados Pessoais</h2>
         <div className="headerProfile">
-          <img
-            src="https://via.placeholder.com/80x80"
-            alt="Foto de perfil"
-            className="profile-pic"
-          />
           <div className="user-info">
-            <h2 className="h2-user-info">{`${nome}`}</h2>
-            <p className="p-user-info">{email}</p>
-          </div>
-          <div id="switch">
-            <button className="switch-button"></button>
-            <span className="switch-span"></span>
+            <h3 className="p-user-info">Nome: {nome}</h3>
+            <h3 className="p-user-info">E-mail: {email}</h3>
           </div>
         </div>
-
         <div className="edit-profile">
-          <h3>Editar Dados</h3>
+          <h3 className="deseja">Deseja alterar alguma informação?</h3>
           <div className="inputs-edit-profile">
-            <input
-              className="style-inputs"
-              type="text"
-              // placeholder="nome"
-              label="Digite seu Nome"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-            />
-            <input
-              className="style-inputs"
-              type="email"
-              placeholder="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              className="style-inputs"
-              type="password"
-              placeholder="senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-            <input
-              className="style-inputs"
-              type="password"
-              placeholder="confirmar senha"
-              value={confirmarSenha}
-              onChange={(e) => setConfirmarSenha(e.target.value)}
-            />
-            <Buttons onClick={handleUpdateUser}>Alterar Dados</Buttons>
+            <Buttons onClick={handleEmailConfirmation}>
+              Enviar Confirmação para E-mail
+            </Buttons>
           </div>
         </div>
       </div>
     </div>
+
   );
 }
 
