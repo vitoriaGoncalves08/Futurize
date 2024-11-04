@@ -210,12 +210,6 @@ export default function HeaderKanban() {
   return (
     <div className="container-header-kanban">
       <h3 className="nome-header-kanban">{projectData.titulo}</h3>
-      <div className="Estrela">
-        <StarBorderIcon></StarBorderIcon>
-      </div>
-      <div className="Lixo">
-        <DeleteOutlineIcon></DeleteOutlineIcon>
-      </div>
       <div className="integrantes-header-kanban">
         {allocatedUsers.map((user) => (
           <Avatar key={user.id}>{formatMemberName(user.nome)}</Avatar>
