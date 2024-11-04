@@ -163,6 +163,10 @@ export default function Card({ index, listIndex, data, setTasks}) {
       usuario_comentario,
       atividadeComentada,
     } = formComment;
+
+    const dataInicial = data_comentario
+    ? format(parse(inicio, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
+    : format(new Date(), 'yyyy-MM-dd');
   
     const data_comentarioDate = new Date(formComment.data_comentario);
     const formattedDate = `${data_comentarioDate.getFullYear()}-${(data_comentarioDate.getMonth() + 1).toString().padStart(2, '0')}-${data_comentarioDate.getDate().toString().padStart(2, '0')}`;
@@ -171,7 +175,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
       id: id,
       titulo_comentario: titulo_comentario,
       descricao_comentario: descricao_comentario,
-      data_comentario: formattedDate,
+      data_comentario: dataInicial,
       usuario_comentario: {id:usuarioLogadoId},
       atividadeComentada: {id:data.id}
 
@@ -223,6 +227,10 @@ export default function Card({ index, listIndex, data, setTasks}) {
       return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
     };
 
+    const dataInicial = data_comentario
+    ? format(parse(data_comentario, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd')
+    : format(new Date(), 'yyyy-MM-dd');
+
     const dataComentario = parseDate(data_comentario);
 
     if (!dataComentario) {
@@ -234,7 +242,7 @@ export default function Card({ index, listIndex, data, setTasks}) {
       id,
       titulo_comentario,
       descricao_comentario,
-      data_comentario: dataComentario,
+      data_comentario: dataInicial,
     };
 
     try {
@@ -883,7 +891,7 @@ const theme = createTheme({
           </DialogTitle>
           <DialogContent sx={{ backgroundColor: '', width: '100%', height: 650 , padding: 0, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
             <Box sx={{ width: '90%', height: 315, backgroundColor: '', boxSizing: 'border-box', paddingTop: 1 }}>
-              <form onSubmit={handleCreateComment} style={{height: 315, backgroundColor: ''}}>
+              <form onSubmit={handleCreateComment} style={{height: 315, width: '100%', backgroundColor: ''}}>
                 <TextField 
                   id="titulo_comentario" 
                   label="Título"
@@ -891,17 +899,9 @@ const theme = createTheme({
                   variant="outlined" 
                   onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
                   sx={{  
-                    width: '100%',
+                    width: 540,
                     marginBottom: 0.5,
                   }} 
-                />
-                <Input
-                  id="data_comentario"
-                  type="date"
-                  name="data_comentario"
-                  value={formAtividade.data_comentario}
-                  onChange={(e) => handleInputChangeComment(e, "data_comentario")}
-                  label="Digite a data do comentário"
                 />
                 <TextField
                   id="descricao_comentario"
@@ -1054,14 +1054,6 @@ const theme = createTheme({
               value={formComment.titulo_comentario}
               onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
               label="Digite seu titulo"
-            />
-            <Input
-              id="encerramento-kanban"
-              type="date"
-              name="encerramento"
-              value={formComment.data_comentario}
-              onChange={(e) => handleInputChangeComment(e, "data_comentario")}
-              label="Digite a data de encerramento"
             />
             <TextField
               id="outlined-multiline-static"
