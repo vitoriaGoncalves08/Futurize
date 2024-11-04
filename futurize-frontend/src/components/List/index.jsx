@@ -367,7 +367,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
             </DialogContent>
           </Dialog>
 
-          <div className="CamadaTime">
+          {/* <div className="CamadaTime">
             <div className="Camada">
               <LayersIcon />
             </div>
@@ -376,7 +376,7 @@ export default function List({ data, index: listIndex, tasks, allocatedUsers, se
               <WatchLaterIcon />
               <p>00:00:00</p>
             </div>
-          </div>
+          </div> */}
 
           <div
             ref={provided.innerRef}
