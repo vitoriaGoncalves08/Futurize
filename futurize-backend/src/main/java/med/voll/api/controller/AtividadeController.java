@@ -185,6 +185,13 @@ public class AtividadeController {
         }
     }
 
+    //Minhas atividades v
+    @GetMapping("/todas/{userId}")
+    public ResponseEntity<List<Atividade>> getTotalAtividades(@PathVariable Long userId) {
+        List<Atividade> total = repository.totalAtividadesByUserId(userId);
+        return ResponseEntity.ok(total);
+    }
+
     //PAGINAÇÂO
 
 /*    @CrossOrigin("*")

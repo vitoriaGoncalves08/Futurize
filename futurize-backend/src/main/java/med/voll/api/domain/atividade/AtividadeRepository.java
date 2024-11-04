@@ -13,6 +13,9 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     @Query("SELECT a.estado, COUNT(a) FROM atividade a WHERE a.responsavel.id = :userId GROUP BY a.estado")
     List<Object[]> countAtividadesByUserId(Long userId);
 
+    @Query("SELECT a FROM atividade a WHERE a.responsavel.id = :userId")
+    List<Atividade> totalAtividadesByUserId(Long userId);
+
     @Query("SELECT COUNT(a) FROM atividade a WHERE a.responsavel.id = :userId AND a.estado = 'EM_ANDAMENTO'")
     Long countAtividadesAndamentoByUserId(@Param("userId") Long userId);
 
