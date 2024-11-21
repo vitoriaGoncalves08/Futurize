@@ -159,22 +159,21 @@ export default function Card({ index, listIndex, data, setTasks}) {
       id,
       titulo_comentario,
       descricao_comentario,
-      data_comentario,
       usuario_comentario,
       atividadeComentada,
     } = formComment;
   
-    const data_comentarioDate = new Date(formComment.data_comentario);
-    const formattedDate = `${data_comentarioDate.getFullYear()}-${(data_comentarioDate.getMonth() + 1).toString().padStart(2, '0')}-${data_comentarioDate.getDate().toString().padStart(2, '0')}`;
+    // Obter a data atual formatada como aaaa-mm-dd
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
   
     const activityData = {
       id: id,
       titulo_comentario: titulo_comentario,
       descricao_comentario: descricao_comentario,
       data_comentario: formattedDate,
-      usuario_comentario: {id:usuarioLogadoId},
-      atividadeComentada: {id:data.id}
-
+      usuario_comentario: {id: usuarioLogadoId},
+      atividadeComentada: {id: data.id}
     };
   
     try {
@@ -190,7 +189,6 @@ export default function Card({ index, listIndex, data, setTasks}) {
       );
   
       if (response.status === 200) {
-        // Depois de criar a tarefa, faça a requisição para buscar as tarefas atualizadas
         await fetchComentario();
         handleClose();
         console.log('Comentario adicionado com sucesso');
@@ -208,33 +206,20 @@ export default function Card({ index, listIndex, data, setTasks}) {
   const handleEditCommentSubmit = async (e) => {
     e.preventDefault();
 
-    const { id, titulo_comentario, data_comentario, descricao_comentario} = formComment;
+    const { id, titulo_comentario, descricao_comentario, data_comentario} = formComment;
 
     // Função para converter data de DD-MM-YYYY para YYYY-MM-DD
     const convertDateFormat = (dateString) => {
       const [day, month, year] = dateString.split('-');
       return `${year}-${month}-${day}`;
     };
-
-    // Parse e validar datas
-    const parseDate = (dateString) => {
-      const formattedDate = convertDateFormat(dateString);
-      const parsedDate = parse(formattedDate, 'yyyy-MM-dd', new Date());
-      return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : null;
-    };
-
-    const dataComentario = parseDate(data_comentario);
-
-    if (!dataComentario) {
-      console.error('Invalid date value provided.');
-      return;
-    }
+   
 
     const dataEditActivity = {
       id,
       titulo_comentario,
       descricao_comentario,
-      data_comentario: dataComentario,
+      data_comentario,
     };
 
     try {
@@ -899,14 +884,14 @@ const theme = createTheme({
                     marginBottom: 0.5,
                   }} 
                 />
-                <Input
+                {/* <Input
                   id="data_comentario"
                   type="date"
                   name="data_comentario"
-                  value={formAtividade.data_comentario}
+                  value={formComment.data_comentario}
                   onChange={(e) => handleInputChangeComment(e, "data_comentario")}
                   label="Digite a data do comentário"
-                />
+                /> */}
                 <TextField
                   id="descricao_comentario"
                   label="Escreva um comentário"
@@ -1060,14 +1045,14 @@ const theme = createTheme({
               onChange={(e) => handleInputChangeComment(e, "titulo_comentario")}
               label="Digite seu titulo"
             />
-            <Input
+            {/* <Input
               id="encerramento-kanban"
               type="date"
               name="encerramento"
               value={formComment.data_comentario}
               onChange={(e) => handleInputChangeComment(e, "data_comentario")}
               label="Digite a data de encerramento"
-            />
+            /> */}
             <TextField
               id="outlined-multiline-static"
               label="Escreva um comentário"
